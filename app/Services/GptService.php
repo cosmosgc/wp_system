@@ -34,7 +34,7 @@ class GptService {
         // Configuração do cliente GuzzleHttp
         $client = new Client([
             'headers' => [
-                'Authorization' => "Bearer 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",
+                'Authorization' => "Bearer ",
                 'Content-Type' => 'application/json',
             ]
         ]);
