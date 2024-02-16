@@ -46,4 +46,17 @@ public function insertDocOnDB(Request $request){
 
     }
 }
+
+public function createDocFromDb(Request $request){
+
+    if (!$request->session()->has('google_access_token')) {
+        // Se o token de acesso não estiver presente, redirecione para o processo de autenticação do Google
+        return redirect()->route('google.redirect');
+    }
+
+    $doc_created=$this->googleDocsService->createAndPopulateGoogleDoc($request->title,$request->content);
+    return $doc_created;
+
+
+}
 }

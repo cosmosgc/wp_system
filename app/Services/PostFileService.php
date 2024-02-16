@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Wp_post_content;
 use Google\Client;
 use Google\Service\Docs;
+use Google\Service\Docs\Request;
 
 
 class PostFileService{
@@ -47,20 +48,6 @@ class PostFileService{
         $client = new Client();
         $client->setAccessToken($accessToken);
     
-        // Verificar se o token de acesso expirou
-        // if ($client->isAccessTokenExpired()) {
-        //     // Se o token de acesso expirou, você pode optar por renová-lo ou redirecionar o usuário para autenticação novamente
-        //     // Aqui, estou redirecionando o usuário para autenticação novamente
-        //     return redirect()->route('google.redirect');
-        // }
-    
-        // // Renovar o token de acesso, se necessário, usando o token de atualização
-        // if ($client->getRefreshToken() && $client->isAccessTokenExpired()) {
-        //     $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-        //     // Atualizar o token de acesso na sessão
-        //     session(['google_access_token' => $client->getAccessToken()]);
-        // }
-    
         // Inicializar serviço de Documentos do Google
         $service = new Docs($client);
     
@@ -87,6 +74,52 @@ class PostFileService{
         } catch (\Exception $e) {
             // Lidar com qualquer erro que ocorra ao tentar obter o conteúdo do documento
             return redirect()->back()->with('error', 'Failed to fetch document content: ' . $e->getMessage());
+        }
+    }
+
+    public function createAndPopulateGoogleDoc($title,$data)
+    {
+        $accessToken = session('google_access_token');
+
+        if (!$accessToken) {
+            return redirect()->route('google.redirect');
+        }
+
+        $client = new Client();
+        $client->setAccessToken($accessToken);
+
+ 
+       $service = new Docs($client);
+
+        try {
+            $document = new \Google\Service\Docs\Document([
+                'title' => $title
+            ]);
+
+            $createdDocument = $service->documents->create($document);
+            $documentId = $createdDocument->documentId;
+
+            // Adiciona conteúdo ao documento
+            $requests = [
+                new \Google\Service\Docs\Request([
+                    'insertText' => [
+                        'location' => [
+                            'index' => 1,
+                        ],
+                        'text' => $data
+                    ]
+                ])
+            ];
+
+            $batchUpdateRequest = new \Google\Service\Docs\BatchUpdateDocumentRequest([
+                'requests' => $requests
+            ]);
+
+            $service->documents->batchUpdate($documentId, $batchUpdateRequest);
+
+            return 'Documento criado e populado com sucesso! ID: ' . $documentId;
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Falha ao criar o documento: ' . $e->getMessage());
         }
     }
     

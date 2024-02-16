@@ -86,6 +86,7 @@
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="{{ route('dashboard.show', ['page' => 'profile']) }}"><i class="fas fa-user"></i>Profile</a></li>
+            <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Post Content</a></li>
             @foreach($test as $editor)
                 @if($editor->is_admin == 1)
                      <li><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-tie"></i>Register Employer</a></li>

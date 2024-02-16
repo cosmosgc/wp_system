@@ -31,8 +31,10 @@ Route::get('/edior_created',[DasboardController::class,'ediorCreated'])->name('d
 Route::get('/content_creation',[DasboardController::class,'contentCreation'])->name('dashboard.contentConfig');
 Route::get('/post_creation',[DasboardController::class,'postCreation'])->name('dashboard.createPost');
 Route::get('/upload_doc',[DasboardController::class,'DocsUpload'])->name('doc');
+Route::get('/create-doc',[DasboardController::class,'DocCreation']);
 Route::get('/auth/google', [GoogleAuthController::class,'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleAuthController::class,'handleGoogleCallback'])->name('google.callback');
+Route::get('/list_content',[DasboardController::class,'listPostConfig'])->name('dashboard.SumitPosts');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');
@@ -40,3 +42,4 @@ Route::post('/submit_file',[CsvReaderController::class,'ImportCsv']);
 Route::post('/insert_post_content',[PostContentController::class,'saveContent'])->name('insertContent');
 Route::post('/gpt_query',[GptController::class,'generatePost']);
 Route::post('/process_doc',[GooGleDocsController::class,'insertDocOnDB']);
+Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
