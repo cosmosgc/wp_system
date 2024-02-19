@@ -41,7 +41,7 @@
           </div>
     </div>
 
-    <script>
+    {{-- <script>
       const postButton= document.querySelector(".post_wp");
       const deleteButton= document.querySelector(".delete_config");
       const createDocButton= document.querySelector(".create_doc");
@@ -75,5 +75,5 @@
       }
 
       })
-    </script>
+    </script> --}}
 @endsection

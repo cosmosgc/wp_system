@@ -29,9 +29,16 @@
         const sections = document.querySelector('#sections').value;
         const paragraph=document.querySelector('#paragraphs').value;
 
+
         const gpt_button=document.querySelector('.gpt_submit');
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
         gpt_button.addEventListener('click',async ()=>{
+            console.log(topics)
+            console.log(languages)
+            console.log(style);
+            console.log(tone);
+            console.log(sections)
+            console.log(paragraph);
             const query= await fetch('/gpt_query',{
                 method:'POST',
                 body:JSON.stringify({

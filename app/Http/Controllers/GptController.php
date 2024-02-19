@@ -38,6 +38,7 @@ class GptController extends Controller
         $anchor_2=null;
         $anchor_3=null;
         $id_content=null;
+        $token='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';
 
 
         foreach(Wp_post_content::all() as $post_config){
@@ -92,7 +93,7 @@ class GptController extends Controller
         }
 
         foreach($total_comands[0] as $command){
-            $gpt_request=$this->gptService->sendRequest($command,$request->topic);
+            $gpt_request=$this->gptService->sendRequest($command,$request->topic,$token);
             $data=$gpt_request['choices'][0]['message']['content'];
             $complete_post[]=$data;
             $gptData.=$data;
@@ -104,10 +105,41 @@ class GptController extends Controller
      
         foreach($filtered_array as $key=>$heading){
 
-            $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading);
+            $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
             $complete_post[]=$section_request['choices'][0]['message']['content'];
             $gptData.=$section_request['choices'][0]['message']['content'];
         }
+
+
+        $qa_command=$this->helper->replace_variables(['Write a Q&A for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%. This Q&A must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%'],array(
+
+            'language' => $language,
+            'title' => $title,
+            'writing_style' => $writing_style,
+            'writing_tone' => $writing_tone,
+            'Ancora 1'=>$anchor_1,
+            'Ancora 2'=>$anchor_2,
+            'Ancora 3'=>$anchor_3,
+        ));
+
+
+        
+        $conclusion_command=$this->helper->replace_variables( ['Write an outro for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%'],array(
+            'language' => $language,
+            'title' => $title,
+            'writing_style' => $writing_style,
+            'writing_tone' => $writing_tone,
+        ));
+
+
+        $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
+        $complete_post[]=$qa_request['choices'][0]['message']['content'];
+        $gptData.=$qa_request['choices'][0]['message']['content'];
+
+
+        $conclusion_request=$this->gptService->sendRequest($conclusion_command[0],$heading,$token);
+        $complete_post[]=$conclusion_request['choices'][0]['message']['content'];
+        $gptData.=$conclusion_request;
 
 
         $insertPostContent=Wp_post_content::find($id_content);
