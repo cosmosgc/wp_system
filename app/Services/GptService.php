@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class GptService {
 
-    public function sendRequest($command, $topic) {
+    public function sendRequest($command, $topic,$token) {
         // URL da API do GPT
         $apiUrl = 'https://api.openai.com/v1/chat/completions';
 
@@ -34,7 +34,7 @@ class GptService {
         // Configuração do cliente GuzzleHttp
         $client = new Client([
             'headers' => [
-                'Authorization' => "Bearer ",
+                'Authorization' => "Bearer $token",
                 'Content-Type' => 'application/json',
             ]
         ]);
