@@ -45,11 +45,19 @@ class DasboardController extends Controller
     }
 
     public function DocCreation(){
-        return view('GoogleDocCreation');
+        return view('dashboard.GoogleDocCreation');
     }
 
     public function listPostConfig(){
         return view('dashboard.SubmitPosts');
-    }   
+    }  
+    
+    public function docCreated(){
+        return view('dashboard.DocumentCreated');
+    }
+
+    public function docImported(){
+        return view('dashboard.DocumentImported');
+    }
 
 }

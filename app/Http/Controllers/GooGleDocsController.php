@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Wp_post_content;
 use App\Services\CsvReaderService;
 use App\Services\PostContentService;
 use App\Services\PostFileService;
@@ -28,21 +29,9 @@ public function insertDocOnDB(Request $request){
     }
     if($request->has('google_docs')){
         $doc_content=$this->googleDocsService->importGoogleDocs($request->google_docs);
-        $content=array(
-            'theme'=>'gjkhfhgjkdzg',
-            'keyword'=>'fdjkghdksjghsjkghskj',
-            'category'=>'gfjdhkghjkdhgdkjhgdjk',
-            'anchor_1'=>'gfjkdfhgkjdhgjkdhgkjdg',
-            'url_link_2'=>'fdlkgjfdlgjfdlkgjdlk',
-            'do_follow_link_1' => null,
-            'anchor_2'=>'gfjkdhgdkjghjkdghkjdh',
-            'do_follow_link_2' => null,
-            'anchor_3'=>'gfjkldjgkldjglkdjgkl',
-            'post_content'=>$doc_content,
-            'post_image'=>null,
-            'internal_link'=>'fdghjdkjghjkdhgjkdhkj'
-        );
-        $save_post=$this->googleDocsService->insertCSV($content);
+        $content=Wp_post_content::where('theme',$request->title)->update(['post_content'=>$doc_content]);
+        return redirect()->route('dashboard.DocumentImported');
+
 
     }
 }
@@ -54,8 +43,9 @@ public function createDocFromDb(Request $request){
         return redirect()->route('google.redirect');
     }
 
-    $doc_created=$this->googleDocsService->createAndPopulateGoogleDoc($request->title,$request->content);
-    return $doc_created;
+    $content=Wp_post_content::where('theme',$request->title)->get();
+    $doc_created=$this->googleDocsService->createAndPopulateGoogleDoc($content[0]->theme,$content[0]->post_content);
+    return redirect()->route('dashboard.DocumentCreated');
 
 
 }

@@ -95,6 +95,7 @@
 
             <li><a href="{{route('dashboard.contentConfig',['page'=>'content_creation'])}}"><i class="fas fa-edit"></i>Create Content</a></li>
             <li><a href="{{route('dashboard.createPost',['page'=>'post_creation'])}}"><i class="fas fa-edit"></i>Post creation</a></li>
+            <li><a href="{{route('createDoc',['page'=>'google_doc_creation'])}}"><i class="fas fa-edit"></i>Google Docs creation</a></li>
             <!-- Adicione outras páginas conforme necessário -->
         </ul>
     </div>
