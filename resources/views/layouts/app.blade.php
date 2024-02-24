@@ -1,9 +1,14 @@
 <!-- resources/views/layouts/app.blade.php -->
 @php  
     use App\Models\Editor;
+    use Illuminate\Http\Request;
     $test=Editor::all();
 
+    $valorCodificado = request()->cookie('Editor');
+
 @endphp
+
+@if(!empty($valorCodificado))
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,6 +83,8 @@
             margin-right: auto;
         }
 
+        
+
     </style>
 </head>
 <body>
@@ -86,16 +93,17 @@
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="{{ route('dashboard.show', ['page' => 'profile']) }}"><i class="fas fa-user"></i>Profile</a></li>
-            <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Post Content</a></li>
+            <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Post list</a></li>
             @foreach($test as $editor)
                 @if($editor->is_admin == 1)
                      <li><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-tie"></i>Register Employer</a></li>
                  @endif
             @endforeach
 
-            <li><a href="{{route('dashboard.contentConfig',['page'=>'content_creation'])}}"><i class="fas fa-edit"></i>Create Content</a></li>
+            <li><a href="{{route('dashboard.contentConfig',['page'=>'content_creation'])}}"><i class="fas fa-edit"></i>Create config</a></li>
             <li><a href="{{route('dashboard.createPost',['page'=>'post_creation'])}}"><i class="fas fa-edit"></i>Post creation</a></li>
             <li><a href="{{route('createDoc',['page'=>'google_doc_creation'])}}"><i class="fas fa-edit"></i>Google Docs creation</a></li>
+            <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Import Config</a></li>
             <!-- Adicione outras páginas conforme necessário -->
         </ul>
     </div>
@@ -110,3 +118,14 @@
 
 </body>
 </html>
+
+@else
+
+<?php
+    // Redirecionar para a rota de login
+    header("Location: " . route('login'));
+    exit; // Importante: encerrar o script para evitar que o restante do código seja executado
+?>
+
+@endif
+

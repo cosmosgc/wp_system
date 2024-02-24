@@ -17,20 +17,22 @@ class PostFileService{
 
     public function insertCSV($data){
         $new_content=Wp_post_content::create([
-            'theme'=>$data['theme'],
-            'keyword'=>$data['keyword'],
-            'category'=>$data['category'],
-            'anchor_1'=>$data['anchor_1'],
-            'url_link_2'=>$data['url_link_2'],
+            'theme'=>isset($data['theme'])?$data['theme']:null,
+            'keyword'=>isset($data['keyword'])?$data['keyword']:null,
+            'category'=>isset($data['category'])?$data['category']:null,
+            'anchor_1'=>isset($data['anchor_1'])?$data['anchor_1']:null,
+            'url_link_1'=>isset($data['url_link_1'])?$data['url_link_1']:null,
+            'anchor_2'=>isset($data['anchor_2'])?$data['anchor_2']:null,
+            'url_link_2'=>isset($data['url_link_2'])?$data['url_link_2']:null,
             'do_follow_link_1'=>isset($data['do_follow_link_1']) && $data['do_follow_link_1'] === true ? 1 : 0,
-            'anchor_2'=>$data['anchor_2'],
+            'anchor_2'=>isset($data['anchor_2'])?$data['anchor_2']:null,
             'do_follow_link_2'=>isset($data['do_follow_link_2']) && $data['do_follow_link_2'] === true ? 1 : 0,
-            'anchor_3'=>$data['anchor_3'],
-            'url_link_3'=>'gfhfdkjghkdjhgkjd',
-            'post_image'=>'adsaadda',
-            'internal_link'=>$data['internal_link'],
-            'post_content'=>$data['post_content'],
-            'insert_image'=>isset($data['insert_image']) && $data['insert_image'] === 'Sim' ? 1 : 0
+            'anchor_3'=>isset($data['anchor_3'])?$data['anchor_3']:null,
+            'url_link_3'=>isset($data['url_link_3'])?$data['url_link_3']:null,
+            'do_follow_link_3'=>isset($data['do_follow_link_3']) && $data['do_follow_link_3'] === true ? 1 : 0,
+            'internal_link'=>isset($data['internal_link'])?$data['internal_link']:null,
+            'post_content'=>isset($data['post_content'])?$data['post_content']:null,
+            'insert_image'=>isset($data['insert_image']) && ($data['insert_image'] === 'Sim') ? 1 : 0
 
         ]);
     }

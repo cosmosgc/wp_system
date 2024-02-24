@@ -10,11 +10,10 @@
     <div class="dashboard-content">
         <h1>Lista de posts e configurações</h1>
         <!-- Formulário de Cadastro de Usuário -->
-
         @foreach($post_configs as $config)
 
         <div class="container mt-5" data-id="{{$config->id}}">
-          <h2>Tabela de Dados</h2>
+          
           <table class="table">
             <thead>
               <tr>
@@ -124,7 +123,7 @@
       const postButton= document.querySelectorAll(".post_wp");
 
 
-      generateContentButtons.forEach(button => {
+      generateContentButtons.forEach((button) => {
         button.addEventListener('click', function () {
           const modal = document.querySelector('.modal');
           modal.classList.add('show');

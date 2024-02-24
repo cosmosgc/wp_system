@@ -7,6 +7,7 @@ use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\GooGleDocsController;
 use App\Http\Controllers\GptController;
+use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
 use App\Http\Controllers\WpController;
 use App\Services\PostFileService;
@@ -25,8 +26,9 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 */
 
 Route::get('/register', [DasboardController::class,'register'])->name('dashboard.register');
-Route::get('/upload_csv',[CsvReaderController::class,'showUploadForm']);
-Route::get('/', [DasboardController::class, 'index']);
+Route::get('/upload_csv',[DasboardController::class,'importCsv'])->name('dashboard.uploadCsv');
+Route::get('/', [DasboardController::class, 'login'])->name('login');
+Route::get('/index', [DasboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard', [DasboardController::class, 'show'])->name('dashboard.show');
 Route::get('/profile', [DasboardController::class, 'profile'])->name('dashboard.profile');
 Route::get('/edior_created',[DasboardController::class,'ediorCreated'])->name('dashboard.editorCreated');
@@ -48,4 +50,5 @@ Route::post('/gpt_query',[GptController::class,'generatePost']);
 Route::post('/process_doc',[GooGleDocsController::class,'insertDocOnDB']);
 Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
 Route::post('/post_content',[WpController::class,'createBlogPost']);
+Route::post('/validate',[loginController::class,'validateLogin'])->name('validateLogin');
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);

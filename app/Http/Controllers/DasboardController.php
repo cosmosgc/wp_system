@@ -13,6 +13,10 @@ class DasboardController extends Controller
         return view('dashboard.index');
     }
 
+    public function login(){
+        return view('login');
+    }
+
     public function show(Request $request)
     {
         $page = $request->input('page', 'home');
@@ -58,6 +62,10 @@ class DasboardController extends Controller
 
     public function docImported(){
         return view('dashboard.DocumentImported');
+    }
+
+    public function importCsv(){
+        return view('dashboard.upload');
     }
 
 }
