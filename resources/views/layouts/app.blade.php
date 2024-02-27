@@ -5,6 +5,7 @@
     $test=Editor::all();
 
     $valorCodificado = request()->cookie('Editor');
+    $user=explode('+',base64_decode($valorCodificado));
 
 @endphp
 
@@ -104,6 +105,7 @@
             <li><a href="{{route('dashboard.createPost',['page'=>'post_creation'])}}"><i class="fas fa-edit"></i>Post creation</a></li>
             <li><a href="{{route('createDoc',['page'=>'google_doc_creation'])}}"><i class="fas fa-edit"></i>Google Docs creation</a></li>
             <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Import Config</a></li>
+            <li><a href="{{route('dashboard.configia',['page'=>'ConfigGpt'])}}"><i class="fas fa-edit"></i>Config IA</a></li>
             <!-- Adicione outras páginas conforme necessário -->
         </ul>
     </div>

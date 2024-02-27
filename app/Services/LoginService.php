@@ -14,7 +14,7 @@ class LoginService{
         $editor =Editor::where('name',$data->name)->first();
 
         if($editor->password===md5($data->password)){
-            Cookie::queue('Editor', base64_encode($editor->name.$editor->password), 60);
+            Cookie::queue('Editor', base64_encode($editor->name.'+'.$editor->password), 60);
             return 200;
         }else{
             return 401;

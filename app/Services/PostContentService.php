@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Editor;
 use App\Models\Wp_post_content;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,9 @@ class PostContentService{
             // Se nenhum arquivo ou URL de imagem for fornecido, defina o caminho da imagem como null
             $imagePath = null;
         }
+           
+        
+        $user_id=Editor::where('name',$data->session_user)->get();
 
         
         $new_content=Wp_post_content::create([
@@ -41,12 +45,18 @@ class PostContentService{
             'anchor_2'=>$data->anchor_2,
             'do_follow_link_2'=>$data->has('do_follow_link_2')?1:0,
             'anchor_3'=>$data->anchor_3,
+            'url_link_3'=>$data->url_link_3,
+            'do_follow_link_3'=>$data->has('do_follow_link_3')?1:0,
             'post_image'=>$imagePath,
             'internal_link'=>$data->internal_link,
             'post_content'=>isset($doContent)?$doContent:null,
-            'insert_image'=>$data->has('insert_image')?1:0
+            'insert_image'=>$data->has('insert_image')?1:0,
+            'status'=>'unpublished',
+            'schedule_date'=>$data->schedule,
+            'Editor_id'=>$user_id[0]->id
 
         ]);
+
 
         
     }

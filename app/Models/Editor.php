@@ -16,6 +16,6 @@ class Editor extends Model
     }
 
     public function links(){
-        return $this->hasMany(Wp_credential::class);
+        return $this->hasMany(Wp_credential::class,'Editor_id');
     }
 }

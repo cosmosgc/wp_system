@@ -45,7 +45,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    console.log('hello')
     const name = document.getElementById("name");
     const password=document.getElementById("password");
     const submitButton = document.querySelector(".submit");
@@ -62,12 +61,10 @@
 
         if (validate_query.status === 200) {
         // O status da resposta é 200 (OK), então você pode prosseguir com o código
-        console.log('heyyy')
         location.href=location.href+'dashboard';
     } else {
         // O status da resposta não é 200 (OK), então houve algum erro
         console.error('Erro ao validar credenciais:', validate_query.status);
-        alert('deu ruim');
     }
 
     })

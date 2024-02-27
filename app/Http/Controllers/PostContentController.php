@@ -29,5 +29,7 @@ class PostContentController extends Controller
        
 
         $new_post_content=$this->postConfigService->insertPostContent($request,$docsContent);
+
+        return redirect()->route('configCreated');
     }
 }

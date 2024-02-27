@@ -1,6 +1,14 @@
 <!-- resources/views/create_post_content.blade.php -->
 
 @extends('layouts.app') <!-- Assuming you have a layout file, adjust accordingly -->
+@php
+use App\Models\Editor;
+use Illuminate\Http\Request;
+$valorCodificado = request()->cookie('Editor');
+
+$user=explode('+',base64_decode($valorCodificado));
+
+@endphp
 
 @section('content')
     <div class="container">
@@ -28,13 +36,13 @@
             </div>
 
             <div class="mb-3">
-                <label for="url_link_2" class="form-label">URL Link 2</label>
-                <input type="text" class="form-control" id="url_link_2" name="url_link_2" >
+                <label for="url_link_2" class="form-label">URL Link 1</label>
+                <input type="text" class="form-control" id="url_link_2" name="url_link_1" >
             </div>
 
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="do_follow" name="do_follow">
-                <label class="form-check-label" for="do_follow">Do Follow</label>
+                <input type="checkbox" class="form-check-input" id="do_follow_link_1" name="do_follow_link_1">
+                <label class="form-check-label" for="do_follow">Do Follow Link 1</label>
             </div>
 
             <div class="mb-3">
@@ -43,8 +51,30 @@
             </div>
 
             <div class="mb-3">
+                <label for="url_link_2" class="form-label">URL Link 2</label>
+                <input type="text" class="form-control" id="url_link_2" name="url_link_2" >
+            </div>
+
+            
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="do_follow_link_2" name="do_follow_link_2">
+                <label class="form-check-label" for="do_follow">Do Follow Link 2</label>
+            </div>
+
+            <div class="mb-3">
                 <label for="anchor_3" class="form-label">Anchor 3</label>
                 <input type="text" class="form-control" id="anchor_3" name="anchor_3">
+            </div>
+
+            <div class="mb-3">
+                <label for="url_link_2" class="form-label">URL Link 3</label>
+                <input type="text" class="form-control" id="url_link_2" name="url_link_3" >
+            </div>
+
+            
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="do_follow_link_3" name="do_follow_link_3">
+                <label class="form-check-label" for="do_follow">Do Follow Link 3</label>
             </div>
 
             <div class="mb-3">
@@ -76,8 +106,11 @@
                 <label for="post_image" class="form-label">Post Image</label>
                 <input type="file" class="form-control" id="post_image" name="post_image" required>
             </div>
-            
 
+            <label for="schedule">Schedule</label>
+            <input type="date" name="schedule" id="schedule">
+            
+            <input type="hidden" name="session_user" value="{{$user[0]}}">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

@@ -32,7 +32,8 @@ class PostFileService{
             'do_follow_link_3'=>isset($data['do_follow_link_3']) && $data['do_follow_link_3'] === true ? 1 : 0,
             'internal_link'=>isset($data['internal_link'])?$data['internal_link']:null,
             'post_content'=>isset($data['post_content'])?$data['post_content']:null,
-            'insert_image'=>isset($data['insert_image']) && ($data['insert_image'] === 'Sim') ? 1 : 0
+            'insert_image'=>isset($data['insert_image']) && ($data['insert_image'] === 'Sim') ? 1 : 0,
+            'Editor_id'=>$data['user_id']
 
         ]);
     }

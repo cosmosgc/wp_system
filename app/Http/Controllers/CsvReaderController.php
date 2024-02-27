@@ -43,6 +43,7 @@ class CsvReaderController extends Controller
                     'anchor_3'=>$dt['Ancora 3'],
                     'do_follow_link_3' => isset($dt['Dofollow_link_3']) && $dt['Dofollow_link_3'] === 'Sim' ? true : null,
                     'internal_link'=>isset($dt['Link Interno']) && $dt['Link Interno']==='Sim'?true:null,
+                    'user_id'=>$request->user_id
                 );
 
                 //$processed_data[]=$content;

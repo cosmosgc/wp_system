@@ -2,15 +2,20 @@
 @extends('layouts.app')
 
 @php
-  use App\Models\Wp_post_content;
-  $post_configs= Wp_post_content::all();
+  use App\Models\Editor;
+
+  $valorCodificado = request()->cookie('Editor');
+  $user=explode('+',base64_decode($valorCodificado));
+  $post_configs= Editor::where('name',$user[0])->get();
+  $post_contents=Editor::find($post_configs[0]->id); 
 @endphp
 
 @section('content')
     <div class="dashboard-content">
         <h1>Lista de posts e configurações</h1>
         <!-- Formulário de Cadastro de Usuário -->
-        @foreach($post_configs as $config)
+        <input type="hidden" name="user_id" class="user_id" value={{$post_configs[0]->id}}>
+        @foreach($post_contents->postContents as $config)
 
         <div class="container mt-5" data-id="{{$config->id}}">
           
@@ -96,7 +101,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" id="generateContentBtn">Gerar</button>
+            <button type="button" class="generateContentBtn btn btn-primary" id="generateContentBtn">Gerar</button>
           </div>
         </div>
       </div>
@@ -113,6 +118,7 @@
       const sections=document.getElementById('sections').value;
       const paragraphs= document.getElementById('paragraphs').value;
       const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+      const user_id= document.querySelector('.user_id')
       
 
 
@@ -121,9 +127,13 @@
       document.addEventListener('DOMContentLoaded', function () {
       const generateContentButtons = document.querySelectorAll('.create_content');
       const postButton= document.querySelectorAll(".post_wp");
+      const generateButton=document.querySelector('.generateContentBtn');
+      let data_id;
+      let Theme;
+      console.log(generateButton);
 
 
-      generateContentButtons.forEach((button) => {
+      generateContentButtons.forEach((button,i) => {
         button.addEventListener('click', function () {
           const modal = document.querySelector('.modal');
           modal.classList.add('show');
@@ -131,21 +141,15 @@
           document.body.classList.add('modal-open');
         });
 
-        const generateButton=document.getElementById('generateContentBtn');
-        const data_id=document.querySelector('.container').getAttribute('data-id');
-        const Theme=document.querySelector('.theme').innerText
-        console.log(Theme);
-
-        generateButton.addEventListener('click',async ()=>{
-          console.log(data_id);
-          console.log(Theme);
-          console.log(languages);
-          console.log(writing_style);
-          console.log(writing_tone);
-          console.log(sections);
-          console.log(paragraphs);
+        
+        data_id=document.querySelector('.container').getAttribute('data-id');
+        Theme=document.querySelector('.theme').innerText
+        
 
 
+      });
+
+      generateButton.addEventListener('click',async ()=>{
           const query= await fetch('/gpt_query',{
             method:'POST',
             body:JSON.stringify({
@@ -161,7 +165,6 @@
             headers:{"Content-Type":"application/json"}
           })
         })
-      });
 
 
       postButton.forEach(button=>{
@@ -171,6 +174,7 @@
             method:'POST',
             body:JSON.stringify({
                id:data_id,
+               user_id:user_id.value,
               _token:csrfToken
             }),
             headers:{"Content-Type":"application/json"}

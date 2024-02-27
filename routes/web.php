@@ -7,6 +7,7 @@ use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\GooGleDocsController;
 use App\Http\Controllers\GptController;
+use App\Http\Controllers\iaCredentialController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
 use App\Http\Controllers\WpController;
@@ -34,13 +35,16 @@ Route::get('/profile', [DasboardController::class, 'profile'])->name('dashboard.
 Route::get('/edior_created',[DasboardController::class,'ediorCreated'])->name('dashboard.editorCreated');
 Route::get('/docs_created',[DasboardController::class,'docCreated'])->name('dashboard.DocumentCreated');
 Route::get('/content_creation',[DasboardController::class,'contentCreation'])->name('dashboard.contentConfig');
-Route::get('/content_imported',[DasboardController::class],'docImported')->name('dashboard.DocumentImported');
+Route::get('/content_imported',[DasboardController::class,'docImported'])->name('dashboard.DocumentImported');
+Route::get('/config_created',[DasboardController::class,'configCreated'])->name('configCreated');
+Route::get('/token_inserted',[DasboardController::class,'tokenInserted'])->name('tokenInserted');
 Route::get('/post_creation',[DasboardController::class,'postCreation'])->name('dashboard.createPost');
 Route::get('/upload_doc',[DasboardController::class,'DocsUpload'])->name('doc');
 Route::get('/create-doc',[DasboardController::class,'DocCreation'])->name('createDoc');
 Route::get('/auth/google', [GoogleAuthController::class,'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleAuthController::class,'handleGoogleCallback'])->name('google.callback');
 Route::get('/list_content',[DasboardController::class,'listPostConfig'])->name('dashboard.SumitPosts');
+Route::get('/insert_gpt_token',[DasboardController::class,'insertGptToken'])->name('dashboard.configia');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');
@@ -51,4 +55,5 @@ Route::post('/process_doc',[GooGleDocsController::class,'insertDocOnDB']);
 Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
 Route::post('/post_content',[WpController::class,'createBlogPost']);
 Route::post('/validate',[loginController::class,'validateLogin'])->name('validateLogin');
+Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);

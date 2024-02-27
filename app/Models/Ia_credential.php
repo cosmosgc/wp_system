@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Ia_credential extends Model
 {
     use HasFactory;
+
+    protected $fillable=['open_ai'];
 }

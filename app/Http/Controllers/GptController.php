@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Sys_helper;
+use App\Models\Ia_credential;
 use App\Models\Wp_post_content;
 use App\Services\GptService;
 use App\Services\Wp_service;
@@ -36,10 +37,15 @@ class GptController extends Controller
         $key=null;
         $anchor_1=null;
         $anchor_1_url=null;
+        $anchor_2_url=null;
+        $anchor_3_url=null;
+        $do_follow_link_1=null;
+        $do_follow_link_2=null;
+        $do_follow_link_3=null;
         $anchor_2=null;
         $anchor_3=null;
         $id_content=null;
-        $token='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';
+        $token=Ia_credential::all()[0]->open_ai;
 
 
         foreach(Wp_post_content::where('id',intval($request->id))->get() as $post_config){
@@ -50,7 +56,14 @@ class GptController extends Controller
             $anchor_2=$post_config->anchor_2;
             $anchor_3=$post_config->anchor_3;
             $id_content=$post_config->id;
-            $anchor_1_url=$post_config->url_link_2;
+            $anchor_1_url=$post_config->url_link_1;
+            $anchor_2_url=$post_config->url_link_2;
+            $anchor_3_url=$post_config->url_link_3;
+            $do_follow_link_1=$post_config->do_follow_link_1;
+            $do_follow_link_2=$post_config->$do_follow_link_2;
+            $do_follow_link_3=$post_config->$do_follow_link_3;
+
+
         }
 
 
@@ -81,13 +94,18 @@ class GptController extends Controller
 
 
         for($i=0;$i<$sections_count;$i++){
-            $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% paragraphs in the section. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%% create this element in some parte of text <a href="%%Anchor_link%%" no-follow>%%Ancora 1%%</a>'];
+            $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% paragraphs in the section. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%% create this element in some parte of text <a href="%%Anchor_link_1%%" %%Follow_1%%-follow>%%Ancora 1%%</a>, for %%Ancora 2%% create this <a href="%%Anchor_link_2%%" %%Follow_2%%-follow>%%Ancora 2%%</a>,for %%Ancora 3%% create <a href="%%Anchor_link_3%%" %%Follow_3%%-follow>%%Ancora 3%%</a>'];
             $complete_text=$this->helper->replace_variables($sections,array(
                 'current_section'=>$i,
                 'Ancora 1'=>$anchor_1,
-                'Anchor_link'=>$anchor_1_url,
+                'Anchor_link_1'=>$anchor_1_url,
+                'Anchor_link_2'=>$anchor_2_url,
+                'Anchor_link_3'=>$anchor_3_url,
                 'Ancora 2'=>$anchor_2,
                 'Ancora 3'=>$anchor_3,
+                'Follow_1'=>($do_follow_link_1)?'do':'no',
+                'Follow_2'=>($do_follow_link_2)?'do':'no',
+                'Follow_3'=>($do_follow_link_3)?'do':'no',
                 'language' => $language,
                 'title' => $title,
                 'writing_style' => $writing_style,
@@ -97,7 +115,7 @@ class GptController extends Controller
             $total_comands[]=$complete_text;
 
         }
-
+        dd($total_comands);
         foreach($total_comands[0] as $command){
             $gpt_request=$this->gptService->sendRequest($command,$request->topic,$token);
             $data=$gpt_request['choices'][0]['message']['content'];

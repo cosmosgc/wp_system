@@ -14,10 +14,16 @@ return new class extends Migration
         //
         Schema::create('wp_credentials', function (Blueprint $table){
             $table->id();
+            $table->integer('Editor_id')->unsigned();
             $table->string("wp_login");
             $table->string("wp_password");
             $table->string("wp_domain");
             $table->timestamps();
+
+            $table->foreign('Editor_id')
+            ->references('id')
+            ->on('editors');
+        
             
         });
     }

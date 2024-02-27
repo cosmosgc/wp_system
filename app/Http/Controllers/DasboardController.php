@@ -36,6 +36,10 @@ class DasboardController extends Controller
         return view('dashboard.editorCreated');
     }
 
+    public function configCreated(){
+        return view('dashboard.configCreated');
+    }
+
     public function contentCreation(){
         return view('dashboard.contentConfig');
     }
@@ -64,8 +68,16 @@ class DasboardController extends Controller
         return view('dashboard.DocumentImported');
     }
 
+    public function tokenInserted(){
+        return view('dashboard.tokeninserted');
+    }
+
     public function importCsv(){
         return view('dashboard.upload');
+    }
+
+    public function insertGptToken(){
+        return view('dashboard.configia');
     }
 
 }

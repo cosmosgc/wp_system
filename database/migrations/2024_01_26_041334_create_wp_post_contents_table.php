@@ -15,23 +15,28 @@ return new class extends Migration
             $table->id();
             $table->string("theme")->nullable();
             $table->string("keyword")->nullable();
+            $table->integer('Editor_id')->unsigned();
             $table->string("category")->nullable();
             $table->string("anchor_1")->nullable();
             $table->string("url_link_1")->nullable();
-            $table->boolean("do_follow_link_1")->default(1);
+            $table->boolean("do_follow_link_1")->default(0);
             $table->string("anchor_2")->nullable();
             $table->string("url_link_2")->nullable();
-            $table->boolean("do_follow_link_2")->default(1);
+            $table->boolean("do_follow_link_2")->default(0);
             $table->string("anchor_3")->nullable();
-            $table->boolean("do_follow_link_3")->default(1);
+            $table->boolean("do_follow_link_3")->default(0);
             $table->string("url_link_3")->nullable();
             $table->string("post_image")->nullable();
             $table->string("internal_link")->nullable();
             $table->text('post_content')->nullable();
-            $table->boolean("insert_image")->default(1);
+            $table->boolean("insert_image")->default(0);
             $table->string("status")->nullable();
             $table->string("schedule_date")->nullable();
             $table->timestamps();
+
+            $table->foreign('Editor_id')
+            ->references('id')
+            ->on('editors');
         });
     }
 
