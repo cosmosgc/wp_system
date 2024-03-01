@@ -58,10 +58,12 @@
         .sidebar a {
             text-decoration: none;
             color: white;
+            padding: 8px;
         }
 
         .sidebar a:hover {
             background-color: #5EAD78; /* Verde mais escuro ao passar o mouse */
+            transition: .5s;
         }
 
         .content {
@@ -79,9 +81,7 @@
         }
 
         ul{
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
+            width: 100%;
         }
 
         
@@ -93,7 +93,6 @@
         <h2>Dashboard</h2>
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="{{ route('dashboard.show', ['page' => 'profile']) }}"><i class="fas fa-user"></i>Profile</a></li>
             <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Post list</a></li>
             @foreach($test as $editor)
                 @if($editor->is_admin == 1)

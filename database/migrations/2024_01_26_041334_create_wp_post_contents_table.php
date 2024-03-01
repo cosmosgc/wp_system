@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("theme")->nullable();
             $table->string("keyword")->nullable();
             $table->integer('Editor_id')->unsigned();
+            $table->integer('Credential_id')->unsigned()->nullable();
             $table->string("category")->nullable();
             $table->string("anchor_1")->nullable();
             $table->string("url_link_1")->nullable();
@@ -32,11 +33,16 @@ return new class extends Migration
             $table->boolean("insert_image")->default(0);
             $table->string("status")->nullable();
             $table->string("schedule_date")->nullable();
+            $table->string("domain")->nullable();
             $table->timestamps();
 
             $table->foreign('Editor_id')
             ->references('id')
             ->on('editors');
+
+            $table->foreign('Credential_id')
+            ->references('id')
+            ->on('wp_credentials');
         });
     }
 

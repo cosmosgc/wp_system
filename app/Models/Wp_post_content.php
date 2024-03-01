@@ -14,4 +14,8 @@ class Wp_post_content extends Model
     public function editor(){
         return $this->belongsTo(Editor::class);
     }
+
+    public function credential(){
+        return $this->belongsTo(Wp_credential::class);
+    }
 }

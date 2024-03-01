@@ -1,9 +1,16 @@
 <!-- resources/views/dashboard/show.blade.php -->
 @extends('layouts.app')
+@php  
+    use Illuminate\Http\Request;
+
+    $valorCodificado = request()->cookie('Editor');
+    $user=explode('+',base64_decode($valorCodificado));
+
+@endphp
 
 @section('content')
     <div class="dashboard-content">
-        <h1>Bem-vindo à página {{ ucfirst($page) }}</h1>
+        <h1>Bem-vindo {{$user[0]}} </h1>
         <!-- Conteúdo dinâmico -->
         
     </div>

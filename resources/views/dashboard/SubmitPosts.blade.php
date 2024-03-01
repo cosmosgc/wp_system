@@ -28,6 +28,7 @@
                 <th>Conteúdo do Post</th>
                 <th>Inserir Imagem?</th>
                 <th>Data de Criação</th>
+                <th>Domain</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -41,6 +42,7 @@
                 <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
                 <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                 <td>{{$config->created_at}}</td>
+                <td>{{$config->domain}}</td>
                 <td>
                   <button class="btn btn-primary post_wp">Postar</button>
                   <button class="btn btn-danger delete_config">Deletar</button>
@@ -134,42 +136,80 @@
 
 
       generateContentButtons.forEach((button,i) => {
+  
         button.addEventListener('click', function () {
           const modal = document.querySelector('.modal');
           modal.classList.add('show');
           modal.style.display = 'block';
           document.body.classList.add('modal-open');
+
+            data_id = button.closest('.container').getAttribute('data-id');
+            Theme = button.closest('.container').querySelector('.theme').innerText;
+          });
+
         });
 
+
+        generateButton.addEventListener('click',async ()=>{
+          const loading=document.createElement('div');
+          const loadingSVG = `
+                    <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" fill="none" r="10" stroke="#000" stroke-width="2">
+              <animate attributeName="r" from="8" to="20" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+            </circle>
+          <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
+          </svg>
+          
+          `
+          loading.innerHTML=loadingSVG;
+
+          const modalDialog = document.querySelector('.modal-dialog');
+          modalDialog.appendChild(loading);
+
+          try {
+            const query = await fetch('/gpt_query', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: data_id,
+                    topic: Theme,
+                    languages: languages,  
+                    style: writing_style,
+                    writing_tone: writing_tone,
+                    sections: sections,
+                    paragraphs: paragraphs,
+                    _token: csrfToken
+                }),
+                headers: { "Content-Type": "application/json" }
+            });
         
-        data_id=document.querySelector('.container').getAttribute('data-id');
-        Theme=document.querySelector('.theme').innerText
+        // Remove o SVG de loading após a conclusão da query
         
+        if(query.ok){
+          alert('content sucefully created')
+        }else{
+          alert('error on posting generation')
+        }
+        modalDialog.removeChild(loading);
+        
+        // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
+    } catch (error) {
+        console.error('Ocorreu um erro:', error);
+        alert(error);
+        // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
+        document.body.removeChild(loadingSVG);
+    }
+})
 
-
-      });
-
-      generateButton.addEventListener('click',async ()=>{
-          const query= await fetch('/gpt_query',{
-            method:'POST',
-            body:JSON.stringify({
-              id:data_id,
-              topic:Theme,
-              languages:languages,
-              style:writing_style,
-              writing_tone:writing_tone,
-              sections:sections,
-              paragraphs:paragraphs,
-              _token:csrfToken
-            }),
-            headers:{"Content-Type":"application/json"}
-          })
-        })
 
 
       postButton.forEach(button=>{
-        const data_id=document.querySelector('.container').getAttribute('data-id');
+        const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
+        const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner 
+        const loading= document.createElement('span')
+        loading.innerHTML='loading....'
         button.addEventListener('click',async()=>{
+          button.insertAdjacentElement("beforebegin", loading);
           const query= await fetch('/post_content',{
             method:'POST',
             body:JSON.stringify({
@@ -179,6 +219,14 @@
             }),
             headers:{"Content-Type":"application/json"}
           })
+
+          if(query.ok){
+            alert('post sucefully created')
+            container.remove(loading);
+          }else{
+            alert('error on posting');
+            button.remove(loading);
+          }
         })
       })
 

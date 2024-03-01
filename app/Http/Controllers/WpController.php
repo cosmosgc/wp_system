@@ -21,10 +21,11 @@ class WpController extends Controller
             $image=Wp_post_content::find($request->id);
             $login=Editor::find($request->user_id);
             foreach($login->links as $credential){
-                $newPost=$this->wpService->postBlogContent($image->keyword,$image->theme,$image->post_content,$image->post_image,$credential->wp_domain,$credential->wp_login,$credential->wp_password);
+                $newPost=$this->wpService->postBlogContent($image->keyword,$image->theme,$image->post_content,$image->insert_image,$image->post_image,$credential->wp_domain,$credential->wp_login,$credential->wp_password);
+                return $newPost;
                 
             }
-            return $newPost;
+           
 
             
         }

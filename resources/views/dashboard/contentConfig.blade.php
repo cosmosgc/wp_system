@@ -3,10 +3,13 @@
 @extends('layouts.app') <!-- Assuming you have a layout file, adjust accordingly -->
 @php
 use App\Models\Editor;
+use App\Models\Wp_credential;
 use Illuminate\Http\Request;
 $valorCodificado = request()->cookie('Editor');
+$credentials=Wp_credential::all();
 
-$user=explode('+',base64_decode($valorCodificado));
+
+$user=explode('+',base64_decode($valorCodificado));  
 
 @endphp
 
@@ -109,6 +112,13 @@ $user=explode('+',base64_decode($valorCodificado));
 
             <label for="schedule">Schedule</label>
             <input type="date" name="schedule" id="schedule">
+
+            <label for="domain">Domain</label>
+            <select name="credentials" id="domain">
+                @foreach($credentials as $credential)
+                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
+                @endforeach
+            </select>
             
             <input type="hidden" name="session_user" value="{{$user[0]}}">
             <button type="submit" class="btn btn-primary">Submit</button>

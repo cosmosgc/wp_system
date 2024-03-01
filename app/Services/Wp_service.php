@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 
 class Wp_service{
 
-    public function postBlogContent($keyword,$title,$content,$image,$domain,$login,$password){
+    public function postBlogContent($keyword,$title,$content,$featured,$image,$domain,$login,$password){
         //$title = $title->input('title');
         //$content = $content->input('content');
 
@@ -16,7 +16,7 @@ class Wp_service{
         $featuredImagePath = storage_path('app/public/'.$image);
 
         // Verifique se a imagem existe no caminho especificado
-        if(file_exists($featuredImagePath)) {
+        if(file_exists($featuredImagePath && $featured)) {
             // Obtenha o nome do arquivo da imagem
             $featuredImageName = basename($featuredImagePath);
 

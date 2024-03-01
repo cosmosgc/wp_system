@@ -94,7 +94,7 @@ class GptController extends Controller
 
 
         for($i=0;$i<$sections_count;$i++){
-            $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% paragraphs in the section. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%% create this element in some parte of text <a href="%%Anchor_link_1%%" %%Follow_1%%-follow>%%Ancora 1%%</a>, for %%Ancora 2%% create this <a href="%%Anchor_link_2%%" %%Follow_2%%-follow>%%Ancora 2%%</a>,for %%Ancora 3%% create <a href="%%Anchor_link_3%%" %%Follow_3%%-follow>%%Ancora 3%%</a>'];
+            $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% paragraphs in the section. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%%  add this element into the text: <a href="%%Anchor_link_1%%" rel="%%Follow_1%%follow">%%Ancora 1%%</a>, for %%Ancora 2%% add this element into the text: <a href="%%Anchor_link_2%%" rel="%%Follow_2%%follow">%%Ancora 2%%</a>,for %%Ancora 3%% add this element into the text: <a href="%%Anchor_link_3%%" rel="%%Follow_3%%follow">%%Ancora 3%%</a>'];
             $complete_text=$this->helper->replace_variables($sections,array(
                 'current_section'=>$i,
                 'Ancora 1'=>$anchor_1,
@@ -103,8 +103,8 @@ class GptController extends Controller
                 'Anchor_link_3'=>$anchor_3_url,
                 'Ancora 2'=>$anchor_2,
                 'Ancora 3'=>$anchor_3,
-                'Follow_1'=>($do_follow_link_1)?'do':'no',
-                'Follow_2'=>($do_follow_link_2)?'do':'no',
+                'Follow_1'=>($do_follow_link_1==1)?'do':'no',
+                'Follow_2'=>($do_follow_link_2==1)?'do':'no',
                 'Follow_3'=>($do_follow_link_3)?'do':'no',
                 'language' => $language,
                 'title' => $title,
@@ -115,12 +115,11 @@ class GptController extends Controller
             $total_comands[]=$complete_text;
 
         }
-        dd($total_comands);
         foreach($total_comands[0] as $command){
             $gpt_request=$this->gptService->sendRequest($command,$request->topic,$token);
             $data=$gpt_request['choices'][0]['message']['content'];
             $complete_post[]=$data;
-            $gptData.=$data;
+            $gptData.=$data."\n\n";
             }
 
         $headings = explode("\n", $complete_post[1]);
@@ -131,8 +130,13 @@ class GptController extends Controller
 
             $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
             $complete_post[]=$section_request['choices'][0]['message']['content'];
-            $gptData.=$section_request['choices'][0]['message']['content'];
+            $gptData.=$section_request['choices'][0]['message']['content']."\n\n";
         }
+
+        $new_value=str_replace($filtered_array[0],"",$gptData);
+        $newGptData=str_replace($filtered_array[1],"",$gptData);
+          
+
 
 
         $qa_command=$this->helper->replace_variables(['Write a Q&A for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%. This Q&A must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%'],array(
@@ -158,12 +162,14 @@ class GptController extends Controller
 
         $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
         $complete_post[]=$qa_request['choices'][0]['message']['content'];
-        $gptData.=$qa_request['choices'][0]['message']['content'];
+        $newGptData.=$qa_request['choices'][0]['message']['content']."\n\n";
 
 
         $conclusion_request=$this->gptService->sendRequest($conclusion_command[0],$heading,$token);
         $complete_post[]=$conclusion_request['choices'][0]['message']['content'];
-        $gptData.=$conclusion_request['choices'][0]['message']['content'];
+        $newGptData.=$conclusion_request['choices'][0]['message']['content']."\n\n";
+
+
         
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$gptData]);
         return $insertPostContent;

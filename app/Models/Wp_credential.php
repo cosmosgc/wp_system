@@ -12,4 +12,9 @@ class Wp_credential extends Model
     public function editor(){
         return $this->belongsTo(Editor::class);
     }
+
+
+    public function content(){
+        return $this->hasMany(Wp_post_content::class);
+    }
 }
