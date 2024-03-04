@@ -80,4 +80,12 @@ class DasboardController extends Controller
         return view('dashboard.configia');
     }
 
+    public function insertWpCredential(){
+        return view('dashboard.wordpressCredential');
+    }
+
+    public function siteCredentialCreated(){
+        return view('dashboard.SiteCredentialCreated');
+    }
+
 }

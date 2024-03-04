@@ -9,6 +9,8 @@ class Wp_credential extends Model
 {
     use HasFactory;
 
+    protected $fillable=['wp_login','wp_password','wp_domain','Editor_id'];
+
     public function editor(){
         return $this->belongsTo(Editor::class);
     }

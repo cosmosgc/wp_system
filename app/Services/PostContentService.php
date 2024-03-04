@@ -13,27 +13,43 @@ class PostContentService{
 
     public function insertPostContent($data,$doContent){
 
-        // Verifica se uma imagem foi enviada
-        if ($data->hasFile('post_image') && $data->file('post_image')->isValid()) {
-            // Obtém o arquivo da imagem
-            $image = $data->file('post_image');
-            
-            // Salva a imagem no armazenamento (storage) do Laravel
-            $imagePath = $image->store('images', 'public');
-        } elseif ($data->filled('gdrive_url')) {
-            // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
-            $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
-        } elseif ($data->filled('image_url')) {
-            // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
-            $imagePath = $this->downloadImageFromUrl($data->image_url);
-        } else {
-            // Se nenhum arquivo ou URL de imagem for fornecido, defina o caminho da imagem como null
-            $imagePath = null;
-        }
+            //dd($data->theme);
+
+            // Verifica se uma imagem foi enviada   
+            if ($data->sys_image) {
+                // Obtém o arquivo da imagem
+                $imageData = $data->sys_image;
+                
+                
+                // Salva a imagem no armazenamento (storage) do Laravel
+                        // Extrai o tipo de mídia e os dados da imagem
+                list($type, $imageData) = explode(';', $imageData);
+                list(, $imageData)      = explode(',', $imageData);
+
+                // Decodifica os dados da imagem de base64 para bytes
+                $imageData = base64_decode($imageData);
+
+                // Gera um nome de arquivo único para a imagem
+                $imageName = uniqid() . '.jpg';
+
+                // Salva a imagem no armazenamento (storage) do Laravel
+                file_put_contents(storage_path('app/public/images/') . $imageName, $imageData);
+
+                // Define o caminho da imagem
+                $imagePath = 'images/' . $imageName;
+            } elseif ($data->filled('gdrive_url')) {
+                // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
+                $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
+            } elseif ($data->filled('url_image')) {
+                // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
+                $imagePath = $this->downloadImageFromUrl($data->image_url);
+            } else {
+                // Se nenhum arquivo ou URL de imagem for fornecido, defina o caminho da imagem como null
+                $imagePath = null;
+            }
            
         
         $user_id=Editor::where('name',$data->session_user)->get();
-
         
         $new_content=Wp_post_content::create([
             'theme'=>$data->theme,
@@ -53,6 +69,7 @@ class PostContentService{
             'insert_image'=>$data->has('insert_image')?1:0,
             'status'=>'unpublished',
             'schedule_date'=>$data->schedule,
+            'domain'=>$data->domain,
             'Editor_id'=>$user_id[0]->id
 
         ]);

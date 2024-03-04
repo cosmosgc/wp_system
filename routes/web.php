@@ -11,6 +11,7 @@ use App\Http\Controllers\iaCredentialController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
 use App\Http\Controllers\WpController;
+use App\Http\Controllers\WpCredentialController;
 use App\Services\PostFileService;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -45,15 +46,18 @@ Route::get('/auth/google', [GoogleAuthController::class,'redirectToGoogle'])->na
 Route::get('/auth/google/callback', [GoogleAuthController::class,'handleGoogleCallback'])->name('google.callback');
 Route::get('/list_content',[DasboardController::class,'listPostConfig'])->name('dashboard.SumitPosts');
 Route::get('/insert_gpt_token',[DasboardController::class,'insertGptToken'])->name('dashboard.configia');
+Route::get('/submit_wp',[DasboardController::class,'insertWpCredential'])->name('dashboard.wp');
+Route::get('/site_credential_created',[DasboardController::class,'siteCredentialCreated'])->name('credentialCreated');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');
 Route::post('/submit_file',[CsvReaderController::class,'ImportCsv']);
-Route::post('/insert_post_content',[PostContentController::class,'saveContent'])->name('insertContent');
+Route::post('/insert_post_content',[PostContentController::class,'saveContent']);
 Route::post('/gpt_query',[GptController::class,'generatePost']);
 Route::post('/process_doc',[GooGleDocsController::class,'insertDocOnDB']);
 Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
 Route::post('/post_content',[WpController::class,'createBlogPost']);
 Route::post('/validate',[loginController::class,'validateLogin'])->name('validateLogin');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
+Route::post('/submit_wp_credential',[WpCredentialController::class,'saveWpCredential'])->name('saveWpCredential');
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);

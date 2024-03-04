@@ -2,10 +2,11 @@
 @php  
     use App\Models\Editor;
     use Illuminate\Http\Request;
-    $test=Editor::all();
+    
 
     $valorCodificado = request()->cookie('Editor');
     $user=explode('+',base64_decode($valorCodificado));
+    $test=Editor::where('name',$user[0])->get();
 
 @endphp
 
@@ -37,6 +38,7 @@
             left: 0;
             background-color: #86C995; /* Verde leve */
             padding-top: 20px;
+            transition:.8s
 
         }
 
@@ -73,6 +75,7 @@
 
         .sidebar i {
             margin-right: 8px;
+    
         }
 
         li a{
@@ -84,29 +87,118 @@
             width: 100%;
         }
 
+        .open_side{
+            margin-left: 237px;
+            display: none;
+            border-radius: 30px;
+            background: #fff;
+            border: 2px solid #ddd
+        }
+
+        .close_side{
+            margin-left: 213px;
+            border-radius: 30px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            color: #fff;
+            border: 2px #fff solid;
+        }
+
+        @media(max-width:600px){
+            .content{
+                margin-left: 20px;
+            }
+
+            .sidebar{
+                margin-left: -234px
+            }
+
+            .open_side{
+                display: block;
+            }
+
+            .close_side{
+                display: none;
+            }
+        }
+
+        .download-label {
+        display: inline-block;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .download-icon {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+
+    /* Estilos específicos para melhorar a acessibilidade */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .custom-file-input{
+        display: none;
+    }
+
+    .dashboard_content{
+        overflow: scroll;
+    }
+
+    table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+    th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+    }
+
+    th {
+    background-color: #f2f2f2;
+    }
+
         
 
     </style>
 </head>
 <body>
     <div class="sidebar">
+        <button class="close_side">X</button>
+        <button class="open_side"><<</button>     
         <h2>Dashboard</h2>
         <ul>
-            <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Post list</a></li>
-            @foreach($test as $editor)
-                @if($editor->is_admin == 1)
-                     <li><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-tie"></i>Register Employer</a></li>
-                 @endif
-            @endforeach
+            <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
+            <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Listagem de Configurações</a></li>
+            @if($test[0]->is_admin==1)
+                 <li><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-plus"></i>Registrar Editor</a></li>
+            @endif
+            <li><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-cog"></i> Criar config</a></li>
+            <li><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-key"></i> Inserir credenciais Wordpress</a></li>
+            <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li>
+            <li><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fab fa-google"></i> Google Docs</a></li>
+            <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Importar config</a></li>
+            <li><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class="fas fa-robot"></i> Configurar IA</a></li>
+            <li class="quit"><a href="#"><i class="fas fa-sign-out-alt "></i> Sair</a></li>
 
-            <li><a href="{{route('dashboard.contentConfig',['page'=>'content_creation'])}}"><i class="fas fa-edit"></i>Create config</a></li>
-            <li><a href="{{route('dashboard.createPost',['page'=>'post_creation'])}}"><i class="fas fa-edit"></i>Post creation</a></li>
-            <li><a href="{{route('createDoc',['page'=>'google_doc_creation'])}}"><i class="fas fa-edit"></i>Google Docs creation</a></li>
-            <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Import Config</a></li>
-            <li><a href="{{route('dashboard.configia',['page'=>'ConfigGpt'])}}"><i class="fas fa-edit"></i>Config IA</a></li>
+
             <!-- Adicione outras páginas conforme necessário -->
         </ul>
+        
     </div>
 
     <div class="content">
@@ -118,6 +210,39 @@
 
 
 </body>
+
+<script>
+    const close_side=document.querySelector('.close_side')
+    const open_side=document.querySelector('.open_side')
+    const sidebar=document.querySelector('.sidebar')
+    const quit_button=document.querySelector('.quit');
+
+
+    quit_button.addEventListener('click',()=>{
+        console.log('hello')
+        deleteCookie('Editor');
+    })
+
+
+    function deleteCookie(name) {
+        document.cookie = encodeURIComponent(name) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=None; Secure';
+    }
+
+    close_side.addEventListener('click',(e)=>{
+        sidebar.style="margin-left: -234px;";
+        e.target.style='display:none';
+        open_side.style="display:block";
+
+    })
+
+    open_side.addEventListener('click',(e)=>{
+        sidebar.style="margin-left: 0;";
+        e.target.style='display:none';
+        close_side.style="display:block";
+
+    })
+
+</script>
 </html>
 
 @else

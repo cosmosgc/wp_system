@@ -14,114 +14,357 @@ $user=explode('+',base64_decode($valorCodificado));
 @endphp
 
 @section('content')
-    <div class="container">
-        <form method="POST" action="{{route('insertContent')}}" enctype="multipart/form-data">
-            @csrf
+<button id="adddocument">Adicionar document</button>
+<button id="removedocument">Remover document Selecionado/Todos</button>
 
-            <div class="mb-3">
-                <label for="theme" class="form-label">Theme</label>
-                <input type="text" class="form-control" id="theme" name="theme">
-            </div>
+@foreach($credentials as $credential)
+    <input type="hidden" name="opt" class="domain_options" value="{{$credential->wp_domain}}">
 
-            <div class="mb-3">
-                <label for="keyword" class="form-label">Keyword</label>
-                <input type="text" class="form-control" id="keyword" name="keyword">
-            </div>
+@endforeach
 
-            <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
-                <input type="text" class="form-control" id="category" name="category">
-            </div>
 
-            <div class="mb-3">
-                <label for="anchor_1" class="form-label">Anchor 1</label>
-                <input type="text" class="form-control" id="anchor_1" name="anchor_1">
-            </div>
-
-            <div class="mb-3">
-                <label for="url_link_2" class="form-label">URL Link 1</label>
-                <input type="text" class="form-control" id="url_link_2" name="url_link_1" >
-            </div>
-
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="do_follow_link_1" name="do_follow_link_1">
-                <label class="form-check-label" for="do_follow">Do Follow Link 1</label>
-            </div>
-
-            <div class="mb-3">
-                <label for="anchor_2" class="form-label">Anchor 2</label>
-                <input type="text" class="form-control" id="anchor_2" name="anchor_2">
-            </div>
-
-            <div class="mb-3">
-                <label for="url_link_2" class="form-label">URL Link 2</label>
-                <input type="text" class="form-control" id="url_link_2" name="url_link_2" >
-            </div>
-
-            
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="do_follow_link_2" name="do_follow_link_2">
-                <label class="form-check-label" for="do_follow">Do Follow Link 2</label>
-            </div>
-
-            <div class="mb-3">
-                <label for="anchor_3" class="form-label">Anchor 3</label>
-                <input type="text" class="form-control" id="anchor_3" name="anchor_3">
-            </div>
-
-            <div class="mb-3">
-                <label for="url_link_2" class="form-label">URL Link 3</label>
-                <input type="text" class="form-control" id="url_link_2" name="url_link_3" >
-            </div>
-
-            
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="do_follow_link_3" name="do_follow_link_3">
-                <label class="form-check-label" for="do_follow">Do Follow Link 3</label>
-            </div>
-
-            <div class="mb-3">
-                <label for="anchor_3" class="form-label">Image URL</label>
-                <input type="text" class="form-control" id="image_url" name="image_url">
-            </div>
-
-            <div class="mb-3 d-flex flex-row">
-                <div class="child flex-grow-1">
-                    <label for="anchor_3" class="form-label">GoogleDrive URL</label>
-                    <input type="text" class="form-control" id="Gdrive_url" name="gdrive_url">
-                </div>
-                <div class="child flex-grow-1">
-                    <label for="anchor_3" class="form-label">Folder ID</label>
-                    <input type="text" class="form-control" id="folder_id" name="folder_id">
-                </div>
-            </div>
-
-          <div class="mb-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="insert_image" id="upload_radio" value="upload">
-                    <label class="form-check-label" for="upload_radio">
-                        Use Featured image
-                    </label>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="post_image" class="form-label">Post Image</label>
-                <input type="file" class="form-control" id="post_image" name="post_image" required>
-            </div>
-
-            <label for="schedule">Schedule</label>
-            <input type="date" name="schedule" id="schedule">
-
-            <label for="domain">Domain</label>
-            <select name="credentials" id="domain">
+    <div class="container editable-document">
+        <table>
+        <tr>
+            <th>Label</th>
+            <th>Input</th>
+        </tr>
+        <tr>
+            <td>Theme</td>
+            <td class="theme" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Keyword</td>
+            <td class="keyword" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td class="category" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Anchor 1</td>
+            <td class="anchor_1" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>URL Link 1</td>
+            <td class="url_link_1" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Do Follow Link 1</td>
+            <td><input type="checkbox" class="do_follow_link_1" name="" id=""></td>
+        </tr>
+        <tr>
+            <td>Anchor 2</td>
+            <td class="anchor_2" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>URL Link 2</td>
+            <td class="url_link_2" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Do Follow Link 2</td>
+            <td><input type="checkbox" class="do_follow_link_2" name="" id=""></td>
+        </tr>
+        <tr>
+            <td>Anchor 3</td>
+            <td class="anchor_3" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>URL Link 3</td>
+            <td class="url_link_3" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Do Follow Link 3</td>
+            <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
+        </tr>
+        <tr>
+            <td>Image URL</td>
+            <td class="url_image" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>GoogleDrive URL</td>
+            <td class="gdrive_url" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Folder ID</td>
+            <td class="image_folder_id" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Use Featured image</td>
+            <td class="insert_image"><input type="checkbox"></td>
+        </tr>
+        <tr>
+            <td>Post Image</td>
+            <td class="sys_image"><input type="file"></td>
+        </tr>
+        <tr>
+            <td>Schedule</td>
+            <td class="schedule_date" contenteditable="true"><input type="date"></td>
+        </tr>
+        <tr>
+            <td>Domain</td>
+            <td>
+            <select class="domain">
                 @foreach($credentials as $credential)
                     <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
+
                 @endforeach
             </select>
-            
-            <input type="hidden" name="session_user" value="{{$user[0]}}">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+            </td>
+        </tr>
+        </table>
+        <input type="hidden" name="user" class="user" value="{{$user[0]}}">
+        <button type="button" class="btn btn-outline-primary submitForm">Salvar config</button>
+
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var submitButtons = document.querySelectorAll('.submitForm');
+            const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+            submitButtons.forEach(function(submitButton) {
+                submitButton.addEventListener('click', function(event) {
+                    event.preventDefault(); // Evita o comportamento padrão de envio do formulário
+        
+                    // Encontra o "document" pai do botão clicado
+        
+                    // Coleta dos dados do formulário dentro do "document" atual
+                    var formData = new FormData();
+                    var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
+                    formData.append('sys_image', imageFile);
+
+                    var reader = new FileReader();
+                    reader.readAsDataURL(imageFile);
+                    reader.onload = function () {
+                        var imageData = reader.result;
+
+                    var postData = {
+                    sys_image: imageData,
+                    theme: document.querySelector('.theme').innerText,
+                    keyword: document.querySelector('.keyword').innerText,
+                    category: document.querySelector('.category').innerText,
+                    anchor_1: document.querySelector('.anchor_1').innerText,
+                    url_link_2: document.querySelector('.url_link_2').innerText,
+                    do_follow_link_1: document.querySelector('.do_follow_link_1').checked ? 1 : 0,
+                    anchor_2: document.querySelector('.anchor_2').innerText,
+                    do_follow_link_2: document.querySelector('.do_follow_link_2').checked ? 1 : 0,
+                    anchor_3: document.querySelector('.anchor_3').innerText,
+                    url_link_3: document.querySelector('.url_link_3').innerText,
+                    do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
+                    url_image: document.querySelector('.url_image').innerText,
+                    gdrive_url: document.querySelector('.gdrive_url').innerText,
+                    image_folder_id: document.querySelector('.image_folder_id').innerText,
+                    insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
+                    schedule_date: document.querySelector('.schedule_date input[type="date"]').value,
+                    domain: document.querySelector('.domain').value,
+                    session_user:document.querySelector('.user').value
+                };
+                        console.log(postData);  
+        
+                    // Faz a requisição AJAX
+                    fetch('/insert_post_content', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                        },
+                        body: JSON.stringify(postData),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro na requisição');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Resposta do servidor:', data);
+                        // Aqui você pode lidar com a resposta do servidor conforme necessário
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    })
+                    }
+                    
+;
+                });
+            });
+        });
+        </script>
+
+<script>
+    var adddocumentButton = document.getElementById('adddocument');
+        var removedocumentButton = document.getElementById('removedocument');
+        const domain= document.querySelectorAll(".domain_options")
+    
+        adddocumentButton.addEventListener('click', function(event) {
+            event.preventDefault();
+    
+            var newdocument = createNewdocument();
+            document.body.appendChild(newdocument);
+            bindSubmitEvent(newdocument);
+        });
+    
+        removedocumentButton.addEventListener('click', function(event) {
+            event.preventDefault();
+    
+            var selecteddocument = document.querySelector('.editable-document.selected');
+            if (selecteddocument) {
+                selecteddocument.remove();
+            } else {
+                var alldocuments = document.querySelectorAll('.editable-document');
+                alldocuments.forEach(function(document) {
+                    document.remove();
+                });
+            }
+        });
+
+        function bindSubmitEvent(documentElement) {
+            var submitButton = documentElement.querySelectorAll('.submitForm');
+            submitButton.forEach((e,index)=>{
+                submitButton[index].addEventListener('click', function(event) {
+                event.preventDefault();
+                console.log(document.querySelectorAll('.theme'));
+
+            //     var formData = new FormData();
+            //         var imageFile = document.querySelector('.sys_image_custom input[type="file"]').files[0];
+            //         console.log(imageFile);
+            //         formData.append('sys_image', imageFile);
+
+            //         var reader = new FileReader();
+            //         reader.readAsDataURL(imageFile);
+            //         reader.onload = function () {
+            //             var imageData = reader.result;
+
+            //         var postData = {
+            //         sys_image: imageData,
+            //         theme: document.querySelectorAll('.theme')[i].innerText,
+            //         keyword: document.querySelectorAll('.keyword')[i].innerText,
+            //         category: document.querySelectorAll('.category')[i].innerText,
+            //         anchor_1: document.querySelectorAll('.anchor_1')[i].innerText,
+            //         url_link_2: document.querySelectorAll('.url_link_2')[i].innerText,
+            //         do_follow_link_1: document.querySelectorAll('.do_follow_link_1')[i].checked ? 1 : 0,
+            //         anchor_2: document.querySelectorAll('.anchor_2')[i].innerText,
+            //         do_follow_link_2: document.querySelectorAll('.do_follow_link_2')[i].checked ? 1 : 0,
+            //         anchor_3: document.querySelectorAll('.anchor_3')[i].innerText,
+            //         url_link_3: document.querySelectorAll('.url_link_3')[i].innerText,
+            //         do_follow_link_3: document.querySelectorAll('.do_follow_link_3')[i].checked ? 1 : 0,
+            //         url_image: document.querySelectorAll('.url_image')[i].innerText,
+            //         gdrive_url: document.querySelectorAll('.gdrive_url')[i].innerText,
+            //         image_folder_id: document.querySelectorAll('.image_folder_id')[i].innerText,
+            //         insert_image: document.querySelectorAll('.insert_image input[type="checkbox"]')[i].checked ? 1 : 0,
+            //         schedule_date: document.querySelectorAll('.schedule_date input[type="date"]')[i].value,
+            //         domain: document.querySelector('.domain').value,
+            //         session_user:document.querySelector('.user').value
+            //     };
+            //             console.log(postData);  
+            // }
+            })
+
+
+                // Coleta dos dados do formulário dentro do elemento do documento
+
+                
+            });
+        }
+    
+        function createNewdocument() {
+            var newdocument = document.createElement('div');
+            newdocument.classList.add('content');
+            newdocument.classList.add('editable-document');
+            newdocument.innerHTML = `
+            <div class="container">
+                    <table>
+                    <tr>
+                        <th>Label</th>
+                        <th>Input</th>
+                    </tr>
+                    <tr>
+                        <td>Theme</td>
+                        <td class="theme" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Keyword</td>
+                        <td class="keyword" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Category</td>
+                        <td class="category" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Anchor 1</td>
+                        <td class="anchor_1" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>URL Link 1</td>
+                        <td class="url_link_1" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Do Follow Link 1</td>
+                        <td><input type="checkbox" class="do_follow_link_1" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Anchor 2</td>
+                        <td class="anchor_2" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>URL Link 2</td>
+                        <td class="url_link_2" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Do Follow Link 2</td>
+                        <td><input type="checkbox" class="do_follow_link_2" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Anchor 3</td>
+                        <td class="anchor_3" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>URL Link 3</td>
+                        <td class="url_link_3" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Do Follow Link 3</td>
+                        <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Image URL</td>
+                        <td class="url_image" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>GoogleDrive URL</td>
+                        <td class="gdrive_url" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Folder ID</td>
+                        <td class="image_folder_id" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                        <td>Use Featured image</td>
+                        <td class="insert_image"><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td>Post Image</td>
+                        <td class="sys_image_custom"><input type="file"></td>
+                    </tr>
+                    <tr>
+                        <td>Schedule</td>
+                        <td class="schedule_date" contenteditable="true"><input type="date"></td>
+                    </tr>
+                    <tr>
+                        <td>Domain</td>
+                        <td>
+                        <select class="domain">
+                            ${Object.keys(domain).map(key => `<option value="${domain[key].value}">${domain[key].value}</option>`).join('')}
+                        </select>
+                        </td>
+                    </tr>
+                    </table>
+                    <button type="button" class="btn btn-outline-primary submitForm">Salvar config</button>
+
+                </div>
+            `;
+            return newdocument;
+        }
+</script>
 @endsection
