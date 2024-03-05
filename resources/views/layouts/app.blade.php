@@ -28,6 +28,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
+        .flex-container-column {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 3px;
+        }
 
         .sidebar {
             height: 100%;
@@ -60,22 +66,37 @@
         .sidebar a {
             text-decoration: none;
             color: white;
-            padding: 8px;
+            padding: 5px;
+            text-align: end;
         }
 
         .sidebar a:hover {
             background-color: #5EAD78; /* Verde mais escuro ao passar o mouse */
             transition: .5s;
+            border-radius: 10px;
         }
 
         .content {
             margin-left: 250px;
             padding: 20px;
+            transition: .8s;
+        }
+        input[type="file"] {
+            border: 1px solid #c5c5c5;
+            border-radius: 11px;
+            padding: 5px;
+            white-space: normal;
+            word-wrap: break-word;
+            width: 100%;
+            overflow: auto;
         }
 
         .sidebar i {
             margin-right: 8px;
     
+        }
+        .sidebar .fa, .sidebar .fas {
+            align-self: center;
         }
 
         li a{
@@ -104,6 +125,33 @@
             color: #fff;
             border: 2px #fff solid;
         }
+        .closed {
+        margin-left: -234px;
+        }
+
+        .expanded {
+        margin-left: 20px;
+        }
+        .open{
+            display: block;
+        }
+        .minimized{
+            display: block;
+        }
+        .closed .open_side {
+            display: block !important;
+        }
+
+        .open .open_side {
+            display: none !important;
+        }
+        .closed .close_side {
+            display: none !important;
+        }
+
+        .open .close_side {
+            display: block !important;
+        }
 
         @media(max-width:600px){
             .content{
@@ -112,6 +160,19 @@
 
             .sidebar{
                 margin-left: -234px
+            }
+            .closed {
+                margin-left: -234px !important;
+            }
+            .open{
+                margin-left: 0px !important;
+            }
+
+            .expanded {
+            margin-left: 20px !important;
+            }
+            .minimized{
+                margin-left: 250px !important;
             }
 
             .open_side{
@@ -158,18 +219,35 @@
     }
 
     table {
-  border-collapse: collapse;
-  width: 100%;
-}
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    }
 
     th, td {
-    border: 1px solid black;
-    padding: 8px;
+    border: 1px solid #ddd;
+    padding: 9px;
     text-align: left;
     }
 
     th {
-    background-color: #f2f2f2;
+    background-color: #daf3e4;
+    }
+
+    tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    }
+
+    /* Hover effect */
+    tr:hover {
+    background-color: #e0e0e0a8;
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 600px) {
+    th, td {
+        font-size: 14px;
+    }
     }
 
         
@@ -184,7 +262,7 @@
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
             <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Listagem de Configurações</a></li>
-            @if($test[0]->is_admin==1)
+            @if(/*$test[0]->is_admin==1*/ true)
                  <li><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-plus"></i>Registrar Editor</a></li>
             @endif
             <li><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-cog"></i> Criar config</a></li>
@@ -215,6 +293,7 @@
     const close_side=document.querySelector('.close_side')
     const open_side=document.querySelector('.open_side')
     const sidebar=document.querySelector('.sidebar')
+    const content=document.querySelector('.content')
     const quit_button=document.querySelector('.quit');
 
 
@@ -227,20 +306,38 @@
     function deleteCookie(name) {
         document.cookie = encodeURIComponent(name) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=None; Secure';
     }
+    // close_side.addEventListener('click',(e)=>{
+    //     sidebar.style="margin-left: -234px;";
+    //     content.style="margin-left: 20px;";
+    //     e.target.style='display:none';
+    //     open_side.style="display:block";
 
-    close_side.addEventListener('click',(e)=>{
-        sidebar.style="margin-left: -234px;";
-        e.target.style='display:none';
-        open_side.style="display:block";
+    // })
 
-    })
+    // open_side.addEventListener('click',(e)=>{
+    //     sidebar.style="";
+    //     content.style="";
+    //     e.target.style='display:none';
+    //     close_side.style="display:block";
 
-    open_side.addEventListener('click',(e)=>{
-        sidebar.style="margin-left: 0;";
-        e.target.style='display:none';
-        close_side.style="display:block";
+    // })
+    close_side.addEventListener('click', () => {
+        sidebar.classList.add('closed');
+        content.classList.add('expanded');
+        sidebar.classList.remove('open');
+        content.classList.remove('minimize');
+        // close_side.style.display = 'none';
+        // open_side.style.display = 'block';
+    });
 
-    })
+    open_side.addEventListener('click', () => {
+        sidebar.classList.remove('closed');
+        content.classList.remove('expanded');
+        sidebar.classList.add('open');
+        content.classList.add('minimize');
+        // close_side.style.display = 'block';
+        // open_side.style.display = 'none';
+    });
 
 </script>
 </html>
