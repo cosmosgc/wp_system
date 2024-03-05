@@ -45,8 +45,9 @@
             left: 0;
             background-color: #86C995; /* Verde leve */
             padding-top: 20px;
-            transition:.8s
-
+            transition:.8s;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: -2px 0px 11px rgb(0 0 0);
         }
 
         .sidebar h2 {
@@ -61,7 +62,9 @@
 
         .sidebar li {
             padding: 8px;
+            padding-top: 0px;
             text-align: center;
+            transition: 0.3s;
         }
 
         .sidebar a {
@@ -69,12 +72,17 @@
             color: white;
             padding: 5px;
             text-align: end;
+            display: block;
+            transition: 0.3s;
         }
 
         .sidebar a:hover {
             background-color: #5EAD78; /* Verde mais escuro ao passar o mouse */
             transition: .5s;
             border-radius: 10px;
+        }
+        .sidebar li:hover {
+            transform: scale(1.05);
         }
 
         .content {
@@ -113,8 +121,9 @@
             margin-left: 237px;
             display: none;
             border-radius: 30px;
-            background: #fff;
-            border: 2px solid #ddd
+            background: #86c995;
+            border: none;
+            box-shadow: 4px 0px 5px 0px rgb(255 255 255);
         }
 
         .close_side{
@@ -223,6 +232,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
+    box-shadow: 0px 0px 9px 0px black;
     }
 
     th, td {
