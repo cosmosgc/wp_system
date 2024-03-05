@@ -13,6 +13,11 @@
 @section('content')
     <div class="dashboard-content">
         <h1>Lista de posts e configurações</h1>
+        <div class="search_bar">
+          <form action="/search" method="get">
+            <div><input type="text" name="query" id="query"><input type="submit" value="search"></div>
+          </form>
+        </div>
         <!-- Formulário de Cadastro de Usuário -->
         <input type="hidden" name="user_id" class="user_id" value={{$post_configs[0]->id}}>
         @foreach($post_contents->postContents as $config)
@@ -42,7 +47,7 @@
                 <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
                 <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                 <td>{{$config->created_at}}</td>
-                <td>{{$config->domain}}</td>
+                <td class="domain">{{$config->domain}}</td>
                 <td>
                   <button class="btn btn-primary post_wp">Postar</button>
                   <button class="btn btn-danger delete_config">Deletar</button>
@@ -186,16 +191,31 @@
         // Remove o SVG de loading após a conclusão da query
         
         if(query.ok){
-          alert('content sucefully created')
+          Swal.fire({
+            title: 'Content Sucefully created',
+            text: 'Do you want to continue',
+            icon: 'success',
+            confirmButtonText: 'continue'
+          })
         }else{
-          alert('error on posting generation')
+          Swal.fire({
+            title: 'Error on Generate Content',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'continue'
+          })
         }
         modalDialog.removeChild(loading);
         
         // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
     } catch (error) {
         console.error('Ocorreu um erro:', error);
-        alert(error);
+        Swal.fire({
+            title: 'Error on the process',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'continue'
+          })
         // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
         document.body.removeChild(loadingSVG);
     }
@@ -203,28 +223,43 @@
 
 
 
-      postButton.forEach(button=>{
+      postButton.forEach((button,i)=>{
         const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
         const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner 
-        const loading= document.createElement('span')
+        const loading= document.createElement('span');
+        
+        
         loading.innerHTML='loading....'
         button.addEventListener('click',async()=>{
           button.insertAdjacentElement("beforebegin", loading);
+          const domain=document.querySelectorAll('.domain')[i];
+          console.log(domain.innerText);
           const query= await fetch('/post_content',{
             method:'POST',
             body:JSON.stringify({
                id:data_id,
                user_id:user_id.value,
+               domain:domain.innerText,
               _token:csrfToken
             }),
             headers:{"Content-Type":"application/json"}
           })
 
           if(query.ok){
-            alert('post sucefully created')
+            Swal.fire({
+            title: 'Post sucefully created on wordpress',
+            text: 'Do you want to continue',
+            icon: 'success',
+            confirmButtonText: 'continue'
+          })
             container.remove(loading);
           }else{
-            alert('error on posting');
+            Swal.fire({
+            title: 'Error on the process',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'continue'
+          })
             button.remove(loading);
           }
         })

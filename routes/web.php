@@ -10,6 +10,7 @@ use App\Http\Controllers\GptController;
 use App\Http\Controllers\iaCredentialController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
+use App\Http\Controllers\searchController;
 use App\Http\Controllers\WpController;
 use App\Http\Controllers\WpCredentialController;
 use App\Services\PostFileService;
@@ -48,6 +49,7 @@ Route::get('/list_content',[DasboardController::class,'listPostConfig'])->name('
 Route::get('/insert_gpt_token',[DasboardController::class,'insertGptToken'])->name('dashboard.configia');
 Route::get('/submit_wp',[DasboardController::class,'insertWpCredential'])->name('dashboard.wp');
 Route::get('/site_credential_created',[DasboardController::class,'siteCredentialCreated'])->name('credentialCreated');
+Route::get('/search',[searchController::class,'searchByQuery']);
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

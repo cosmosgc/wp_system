@@ -13,7 +13,7 @@ class PostContentService{
 
     public function insertPostContent($data,$doContent){
 
-            //dd($data->theme);
+            //dd($data->domain);
 
             // Verifica se uma imagem foi enviada   
             if ($data->sys_image) {
@@ -40,7 +40,7 @@ class PostContentService{
             } elseif ($data->filled('gdrive_url')) {
                 // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
                 $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
-            } elseif ($data->filled('url_image')) {
+            } elseif ($data->filled('image_url')) {
                 // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
                 $imagePath = $this->downloadImageFromUrl($data->image_url);
             } else {
@@ -95,38 +95,39 @@ class PostContentService{
     }
 
 
-    private function downloadImageFromGoogleDrive($imageUrl,$data)
+    private function downloadImageFromGoogleDrive($imageUrl, $data)
     {
         // Cria uma instância do cliente Google Client
         $client = new Google_Client();
+        $credentials = json_decode(file_get_contents(base_path('credentials.json')), true);
         $client->setApplicationName('Google Drive API');
-        $client->setScopes(Google_Service_Drive::DRIVE_READONLY); // Escopo de somente leitura para acessar os arquivos
-        $client->setAuthConfig(base_path('credentials.json')); // Caminho para o arquivo de credenciais da API
-
+        $client->setDeveloperKey($credentials['web']['api_key']); // Usando a chave de API
+    
         // Cria uma instância do serviço Google Drive
         $service = new Google_Service_Drive($client);
-
+    
         // ID da pasta no Google Drive que contém as imagens
         $folderId = $data->folder_id;
-
+    
         // Lista os arquivos na pasta especificada
         $results = $service->files->listFiles([
             'q' => "'$folderId' in parents",
             'fields' => 'files(id, name)',
         ]);
-
+    
         // Escolhe um arquivo aleatório da lista
         $randomFile = collect($results->getFiles())->random();
-
+    
         // Faz o download do arquivo selecionado
         $fileId = $randomFile->getId();
         $response = $service->files->get($fileId, ['alt' => 'media']);
-
+    
         // Salva o conteúdo do arquivo no armazenamento do Laravel
         $fileName = Str::random(20) . '_' . $randomFile->getName();
         Storage::disk('public')->put('images/' . $fileName, $response->getBody()->getContents());
-
+    
         // Retorna o caminho da imagem baixada
         return 'images/' . $fileName;
     }
+    
 }

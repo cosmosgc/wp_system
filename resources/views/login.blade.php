@@ -43,15 +43,26 @@
 
 <!-- Bootstrap JS (Optional) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+        $token=localStorage.getItem('Editor')
+        if ($token){
+        // Se não estiver presente, redireciona para a página de dashboard
+        
+         window.location.href = location.href+'dashboard';
+    }else{
+        return
+    }
+</script>
 
 <script>
     const name = document.getElementById("name");
     const password=document.getElementById("password");
     const submitButton = document.querySelector(".submit");
     const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-    console.log(submitButton);
+    console.log(csrfToken);
 
     submitButton.addEventListener('click',async ()=>{
+            localStorage.setItem('Editor',  btoa(csrfToken));
         const validate_query=await fetch('/validate',{
             method:'POST',
             body:JSON.stringify({name:name.value,password:password.value,_token:csrfToken}),

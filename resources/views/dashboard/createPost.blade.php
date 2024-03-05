@@ -62,12 +62,6 @@
         const gpt_button=document.querySelector('.gpt_submit');
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
         gpt_button.addEventListener('click',async ()=>{
-            console.log(topics)
-            console.log(languages)
-            console.log(style);
-            console.log(tone);
-            console.log(sections)
-            console.log(paragraph);
             const query= await fetch('/gpt_query',{
                 method:'POST',
                 body:JSON.stringify({
@@ -83,25 +77,25 @@
             })
 
             const response=await query.json();
-            if (response.success) {
+            if (query.ok) {
             // Exibe um alerta de sucesso usando SweetAlert2
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso',
-                text: 'Your text was sucessfully created'
-            });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso',
+                    text: 'Your text was sucessfully created'
+                });
         } else {
             // Exibe um alerta de falha usando SweetAlert2
             Swal.fire({
+                title: 'Error on the process',
+                text: 'Do you want to continue',
                 icon: 'error',
-                title: 'Falha',
-                text: 'Error o text creation'
-            });
+                confirmButtonText: 'continue'
+          })
         }
         })
 
         })
 
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection

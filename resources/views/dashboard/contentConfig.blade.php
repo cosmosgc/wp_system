@@ -134,36 +134,34 @@ $user=explode('+',base64_decode($valorCodificado));
                     // Coleta dos dados do formulário dentro do "document" atual
                     var formData = new FormData();
                     var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
-                    formData.append('sys_image', imageFile);
 
-                    var reader = new FileReader();
-                    reader.readAsDataURL(imageFile);
-                    reader.onload = function () {
-                        var imageData = reader.result;
+                    if (imageFile) {
+                        formData.append('sys_image', imageFile);
+                    }
 
                     var postData = {
-                    sys_image: imageData,
-                    theme: document.querySelector('.theme').innerText,
-                    keyword: document.querySelector('.keyword').innerText,
-                    category: document.querySelector('.category').innerText,
-                    anchor_1: document.querySelector('.anchor_1').innerText,
-                    url_link_2: document.querySelector('.url_link_2').innerText,
-                    do_follow_link_1: document.querySelector('.do_follow_link_1').checked ? 1 : 0,
-                    anchor_2: document.querySelector('.anchor_2').innerText,
-                    do_follow_link_2: document.querySelector('.do_follow_link_2').checked ? 1 : 0,
-                    anchor_3: document.querySelector('.anchor_3').innerText,
-                    url_link_3: document.querySelector('.url_link_3').innerText,
-                    do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
-                    url_image: document.querySelector('.url_image').innerText,
-                    gdrive_url: document.querySelector('.gdrive_url').innerText,
-                    image_folder_id: document.querySelector('.image_folder_id').innerText,
-                    insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
-                    schedule_date: document.querySelector('.schedule_date input[type="date"]').value,
-                    domain: document.querySelector('.domain').value,
-                    session_user:document.querySelector('.user').value
-                };
-                        console.log(postData);  
-        
+                        theme: document.querySelector('.theme').innerText,
+                        keyword: document.querySelector('.keyword').innerText,
+                        category: document.querySelector('.category').innerText,
+                        anchor_1: document.querySelector('.anchor_1').innerText,
+                        url_link_2: document.querySelector('.url_link_2').innerText,
+                        do_follow_link_1: document.querySelector('.do_follow_link_1').checked ? 1 : 0,
+                        anchor_2: document.querySelector('.anchor_2').innerText,
+                        do_follow_link_2: document.querySelector('.do_follow_link_2').checked ? 1 : 0,
+                        anchor_3: document.querySelector('.anchor_3').innerText,
+                        url_link_3: document.querySelector('.url_link_3').innerText,
+                        do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
+                        image_url: document.querySelector('.url_image').innerText,
+                        gdrive_url: document.querySelector('.gdrive_url').innerText,
+                        folder_id: document.querySelector('.image_folder_id').innerText,
+                        insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
+                        schedule_date: document.querySelector('.schedule_date input[type="date"]').value,
+                        domain: document.querySelector('.domain').value,
+                        session_user: document.querySelector('.user').value
+                    };
+
+                    console.log(postData);
+
                     // Faz a requisição AJAX
                     fetch('/insert_post_content', {
                         method: 'POST',
@@ -185,10 +183,9 @@ $user=explode('+',base64_decode($valorCodificado));
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                    })
-                    }
-                    
-;
+                    });
+                                        
+
                 });
             });
         });
