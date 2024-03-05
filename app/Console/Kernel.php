@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command('postagens:processar')->hourly();    
+        $schedule->command('postagens:processar')->everyMinute();    
 
 
     }

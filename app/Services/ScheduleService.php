@@ -37,7 +37,8 @@ class ScheduleService
                         $posts->post_image,
                         $credential->wp_domain,
                         $credential->wp_login,
-                        $credential->wp_password
+                        $credential->wp_password,
+                        $posts->domain
                     );
                 }
             }
