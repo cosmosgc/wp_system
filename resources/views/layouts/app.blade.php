@@ -250,6 +250,11 @@
         font-size: 14px;
     }
     }
+    .card-medium {
+        box-shadow: 4px 4px 12px 0px black;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    }
 
         
 
