@@ -267,10 +267,11 @@ $user=explode('+',base64_decode($valorCodificado));
             });
         }
     
-        function createNewdocument() {
+        function createNewdocument(id = 1) {
             var newdocument = document.createElement('div');
             newdocument.classList.add('content');
             newdocument.classList.add('editable-document');
+            newdocument.id = id;
             newdocument.innerHTML = `
             <div class="container">
                     <table>
@@ -363,7 +364,64 @@ $user=explode('+',base64_decode($valorCodificado));
 
                 </div>
             `;
+            var submitButton = newdocument.querySelector('.submitForm');
+
+            // Add a click event listener to the button
+            submitButton.addEventListener('click', function() {
+                // Call the function to retrieve and log the data
+                getDataFromTable(newdocument);
+            });
             return newdocument;
+        }
+
+        function getDataFromTable(id) {
+            // Select all the contenteditable elements inside the table with the specified id
+            var inputElements = id;//document.querySelectorAll(`#${id} [contenteditable="true"], #${id} .do_follow_link_1, #${id} .do_follow_link_2, #${id} .do_follow_link_3, #${id} .insert_image input, #${id} .sys_image_custom input, #${id} .schedule_date input, #${id} .domain select`);
+
+            // Create an object to store the data
+            var postData = {
+                        theme: inputElements.querySelector('.theme').innerText,
+                        keyword: inputElements.querySelector('.keyword').innerText,
+                        category: inputElements.querySelector('.category').innerText,
+                        anchor_1: inputElements.querySelector('.anchor_1').innerText,
+                        url_link_2: inputElements.querySelector('.url_link_2').innerText,
+                        do_follow_link_1: inputElements.querySelector('.do_follow_link_1').checked ? 1 : 0,
+                        anchor_2: inputElements.querySelector('.anchor_2').innerText,
+                        do_follow_link_2: inputElements.querySelector('.do_follow_link_2').checked ? 1 : 0,
+                        anchor_3: inputElements.querySelector('.anchor_3').innerText,
+                        url_link_3: inputElements.querySelector('.url_link_3').innerText,
+                        do_follow_link_3: inputElements.querySelector('.do_follow_link_3').checked ? 1 : 0,
+                        image_url: inputElements.querySelector('.url_image').innerText,
+                        gdrive_url: inputElements.querySelector('.gdrive_url').innerText,
+                        folder_id: inputElements.querySelector('.image_folder_id').innerText,
+                        insert_image: inputElements.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
+                        schedule_date: inputElements.querySelector('.schedule_date input[type="date"]').value,
+                        domain: inputElements.querySelector('.domain').value,
+                        //session_user: inputElements.querySelector('.user').value
+                    };
+
+                    console.log(postData);
+                    fetch('/insert_post_content', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                        },
+                        body: JSON.stringify(postData),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro na requisição');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Resposta do servidor:', data);
+                        // Aqui você pode lidar com a resposta do servidor conforme necessário
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    });
         }
 </script>
 @endsection
