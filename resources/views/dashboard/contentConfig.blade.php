@@ -366,19 +366,15 @@ $user=explode('+',base64_decode($valorCodificado));
             `;
             var submitButton = newdocument.querySelector('.submitForm');
 
-            // Add a click event listener to the button
             submitButton.addEventListener('click', function() {
-                // Call the function to retrieve and log the data
                 getDataFromTable(newdocument);
             });
             return newdocument;
         }
 
-        function getDataFromTable(id) {
-            // Select all the contenteditable elements inside the table with the specified id
-            var inputElements = id;//document.querySelectorAll(`#${id} [contenteditable="true"], #${id} .do_follow_link_1, #${id} .do_follow_link_2, #${id} .do_follow_link_3, #${id} .insert_image input, #${id} .sys_image_custom input, #${id} .schedule_date input, #${id} .domain select`);
+        function getDataFromTable(element) {
+            var inputElements = element;
 
-            // Create an object to store the data
             var postData = {
                         theme: inputElements.querySelector('.theme').innerText,
                         keyword: inputElements.querySelector('.keyword').innerText,
