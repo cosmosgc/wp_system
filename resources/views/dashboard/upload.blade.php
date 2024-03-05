@@ -4,7 +4,7 @@
 @php
     use App\Models\Editor;
 
-    $valorCodificado = request()->cookie('Editor');
+    $valorCodificado = request()->cookie('editor');
     $user=explode('+',base64_decode($valorCodificado));
     $post_configs= Editor::where('name',$user[0])->get();
 @endphp

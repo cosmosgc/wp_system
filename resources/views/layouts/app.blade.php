@@ -4,7 +4,7 @@
     use Illuminate\Http\Request;
     
 
-    $valorCodificado = request()->cookie('Editor');
+    $valorCodificado = request()->cookie('editor');
     $user=explode('+',base64_decode($valorCodificado));
     $test=Editor::where('name',$user[0])->get();
 
@@ -45,8 +45,9 @@
             left: 0;
             background-color: #86C995; /* Verde leve */
             padding-top: 20px;
-            transition:.8s
-
+            transition:.8s;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: -2px 0px 11px rgb(0 0 0);
         }
 
         .sidebar h2 {
@@ -61,7 +62,9 @@
 
         .sidebar li {
             padding: 8px;
+            padding-top: 0px;
             text-align: center;
+            transition: 0.3s;
         }
 
         .sidebar a {
@@ -69,12 +72,17 @@
             color: white;
             padding: 5px;
             text-align: end;
+            display: block;
+            transition: 0.3s;
         }
 
         .sidebar a:hover {
             background-color: #5EAD78; /* Verde mais escuro ao passar o mouse */
             transition: .5s;
             border-radius: 10px;
+        }
+        .sidebar li:hover {
+            transform: scale(1.05);
         }
 
         .content {
@@ -113,8 +121,9 @@
             margin-left: 237px;
             display: none;
             border-radius: 30px;
-            background: #fff;
-            border: 2px solid #ddd
+            background: #86c995;
+            border: none;
+            box-shadow: 4px 0px 5px 0px rgb(255 255 255);
         }
 
         .close_side{
@@ -223,6 +232,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
+    box-shadow: 0px 0px 9px 0px black;
     }
 
     th, td {
@@ -250,6 +260,11 @@
         font-size: 14px;
     }
     }
+    .card-medium {
+        box-shadow: 4px 4px 12px 0px black;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    }
 
         
 
@@ -272,7 +287,7 @@
             <li><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fab fa-google"></i> Google Docs</a></li>
             <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Importar config</a></li>
             <li><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class="fas fa-robot"></i> Configurar IA</a></li>
-            <li class="quit"><a href="#"><i class="fas fa-sign-out-alt "></i> Sair</a></li>
+            <li class="quit"><a href="#" onclick="logoff()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
 
 
             <!-- Adicione outras páginas conforme necessário -->
@@ -301,14 +316,29 @@
 
 
     quit_button.addEventListener('click',()=>{
-        console.log('hello')
-        deleteCookie('Editor');
+        logoff();
     })
 
 
     function deleteCookie(name) {
-        document.cookie = encodeURIComponent(name) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=None; Secure';
+        // Convert the cookie name to lowercase
+        var lowercaseName = name.toLowerCase();
+
+        // Delete the cookie with both the original and lowercase names, with HttpOnly attribute
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=None; domain=' + location.hostname + '; Secure; HttpOnly';
+        document.cookie = lowercaseName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=None; domain=' + location.hostname + '; Secure; HttpOnly';
+
+        // Log the deleted cookies
+        console.log(get_cookie(name));
+        console.log(get_cookie(lowercaseName));
     }
+
+
+    function get_cookie(name){
+        return document.cookie.split(';').some(c => {
+            return c.trim().startsWith(name + '=');
+        });
+    }   
     // close_side.addEventListener('click',(e)=>{
     //     sidebar.style="margin-left: -234px;";
     //     content.style="margin-left: 20px;";
@@ -341,6 +371,30 @@
         // close_side.style.display = 'block';
         // open_side.style.display = 'none';
     });
+    function logoff() {
+        // Make an AJAX request to the logoff route using fetch
+        fetch('/quit', {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                // You may include additional headers if needed
+            },
+        })
+        .then(response => {
+            // Check if the response status is 200 (OK)
+            if (response.ok) {
+                // Reload the page
+                location.reload();
+            } else {
+                // Handle non-OK responses if needed
+                console.error('Logoff failed with status:', response.status);
+            }
+        })
+        .catch(error => {
+            // Handle errors if needed
+            console.error('Error during logoff:', error);
+        });
+    }
 
 </script>
 

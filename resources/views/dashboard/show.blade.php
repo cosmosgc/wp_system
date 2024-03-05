@@ -3,7 +3,7 @@
 @php  
     use Illuminate\Http\Request;
 
-    $valorCodificado = request()->cookie('Editor');
+    $valorCodificado = request()->cookie('editor');
     $user=explode('+',base64_decode($valorCodificado));
 
 @endphp

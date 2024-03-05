@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3 mt-5">
-            <div class="card">
+            <div class="card card-medium">
                 <div class="card-body">
                     <h3>Create Document</h3>
                     <form action="/create_doc" method="post">
@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <div class="card mt-4">
+            <div class="card card-medium mt-4">
                 <div class="card-body">
                     <h3>Retrieve Document</h3>
                     <form action="/process_doc" method="post">
