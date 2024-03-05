@@ -7,11 +7,16 @@ use GuzzleHttp\Client;
 
 class Wp_service{
 
+    private $client;
+
+    public function __construct()
+    {
+        $this->client=new Client();
+    }
+
     public function postBlogContent($keyword,$title,$content,$featured,$image,$domain,$login,$password){
         //$title = $title->input('title');
         //$content = $content->input('content');
-
-        $client = new Client();
         
 
         $featuredImagePath = storage_path('app/public/'.$image);
@@ -29,7 +34,7 @@ class Wp_service{
             ];
 
             // Faça a requisição para enviar a imagem para o WordPress
-            $responseUploadImagem = $client->post($domain.'/wp-json/wp/v2/media', [
+            $responseUploadImagem = $this->client->post($domain.'/wp-json/wp/v2/media', [
                 'auth' => [$login, $password],
                 'multipart' => [
                     [
@@ -67,7 +72,7 @@ class Wp_service{
 
  
 
-        $response = $client->post($domain.'/wp-json/wp/v2/posts', [
+        $response = $this->client->post($domain.'/wp-json/wp/v2/posts', [
             'auth' => [$login, $password],
             'form_params' => [
                 'title' => $title,
@@ -77,6 +82,17 @@ class Wp_service{
             ],
         ]);
 
+
         return $response->getBody();
+    }
+
+    public function updateYoastRankMath($domain,$post_id,$keyword){
+        //dd($domain,$keyword,$post_id);
+        $yoast_query=$this->client->post($domain.'/wp-json/wp_manage/v1/update_yoast_keyword/',[
+            'post_id'=>$post_id,
+            'keyword'=>$keyword
+        ]);
+
+        return $yoast_query;
     }
 }

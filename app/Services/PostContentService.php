@@ -95,39 +95,37 @@ class PostContentService{
     }
 
 
-    private function downloadImageFromGoogleDrive($imageUrl, $data)
-    {
-        // Cria uma instância do cliente Google Client
-        $client = new Google_Client();
-        $credentials = json_decode(file_get_contents(base_path('credentials.json')), true);
-        $client->setApplicationName('Google Drive API');
-        $client->setDeveloperKey($credentials['web']['api_key']); // Usando a chave de API
-    
-        // Cria uma instância do serviço Google Drive
-        $service = new Google_Service_Drive($client);
-    
-        // ID da pasta no Google Drive que contém as imagens
-        $folderId = $data->folder_id;
-    
-        // Lista os arquivos na pasta especificada
-        $results = $service->files->listFiles([
-            'q' => "'$folderId' in parents",
-            'fields' => 'files(id, name)',
-        ]);
-    
-        // Escolhe um arquivo aleatório da lista
-        $randomFile = collect($results->getFiles())->random();
-    
-        // Faz o download do arquivo selecionado
-        $fileId = $randomFile->getId();
-        $response = $service->files->get($fileId, ['alt' => 'media']);
-    
-        // Salva o conteúdo do arquivo no armazenamento do Laravel
-        $fileName = Str::random(20) . '_' . $randomFile->getName();
-        Storage::disk('public')->put('images/' . $fileName, $response->getBody()->getContents());
-    
-        // Retorna o caminho da imagem baixada
-        return 'images/' . $fileName;
-    }
+        private function downloadImageFromGoogleDrive($imageUrl, $data)
+        {
+            // Cria uma instância do cliente Google Client
+            $client = new Google_Client();
+            $credentials = json_decode(file_get_contents(base_path('credentials.json')), true);
+            $client->setApplicationName('Google Drive API');
+            $client->setDeveloperKey($credentials['web']['api_key']); // Usando a chave de API
+        
+            // Cria uma instância do serviço Google Drive
+            $service = new Google_Service_Drive($client);
+        
+            // ID da pasta no Google Drive que contém as imagens
+            $folderId = $data->folder_id;
+            // Lista os arquivos na pasta especificada
+            $results = $service->files->listFiles([
+                'q' => "'$folderId' in parents",
+                'fields' => 'files(id, name)',
+            ]); 
+            // Escolhe um arquivo aleatório da lista
+            $randomFile = collect($results->getFiles())->random();
+
+             // Faz o download do arquivo selecionado
+            $fileId = $randomFile->getId();
+            $response = $service->files->get($fileId, ['alt' => 'media']);
+        
+            // Salva o conteúdo do arquivo no armazenamento do Laravel
+            $fileName = Str::random(20) . '_' . $randomFile->getName();
+            Storage::disk('public')->put('images/' . $fileName, $response->getBody()->getContents());
+        
+            // Retorna o caminho da imagem baixada
+            return 'images/' . $fileName;
+        }
     
 }
