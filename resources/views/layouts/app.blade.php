@@ -32,7 +32,7 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
         }
 
         .sidebar {
