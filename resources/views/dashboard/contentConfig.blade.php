@@ -5,7 +5,7 @@
 use App\Models\Editor;
 use App\Models\Wp_credential;
 use Illuminate\Http\Request;
-$valorCodificado = request()->cookie('Editor');
+$valorCodificado = request()->cookie('editor');
 $credentials=Wp_credential::all();
 
 

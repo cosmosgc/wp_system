@@ -26,4 +26,8 @@ class loginController extends Controller
             return response(null, Response::HTTP_UNAUTHORIZED);
         }
     }
+    public function logoff(Request $request){
+        $this->loginService->forgetCookie('editor');
+        return true;
+    }
 }
