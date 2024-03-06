@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="dashboard-content">
-        <h1>Config sucefully created</h1>
+        <h1>Configuração criada com sucesso</h1>
     </div>
 @endsection

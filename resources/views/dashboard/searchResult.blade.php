@@ -14,7 +14,7 @@
               <th>Conteúdo do Post</th>
               <th>Inserir Imagem?</th>
               <th>Data de Criação</th>
-              <th>Domain</th>
+              <th>Dominio</th>
               <th>Ações</th>
             </tr>
           </thead>

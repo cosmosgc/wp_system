@@ -18,8 +18,8 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Surname</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
                     <th>CPF</th>
                     <th>CNPJ</th>
                     <th>Email</th>

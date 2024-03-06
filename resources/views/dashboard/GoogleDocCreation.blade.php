@@ -6,13 +6,13 @@
         <div class="col-md-6 offset-md-3 mt-5">
             <div class="card card-medium">
                 <div class="card-body">
-                    <h3>Create Document</h3>
+                    <h3>Criação de Documento</h3>
                     <form action="/create_doc" method="post">
                         @csrf
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="title" id="title" placeholder="Title of the document">
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Tema da documento">
                         </div>
-                        <button type="submit" class="btn btn-primary">Create Document</button>
+                        <button type="submit" class="btn btn-primary">Criar documento</button>
                     </form>
                 </div>
             </div>
@@ -23,12 +23,12 @@
                     <form action="/process_doc" method="post">
                         @csrf
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="google_docs" id="google_docs" placeholder="Document ID">
+                            <input type="text" class="form-control" name="google_docs" id="google_docs" placeholder="Id do documento">
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="title" id="title" placeholder="Title of the document">
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Tema do documento">
                         </div>
-                        <button type="submit" class="btn btn-primary">Insert Document Text</button>
+                        <button type="submit" class="btn btn-primary">Criar conteúdo via documento</button>
                     </form>
                 </div>
             </div>
