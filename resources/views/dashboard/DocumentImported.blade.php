@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="dashboard-content">
-        <h1>Document Sucessuly importaed</h1>
+        <h1>Documento importado com sucesso</h1>
     </div>
 @endsection

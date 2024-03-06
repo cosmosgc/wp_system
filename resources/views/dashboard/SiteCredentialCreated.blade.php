@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="dashboard-content">
-        <h1>Site Credential sucefully created</h1>
+        <h1>Credenciais do wordpress salvas com sucesso</h1>
     </div>
 @endsection

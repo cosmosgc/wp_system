@@ -3,6 +3,6 @@
 
 @section('content')
     <div class="dashboard-content">
-        <h1>Editor sucefully created</h1>
+        <h1>Editor criado com sucesso</h1>
     </div>
 @endsection

@@ -2,45 +2,46 @@
 @extends('layouts.app')
 
 @section('content')
+<h3>Gere aqui o conteúdo para uma das configurações</h3>
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3 mt-5">
             <div class="card card-medium">
                 <div class="card-body">
                     <div class="mb-1">
-                        <label for="topic" class="form-label">Topic</label>
+                        <label for="topic" class="form-label">Tema</label>
                         <input type="text" class="form-control gpt_topics" id="topic" name="topic">
                     </div>
                     <div class="mb-1">
-                        <label for="languages" class="form-label">Languages</label>
+                        <label for="languages" class="form-label">Idioma</label>
                         <select class="form-select" id="languages" name="languages">
                             <option value="english">English</option>
                             <option value="portuguese">Portuguese</option>
                         </select>
                     </div>
                     <div class="mb-1">
-                        <label for="style" class="form-label">Style</label>
+                        <label for="style" class="form-label">Estilo</label>
                         <select class="form-select" id="style" name="style">
                             <option value="casual">Casual</option>
                             <option value="blog">Blog</option>
                         </select>
                     </div>
                     <div class="mb-1">
-                        <label for="tone" class="form-label">Writing Tone</label>
+                        <label for="tone" class="form-label">Tom de escrita</label>
                         <select class="form-select" id="tone" name="tone">
-                            <option value="first_person">First Person</option>
-                            <option value="eloquent">Eloquent</option>
+                            <option value="first_person">Primeira pessoa</option>
+                            <option value="eloquent">Eloquente</option>
                         </select>
                     </div>
                     <div class="mb-1">
-                        <label for="sections" class="form-label">Sections</label>
+                        <label for="sections" class="form-label">Seções</label>
                         <input type="number" class="form-control" id="sections" name="sections">
                     </div>
                     <div class="mb-1">
-                        <label for="paragraphs" class="form-label">Paragraphs</label>
+                        <label for="paragraphs" class="form-label">Paragráfos</label>
                         <input type="number" class="form-control" id="paragraphs" name="paragraphs">
                     </div>
-                    <button class="btn btn-primary gpt_submit">Generate Text</button>
+                    <button class="btn btn-primary gpt_submit">Gerar Texto</button>
                 </div>
             </div>
         </div>
