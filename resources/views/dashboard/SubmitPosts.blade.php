@@ -13,53 +13,65 @@
 @section('content')
     <div class="dashboard-content">
         <h1>Lista de posts e configurações</h1>
-        <div class="search_bar">
-          <form action="/search" method="get">
-            <div><input type="text" name="query" id="query"><input type="submit" value="search"></div>
-          </form>
-        </div>
-        <!-- Formulário de Cadastro de Usuário -->
-        <input type="hidden" name="user_id" class="user_id" value={{$post_configs[0]->id}}>
-        @foreach($post_contents->postContents as $config)
+        <div class="row justify-content-center">
+          <div class="card card-medium">
+            <div class="card-body">
+              <div class="search_bar">
+                <form action="/search" method="get">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="query" id="query">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Formulário de Cadastro de Usuário -->
+          <input type="hidden" name="user_id" class="user_id" value={{$post_configs[0]->id}}>
+          @foreach($post_contents->postContents as $config)
 
-        <div class="container mt-5" data-id="{{$config->id}}">
-          
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Tema</th>
-                <th>Palavra-chave</th>
-                <th>Categoria</th>
-                <th>Conteúdo do Post</th>
-                <th>Inserir Imagem?</th>
-                <th>Data de Criação</th>
-                <th>Domain</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Aqui você pode iterar sobre os dados do seu banco de dados para preencher as linhas da tabela -->
-              <!-- Exemplo de uma linha de dados -->
-              <tr>
-                <td class="theme">{{$config->theme}}</td>
-                <td>{{$config->keyword}}</td>
-                <td>{{$config->category}}</td>
-                <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
-                <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
-                <td>{{$config->created_at}}</td>
-                <td class="domain">{{$config->domain}}</td>
-                <td>
-                  <button class="btn btn-primary post_wp">Postar</button>
-                  <button class="btn btn-danger delete_config">Deletar</button>
-                  <button class="btn btn-success create_content">Gerar conteúdo</button>
-                </td>
-              </tr>
-              <!-- Fim do exemplo de linha de dados -->
-            </tbody>
-          </table>
-        </div>
+          <div class="container mt-5" data-id="{{$config->id}}">
+            
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tema</th>
+                  <th>Palavra-chave</th>
+                  <th>Categoria</th>
+                  <th>Conteúdo do Post</th>
+                  <th>Inserir Imagem?</th>
+                  <th>Data de Criação</th>
+                  <th>Domain</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Aqui você pode iterar sobre os dados do seu banco de dados para preencher as linhas da tabela -->
+                <!-- Exemplo de uma linha de dados -->
+                <tr>
+                  <td class="theme">{{$config->theme}}</td>
+                  <td>{{$config->keyword}}</td>
+                  <td>{{$config->category}}</td>
+                  <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
+                  <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
+                  <td>{{$config->created_at}}</td>
+                  <td class="domain">{{$config->domain}}</td>
+                  <td>
+                    <button class="btn btn-primary post_wp">Postar</button>
+                    <button class="btn btn-danger delete_config">Deletar</button>
+                    <button class="btn btn-success create_content">Gerar conteúdo</button>
+                  </td>
+                </tr>
+                <!-- Fim do exemplo de linha de dados -->
+              </tbody>
+            </table>
+          </div>
 
-        @endforeach
+          @endforeach
+        </div>
+        
 
     </div>
 
