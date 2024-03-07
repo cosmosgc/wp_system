@@ -24,7 +24,8 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="cpf">CPF</label>
-                                <input type="text" class="form-control" id="cpf" name="cpf" required>
+                                <input type="text" class="form-control" id="cpf" name="cpf">
+                                <h4>Optional</h4>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="email">Email</label>
@@ -45,7 +46,8 @@
 
                         <div class="form-group col-md-12">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" class="form-control" id="cnpj" name="cnpj" required>
+                            <input type="text" class="form-control" id="cnpj" name="cnpj">
+                            <h4>Optional</h4>
                         </div>
 
                         <div class="form-check">

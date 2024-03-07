@@ -59,6 +59,7 @@ Route::post('/gpt_query',[GptController::class,'generatePost']);
 Route::post('/process_doc',[GooGleDocsController::class,'insertDocOnDB']);
 Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
 Route::post('/post_content',[WpController::class,'createBlogPost']);
+Route::post('/update_yoaust',[WpController::class,'updateYoast']);
 Route::post('/validate',[loginController::class,'validateLogin'])->name('validateLogin');
 Route::get('/quit',[loginController::class,'logoff'])->name('logoff');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');

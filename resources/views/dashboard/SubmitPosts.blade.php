@@ -19,7 +19,7 @@
               <div class="search_bar">
                 <form action="/search" method="get">
                   <div class="input-group">
-                    <input type="text" class="form-control" name="query" id="query">
+                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Dominio">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit">Search</button>
                     </div>
@@ -52,7 +52,7 @@
                 <!-- Exemplo de uma linha de dados -->
                 <tr>
                   <td class="theme">{{$config->theme}}</td>
-                  <td>{{$config->keyword}}</td>
+                  <td class="keyword">{{$config->keyword}}</td>
                   <td>{{$config->category}}</td>
                   <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
                   <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
@@ -245,6 +245,7 @@
         button.addEventListener('click',async()=>{
           button.insertAdjacentElement("beforebegin", loading);
           const domain=document.querySelectorAll('.domain')[i];
+          const keyword=document.querySelectorAll('.keyword')[i]
           console.log(domain.innerText);
           const query= await fetch('/post_content',{
             method:'POST',
@@ -256,8 +257,22 @@
             }),
             headers:{"Content-Type":"application/json"}
           })
+          const test= await query.json()
 
-          if(query.ok){
+          const query_2= await fetch('/update_yoaust',{
+            method:'POST',
+            body:JSON.stringify({
+               id:test,
+               domain:domain.innerText,
+               keyword:keyword.innerText,
+              _token:csrfToken
+            }),
+            headers:{"Content-Type":"application/json"}
+          })
+
+          console.log(test)
+
+          if(query.ok && query_2.ok){
             Swal.fire({
             title: 'Post sucefully created on wordpress',
             text: 'Do you want to continue',

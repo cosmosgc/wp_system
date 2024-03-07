@@ -14,11 +14,11 @@ $user=explode('+',base64_decode($valorCodificado));
 @endphp
 
 @section('content')
+<h3>Criar configuração para postagem</h3>
 <div class="flex-container-column">
-    <button id="adddocument" class="btn btn-primary">Adicionar document</button>
-    <button id="removedocument" class="btn btn-danger">Remover document Selecionado/Todos</button>
+    <button id="adddocument" class="btn btn-primary">Adicionar documento</button>
+    <button id="removedocument" class="btn btn-danger">Limpar documendos</button>
 </div>
-
 @foreach($credentials as $credential)
     <input type="hidden" name="opt" class="domain_options" value="{{$credential->wp_domain}}">
 

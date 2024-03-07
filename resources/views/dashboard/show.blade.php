@@ -14,6 +14,8 @@
         <h1>Bem-vindo {{$user[0]}} </h1>
         <!-- Conteúdo dinâmico -->
         <!-- Display the table -->
+        <br>
+        <h2>Usuários cadastrados</h2>
         <table class="table">
             <thead>
                 <tr>

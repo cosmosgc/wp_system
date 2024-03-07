@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string("surname");
-            $table->string("cpf");
-            $table->string("cnpj");
+            $table->string("cpf")->nullable();
+            $table->string("cnpj")->nullable();
             $table->string("email");
             $table->string("nickname");
             $table->string("password");
