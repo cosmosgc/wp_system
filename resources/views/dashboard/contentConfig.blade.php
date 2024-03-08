@@ -174,11 +174,13 @@ $user=explode('+',base64_decode($valorCodificado));
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Erro na requisição');
+                            alert('erro no servidor')
                         }
                         return response.json();
                     })
                     .then(data => {
                         console.log('Resposta do servidor:', data);
+                        alert('Configuração criada com sucesso')
                         // Aqui você pode lidar com a resposta do servidor conforme necessário
                     })
                     .catch(error => {
@@ -225,39 +227,6 @@ $user=explode('+',base64_decode($valorCodificado));
                 event.preventDefault();
                 console.log(document.querySelectorAll('.theme'));
 
-            //     var formData = new FormData();
-            //         var imageFile = document.querySelector('.sys_image_custom input[type="file"]').files[0];
-            //         console.log(imageFile);
-            //         formData.append('sys_image', imageFile);
-
-            //         var reader = new FileReader();
-            //         reader.readAsDataURL(imageFile);
-            //         reader.onload = function () {
-            //             var imageData = reader.result;
-
-            //         var postData = {
-            //         sys_image: imageData,
-            //         theme: document.querySelectorAll('.theme')[i].innerText,
-            //         keyword: document.querySelectorAll('.keyword')[i].innerText,
-            //         category: document.querySelectorAll('.category')[i].innerText,
-            //         anchor_1: document.querySelectorAll('.anchor_1')[i].innerText,
-            //         url_link_2: document.querySelectorAll('.url_link_2')[i].innerText,
-            //         do_follow_link_1: document.querySelectorAll('.do_follow_link_1')[i].checked ? 1 : 0,
-            //         anchor_2: document.querySelectorAll('.anchor_2')[i].innerText,
-            //         do_follow_link_2: document.querySelectorAll('.do_follow_link_2')[i].checked ? 1 : 0,
-            //         anchor_3: document.querySelectorAll('.anchor_3')[i].innerText,
-            //         url_link_3: document.querySelectorAll('.url_link_3')[i].innerText,
-            //         do_follow_link_3: document.querySelectorAll('.do_follow_link_3')[i].checked ? 1 : 0,
-            //         url_image: document.querySelectorAll('.url_image')[i].innerText,
-            //         gdrive_url: document.querySelectorAll('.gdrive_url')[i].innerText,
-            //         image_folder_id: document.querySelectorAll('.image_folder_id')[i].innerText,
-            //         insert_image: document.querySelectorAll('.insert_image input[type="checkbox"]')[i].checked ? 1 : 0,
-            //         schedule_date: document.querySelectorAll('.schedule_date input[type="date"]')[i].value,
-            //         domain: document.querySelector('.domain').value,
-            //         session_user:document.querySelector('.user').value
-            //     };
-            //             console.log(postData);  
-            // }
             })
 
 
