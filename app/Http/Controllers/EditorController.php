@@ -33,4 +33,8 @@ class EditorController extends Controller{
     }
 }
 
+    public function updateEditor(Request $request){
+        $this->editorService->updateEditor($request);
+    }
+
 }

@@ -11,11 +11,7 @@ use Illuminate\Http\Response;
 class LoginService{
     
     public function verifyCredentials($data){
-        $test = true;
-        if($test){
-            Cookie::queue('editor', base64_encode($data->name.'+'.$data->password), 60);
-            return 200;
-        }
+
         $editor =Editor::where('name',$data->name)->first();
 
         if($editor->password===md5($data->password)){
