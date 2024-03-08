@@ -106,7 +106,7 @@
         </div>
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
-      </div>
+    </div>
 
     <script>
         const id =document.querySelectorAll('.id')

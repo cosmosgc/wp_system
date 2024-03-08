@@ -101,7 +101,7 @@ $user=explode('+',base64_decode($valorCodificado));
         </tr>
         <tr>
             <td>Schedule</td>
-            <td class="schedule_date" contenteditable="true"><input type="date"></td>
+            <td class="schedule_date" contenteditable="true"><input class="schedule" type="date"></td>
         </tr>
         <tr>
             <td>Domain</td>
@@ -155,14 +155,18 @@ $user=explode('+',base64_decode($valorCodificado));
                         gdrive_url: document.querySelector('.gdrive_url').innerText,
                         folder_id: document.querySelector('.image_folder_id').innerText,
                         insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
-                        schedule_date: document.querySelector('.schedule_date input[type="date"]').value,
+                        schedule: document.querySelector('.schedule').value,
                         domain: document.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
 
                     console.log(postData);
-
+                    const loading=document.createElement('span');
+                    loading.classList.add('loading')
+                    loading.innerText='loading....'
+                    const content=document.querySelector(".content");
                     // Faz a requisição AJAX
+                    content.appendChild(loading);
                     fetch('/insert_post_content', {
                         method: 'POST',
                         headers: {
@@ -173,19 +177,26 @@ $user=explode('+',base64_decode($valorCodificado));
                     })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Erro na requisição');
-                            alert('erro no servidor')
+                            Swal.fire({
+                            title: 'Erro ao salvar configuração',
+                            text: 'Do you want to continue',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        })
+                            loading.innerText='';
+                        }else{
+                            Swal.fire({
+                            title: 'Configuração salva com sucesso',
+                            text: 'Do you want to continue',
+                            icon: 'success',
+                            confirmButtonText: 'continue'
+                        })
+
+                        loading.innerText='';
+
                         }
-                        return response.json();
+                        
                     })
-                    .then(data => {
-                        console.log('Resposta do servidor:', data);
-                        alert('Configuração criada com sucesso')
-                        // Aqui você pode lidar com a resposta do servidor conforme necessário
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                    });
                                         
 
                 });
@@ -376,17 +387,23 @@ $user=explode('+',base64_decode($valorCodificado));
                     })
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Erro na requisição');
+                            if (!response.ok) {
+                            Swal.fire({
+                            title: 'Erro ao salvar configuração',
+                            text: 'Do you want to continue',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        })
+                        }else{
+                            Swal.fire({
+                            title: 'Configuração salva com sucesso',
+                            text: 'Do you want to continue',
+                            icon: 'success',
+                            confirmButtonText: 'continue'
+                        })
                         }
-                        return response.json();
                     })
-                    .then(data => {
-                        console.log('Resposta do servidor:', data);
-                        // Aqui você pode lidar com a resposta do servidor conforme necessário
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                    });
+                
         }
 </script>
 @endsection

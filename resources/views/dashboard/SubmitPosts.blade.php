@@ -128,7 +128,7 @@
 
     <script>
       
-      const deleteButton= document.querySelector(".delete_config");
+      //const deleteButton= document.querySelector(".delete_config");
       const createDocButton= document.querySelector(".create_doc");
       const postContent=document.querySelector('.post-content')
       const languages=document.getElementById("languages").value;
@@ -306,7 +306,48 @@ document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
     });
 });
 
+
+const deletebutton= document.querySelectorAll(".delete_config")
+
+
+
+
+deletebutton.forEach((e,i)=>{
+  e.addEventListener('click',async ()=>{
+    data_id=document.querySelector(".container").getAttribute("data-id");
+    console.log(data_id);
+    const deletion_query= await fetch('/remove_config',{
+      method:'DELETE',
+      body:JSON.stringify({
+         id:data_id,
+        _token:csrfToken
+      }),
+      headers:{"Content-Type":"application/json"}
+    })
+
+    if(deletion_query.ok){
+      Swal.fire({
+            title: 'Configuração removida com sucesso',
+            text: 'Do you want to continue',
+            icon: 'success',
+            confirmButtonText: 'continue'
+          })
+          location.reload()
+    }else{
+      Swal.fire({
+            title: 'Erro ao remover configuração',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'continue'
+          })
+
+          location.reload();
+    }
+  })
+})
+
 </script>
+
 
 
 <style>

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\CsvReaderService;
 use App\Services\EditorService;
 use App\Services\LoginService;
+use App\Services\ScheduleService;
 use App\Services\PostContentService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -28,9 +29,15 @@ class AppServiceProvider extends ServiceProvider
             return new PostContentService();
         });
 
-        $this->app->singleton(LoginService:: class,function($app){
+        $this->app->singleton(LoginService::class,function($app){
             return new LoginService();
         });
+
+        $this->app->singleton(ScheduleService::class,function($app){
+            return new ScheduleService();
+        });
+
+
 
         
     }
