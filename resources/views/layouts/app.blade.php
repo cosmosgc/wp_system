@@ -283,6 +283,7 @@
             @endif
             <li><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-cog"></i> Criar config</a></li>
             <li><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-key"></i> Inserir credenciais Wordpress</a></li>
+            <li><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i> Listagem de credenciais</a></li>
             <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li>
             <li><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fab fa-google"></i> Google Docs</a></li>
             <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Importar config</a></li>

@@ -25,4 +25,20 @@ class EditorService{
     
         return $new_editor;
     }
+
+    public function updateEditor($data){
+        $editor=Editor::find(intval($data->id));
+
+        $editor->name=$data->name;
+        $editor->surname=$data->surname;
+        $editor->cpf=$data->cpf;
+        $editor->cnpj=$data->cnpj;
+        $editor->email=$data->email;
+        $editor->password=md5($data->password);
+        $editor->is_admin=$data->has('is_admin')?1:0;
+
+        $editor->save();
+
+        return $editor;
+    }
 }

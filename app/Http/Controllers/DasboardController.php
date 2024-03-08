@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Editor;
+use App\Models\Ia_credential;
 use Illuminate\Http\Request;
 
 class DasboardController extends Controller
@@ -77,11 +79,27 @@ class DasboardController extends Controller
     }
 
     public function insertGptToken(){
-        return view('dashboard.configia');
+        $token=Ia_credential::all()[0];
+        return view('dashboard.configia',['ia_token'=>$token]);
     }
 
     public function insertWpCredential(){
         return view('dashboard.wordpressCredential');
+    }
+
+    public function listWpCredential(){
+        $user_credentials=Editor::all();
+        $editor_credentials=[];
+        foreach($user_credentials as $credentials){
+            if(!empty($credentials->links)){
+                foreach ($credentials->links as $link) {
+                    $editor_credentials[] = $link;
+                }
+            }
+            
+        }
+        return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials]);
+
     }
 
     public function siteCredentialCreated(){

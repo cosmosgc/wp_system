@@ -88,11 +88,25 @@ class Wp_service{
 
     public function updateYoastRankMath($domain,$post_id,$keyword){
         //dd($domain,$keyword,$post_id);
-        $yoast_query=$this->client->post($domain.'/wp-json/wp_manage/v1/update_yoast_keyword/',[
-            'post_id'=>$post_id,
-            'keyword'=>$keyword
-        ]);
-
-        return $yoast_query;
+        $data = array(
+            'post_id' => $post_id,
+            'keyword' => $keyword
+        );
+        
+        $ch = curl_init($domain.'/wp-json/wp_manage/v1/update_yoast_keyword/');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        return $response;
+        // Verifique a resposta
+        if ($response === false) {
+            echo 'Erro ao fazer a requisição cURL: ' . curl_error($ch);
+        } else {
+            echo 'Resposta da requisição: ' . $response;
+        }
     }
 }

@@ -21,4 +21,12 @@ class WpCredentialController extends Controller
         $new_credential=$this->wp_credential_service->insertSite($request);
         return redirect()->route('credentialCreated');
     }
+
+    public function updateWpCredential(Request $request){
+        $new_credential_data=$this->wp_credential_service->updateSite($request);
+    }
+
+    public function deleteWpCredential($id){
+        $credential_deletion=$this->wp_credential_service->deleteCredential($id);
+    }
 }

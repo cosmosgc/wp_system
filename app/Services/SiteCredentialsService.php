@@ -16,4 +16,20 @@ class SiteCredentialsService{
             'Editor_id'=>$editor[0]->id,
         ]);
     }
+
+    public function updateSite($data){
+        $updated_credentials=Wp_credential::find(intval($data->id));
+
+        $updated_credentials->wp_login=$data->login;
+        $updated_credentials->wp_password=$data->password;
+        $updated_credentials->wp_domain=$data->domain;
+
+        $updated_credentials->save();
+    }
+
+    public function deleteCredential($data){
+        $credential=Wp_credential::find(intval($data));
+        $credential->delete();
+    }
+
 }

@@ -19,7 +19,7 @@
 
             <div class="card card-medium mt-4">
                 <div class="card-body">
-                    <h3>Retrieve Document</h3>
+                    <h3>Copiar informação do Documento</h3>
                     <form action="/process_doc" method="post">
                         @csrf
                         <div class="mb-3">

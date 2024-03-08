@@ -50,6 +50,7 @@ Route::get('/insert_gpt_token',[DasboardController::class,'insertGptToken'])->na
 Route::get('/submit_wp',[DasboardController::class,'insertWpCredential'])->name('dashboard.wp');
 Route::get('/site_credential_created',[DasboardController::class,'siteCredentialCreated'])->name('credentialCreated');
 Route::get('/search',[searchController::class,'searchByQuery']);
+Route::get('/list_credential',[DasboardController::class,'listWpCredential'])->name('listCredential');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');
@@ -59,10 +60,15 @@ Route::post('/gpt_query',[GptController::class,'generatePost']);
 Route::post('/process_doc',[GooGleDocsController::class,'insertDocOnDB']);
 Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
 Route::post('/post_content',[WpController::class,'createBlogPost']);
+Route::post('/update_yoaust',[WpController::class,'updateYoast']);
 Route::post('/validate',[loginController::class,'validateLogin'])->name('validateLogin');
 Route::get('/quit',[loginController::class,'logoff'])->name('logoff');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
 Route::post('/submit_wp_credential',[WpCredentialController::class,'saveWpCredential'])->name('saveWpCredential');
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);
 Route::delete('/editor/{id}', [EditorController::class,'destroy'])->name('editor.destroy');
+Route::delete('/wp_crential/{id}',[WpCredentialController::class,'deleteWpCredential'])->name('credentialDelete');
+Route::put('/update_user',[EditorController::class,'updateEditor']);
+Route::put('/update_credentials',[WpCredentialController::class,'updateWpCredential']);
+
 

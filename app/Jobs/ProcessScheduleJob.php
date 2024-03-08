@@ -13,15 +13,10 @@ class ProcessScheduleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $postagemService;
-
-    public function __construct(ScheduleService $postagemService)
-    {
-        $this->postagemService = $postagemService;
-    }
 
     public function handle()
     {
-        $this->postagemService->processScheduledPosts();
+        $postagem=new ScheduleService();
+        $postagem->processScheduledPosts();
     }
 }

@@ -15,7 +15,7 @@
                             <label for="token" class="col-md-4 col-form-label text-md-right">{{ __('Token') }}</label>
 
                             <div class="col-md-6">
-                                <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus>
+                                <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus value="{{$ia_token->open_ai}}">
 
                                 @error('token')
                                     <span class="invalid-feedback" role="alert">
@@ -28,7 +28,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Insert Token') }}
+                                    {{ __('Insert Token/Update Token') }}
                                 </button>
                             </div>
                         </div>
