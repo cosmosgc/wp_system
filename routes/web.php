@@ -64,3 +64,5 @@ Route::get('/quit',[loginController::class,'logoff'])->name('logoff');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
 Route::post('/submit_wp_credential',[WpCredentialController::class,'saveWpCredential'])->name('saveWpCredential');
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);
+Route::delete('/editor/{id}', [EditorController::class,'destroy'])->name('editor.destroy');
+
