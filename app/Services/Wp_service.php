@@ -22,7 +22,7 @@ class Wp_service{
         $featuredImagePath = storage_path('app/public/'.$image);
 
         // Verifique se a imagem existe no caminho especificado
-        if(file_exists($featuredImagePath)&& $featured==1) {
+        if(!empty($image) && $featured==1) {
             // Obtenha o nome do arquivo da imagem
             $featuredImageName = basename($featuredImagePath);
 

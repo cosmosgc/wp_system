@@ -43,6 +43,8 @@
 
 <!-- Bootstrap JS (Optional) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
         $token=localStorage.getItem('Editor')
         if ($token){
@@ -72,10 +74,17 @@
 
         if (validate_query.status === 200) {
         // O status da resposta é 200 (OK), então você pode prosseguir com o código
+        
         location.href=location.href+'dashboard';
     } else {
         // O status da resposta não é 200 (OK), então houve algum erro
         console.error('Erro ao validar credenciais:', validate_query.status);
+        Swal.fire({
+                            title: 'Senha ou usuario invalidos',
+                            text: 'Do you want to continue',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        })
     }
 
     })
