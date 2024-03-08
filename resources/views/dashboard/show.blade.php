@@ -1,6 +1,6 @@
 <!-- resources/views/dashboard/show.blade.php -->
 @extends('layouts.app')
-@php  
+@php
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\DB;
 
@@ -11,19 +11,24 @@
 
 @section('content')
     <style>
-        .editor_modal{
-            height: 100vh;
-            width: 100%;
+        .editor_modal {
+            height: 80vh;
+            width: 70vw;
+            max-width: 600px;
             position: absolute;
-            top: 0;
-            background: rgba(0,0,0,.6);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgb(0 0 0 / 63%);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
             display: none;
             color: #fff;
-
         }
 
         .editor_modal_content{
-            width:50%
+            padding: 30px;
+            width: 90%;
         }
 
         .editor_modal_content>input{
@@ -40,13 +45,13 @@
         .upgrade_button {
             border-radius: 20px; /* Ajuste o valor conforme desejado */
             width: 25%;
-      
+
         }
 
         .close_modal_button{
             position: absolute;
             top: 15px;
-            right: 316px;
+            right: 17px;
         }
 
     </style>
@@ -127,7 +132,7 @@
         const modalId=document.getElementById("id");
         const modalAdmin=document.getElementById("admin");
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-        
+
 
         const update=document.querySelectorAll('.update');
 
