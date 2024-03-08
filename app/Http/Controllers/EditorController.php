@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\EditorService;
 use Illuminate\Http\Request;
+use App\Models\Editor;
 
 
 class EditorController extends Controller{
@@ -21,4 +22,15 @@ class EditorController extends Controller{
         return redirect()->route('dashboard.editorCreated');
 
     }
+    public function destroy($id)
+{
+    $editor = Editor::find($id);
+    if ($editor) {
+        $editor->delete();
+        return redirect()->route('dashboard.show')->with('success', 'Editor excluído com sucesso!');
+    } else {
+        return redirect()->route('dashboard.show')->with('error', 'Editor não encontrado!');
+    }
+}
+
 }

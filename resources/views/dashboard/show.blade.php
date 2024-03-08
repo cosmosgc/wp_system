@@ -25,6 +25,7 @@
                     <th>CPF</th>
                     <th>CNPJ</th>
                     <th>Email</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,13 @@
                         <td>{{ $editor->cpf }}</td>
                         <td>{{ $editor->cnpj }}</td>
                         <td>{{ $editor->email }}</td>
+                        <td>
+                            <form action="{{ route('editor.destroy', $editor->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Excluir</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
