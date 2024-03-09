@@ -8,9 +8,8 @@
                 <div class="card-header">{{ __('Insert your OpenAI token') }}</div>
 
                 <div class="card-body">
+              
                     <form method="POST" action="{{ route('insertIaToken') }}">
-                        @csrf
-
                         <div class="form-group row">
                             <label for="token" class="col-md-4 col-form-label text-md-right">{{ __('Token') }}</label>
 
@@ -26,13 +25,21 @@
                         </div>
                         <br>
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                            <div class="token_buttons" class="col-md-6 offset-md-4">
+                            
+                                    @csrf
+                                    @method('POST')
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Insert Token/Update Token') }}
                                 </button>
+                            </form>
+                                <form action="{{ route('deleteToken', isset($ia_token[0])?$ia_token[0]->id:'') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" type="submit">{{ __('Remover Token') }}</button>
+                                </form>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>

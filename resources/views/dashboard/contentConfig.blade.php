@@ -41,7 +41,7 @@ $user=explode('+',base64_decode($valorCodificado));
         </tr>
         <tr>
             <td>Category</td>
-            <td class="category" contenteditable="true"></td>
+            <td><select class="category" name="" id=""></select></td>
         </tr>
         <tr>
             <td>Anchor 1</td>
@@ -121,7 +121,58 @@ $user=explode('+',base64_decode($valorCodificado));
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+
+            
+            ///carregar categorias do domino
+            var domain=document.querySelector('.domain')
+            var category= document.querySelector('.category')
+            await dynamicCategories();
+            domain.addEventListener('change',async (e)=>{
+                        await dynamicCategories();
+                    })
+            
+            async function dynamicCategories(){
+
+                                    
+                    async function getSiteCategories(domain){
+                        try {
+                            const regex = /^(https?:\/\/)/i;
+                            let new_domain=domain.replace(regex,'');
+                            console.log(new_domain);
+                            const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);  
+                            const response =await domain_query.json();
+                            return response; 
+                            
+                        } catch (error) {
+                            Swal.fire({
+                            title: error,
+                            text: 'Do you want to continue',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        })
+                        }
+   
+                     }
+
+                    let categories= await getSiteCategories(domain.value);
+
+                    categories.forEach((e)=>{
+                        const option=document.createElement('option');
+                        option.value=e.name;
+                        option.innerText=e.name;
+                        category.appendChild(option);
+                    })
+
+
+
+            }
+
+
+
+
+            ////////////////////
+
             var submitButtons = document.querySelectorAll('.submitForm');
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
@@ -142,7 +193,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     var postData = {
                         theme: document.querySelector('.theme').innerText,
                         keyword: document.querySelector('.keyword').innerText,
-                        category: document.querySelector('.category').innerText,
+                        category: document.querySelector('.category').value,
                         anchor_1: document.querySelector('.anchor_1').innerText,
                         url_link_2: document.querySelector('.url_link_2').innerText,
                         do_follow_link_1: document.querySelector('.do_follow_link_1').checked ? 1 : 0,
@@ -159,6 +210,8 @@ $user=explode('+',base64_decode($valorCodificado));
                         domain: document.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
+
+
 
                     console.log(postData);
                     const loading=document.createElement('span');

@@ -266,6 +266,13 @@
         backdrop-filter: blur(10px);
     }
 
+    .token_buttons{
+        display: flex;
+        gap: 5%;
+        justify-content: center;
+        align-content: center;
+    }
+
         
 
     </style>

@@ -31,4 +31,11 @@ class PostContentController extends Controller
 
         return redirect()->route('configCreated');
     }
+
+    public function updateConfig(Request $request){
+        $updated_config=$this->postConfigService->updateConfig($request);
+
+        return $updated_config;
+    }
+
 }

@@ -14,39 +14,8 @@ class PostContentService{
     public function insertPostContent($data,$doContent){
 
             //dd($data->domain);
+           $image= $this->processImage($data);
 
-            // Verifica se uma imagem foi enviada   
-            if ($data->sys_image) {
-                // Obtém o arquivo da imagem
-                $imageData = $data->sys_image;
-                
-                
-                // Salva a imagem no armazenamento (storage) do Laravel
-                        // Extrai o tipo de mídia e os dados da imagem
-                list($type, $imageData) = explode(';', $imageData);
-                list(, $imageData)      = explode(',', $imageData);
-
-                // Decodifica os dados da imagem de base64 para bytes
-                $imageData = base64_decode($imageData);
-
-                // Gera um nome de arquivo único para a imagem
-                $imageName = uniqid() . '.jpg';
-
-                // Salva a imagem no armazenamento (storage) do Laravel
-                file_put_contents(storage_path('app/public/images/') . $imageName, $imageData);
-
-                // Define o caminho da imagem
-                $imagePath = 'images/' . $imageName;
-            } elseif ($data->filled('gdrive_url')) {
-                // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
-                $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
-            } elseif ($data->filled('image_url')) {
-                // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
-                $imagePath = $this->downloadImageFromUrl($data->image_url);
-            } else {
-                // Se nenhum arquivo ou URL de imagem for fornecido, defina o caminho da imagem como null
-                $imagePath = null;
-            }
            
         
         $user_id=Editor::where('name',$data->session_user)->get();
@@ -63,7 +32,7 @@ class PostContentService{
             'anchor_3'=>$data->anchor_3,
             'url_link_3'=>$data->url_link_3,
             'do_follow_link_3'=>$data->has('do_follow_link_3')?1:0,
-            'post_image'=>$imagePath,
+            'post_image'=>$image,
             'internal_link'=>$data->internal_link,
             'post_content'=>isset($doContent)?$doContent:null,
             'insert_image'=>$data->has('insert_image')?1:0,
@@ -76,6 +45,75 @@ class PostContentService{
 
 
         
+    }
+
+
+    public function updateConfig($data){
+        $updated_content=Wp_post_content::find(intval($data->id));
+
+        $updated_image =$this->processImage($data);
+
+        $updated_content->theme=$data->theme;
+        $updated_content->keyword=$data->keyword;
+        $updated_content->category=$data->category;
+        $updated_content->anchor_1=$data->anchor_1;
+        $updated_content->url_link_1=$data->url_link_1;
+        $updated_content->do_follow_link_1=$data->do_follow_link_1;
+        $updated_content->anchor_2=$data->anchor_2;
+        $updated_content->url_link_2=$data->url_link_2;
+        $updated_content->do_follow_link_2=$data->do_follow_link_2;
+        $updated_content->anchor_3=$data->anchor_3;
+        $updated_content->url_link_3=$data->url_link_3;
+        $updated_content->do_follow_link_3=$data->do_follow_link_3;
+        $updated_content->post_image=$updated_image;
+        $updated_content->internal_link=$data->internal_link;
+        $updated_content->post_content=$data->post_content;
+        $updated_content->insert_image=$data->insert_image;
+        $updated_content->status=$data->status;
+        $updated_content->schedule_date=$data->schedule_date;
+        $updated_content->domain=$data->domain;
+
+        $updated_content->save();
+
+
+    }
+
+
+    private function processImage($data){
+                    // Verifica se uma imagem foi enviada   
+                    if ($data->sys_image) {
+                        // Obtém o arquivo da imagem
+                        $imageData = $data->sys_image;
+                        
+                        
+                        // Salva a imagem no armazenamento (storage) do Laravel
+                                // Extrai o tipo de mídia e os dados da imagem
+                        list($type, $imageData) = explode(';', $imageData);
+                        list(, $imageData)      = explode(',', $imageData);
+        
+                        // Decodifica os dados da imagem de base64 para bytes
+                        $imageData = base64_decode($imageData);
+        
+                        // Gera um nome de arquivo único para a imagem
+                        $imageName = uniqid() . '.jpg';
+        
+                        // Salva a imagem no armazenamento (storage) do Laravel
+                        file_put_contents(storage_path('app/public/images/') . $imageName, $imageData);
+        
+                        // Define o caminho da imagem
+                        $imagePath = 'images/' . $imageName;
+                    } elseif ($data->filled('gdrive_url')) {
+                        // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
+                        $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
+                    } elseif ($data->filled('image_url')) {
+                        // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
+                        $imagePath = $this->downloadImageFromUrl($data->image_url);
+                    } else {
+                        // Se nenhum arquivo ou URL de imagem for fornecido, defina o caminho da imagem como null
+                        $imagePath = null;
+                    }
+
+                return $imagePath;
     }
 
 

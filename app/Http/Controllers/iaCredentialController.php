@@ -21,4 +21,8 @@ class iaCredentialController extends Controller
 
         return redirect()->route('tokenInserted');
     }
+
+    public function deleteCredential($id){
+        $removed_token=$this->iaCredentialService->removeToken($id);
+    }
 }

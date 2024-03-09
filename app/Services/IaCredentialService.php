@@ -19,4 +19,9 @@ class IaCredentialService{
         }
 
     }
+
+    public function removeToken($id){
+        $token=Ia_credential::find(intval($id));
+        $token->delete();
+    }
 }
