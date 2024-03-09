@@ -14,7 +14,7 @@ return new class extends Migration
         //
         Schema::create('wp_credentials', function (Blueprint $table){
             $table->id();
-            $table->integer('Editor_id')->unsigned();
+            $table->unsignedBigInteger('Editor_id');
             $table->string("wp_login");
             $table->string("wp_password");
             $table->string("wp_domain");
@@ -22,7 +22,8 @@ return new class extends Migration
 
             $table->foreign('Editor_id')
             ->references('id')
-            ->on('editors');
+            ->on('editors')
+            ->onDelete('cascade');
         
             
         });

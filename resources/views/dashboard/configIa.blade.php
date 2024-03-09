@@ -15,7 +15,7 @@
                             <label for="token" class="col-md-4 col-form-label text-md-right">{{ __('Token') }}</label>
 
                             <div class="col-md-6">
-                                <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus value="{{$ia_token->open_ai}}">
+                                <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus value="{{isset($ia_token[0])?$ia_token[0]->open_ai:null}}">
 
                                 @error('token')
                                     <span class="invalid-feedback" role="alert">
