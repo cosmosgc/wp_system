@@ -6,8 +6,13 @@
 
   $valorCodificado = request()->cookie('editor');
   $user=explode('+',base64_decode($valorCodificado));
+  //dd($user);
   $post_configs= Editor::where('name',$user[0])->get();
-  $post_contents=Editor::find($post_configs[0]->id); 
+  //dd($post_configs);
+  if($post_configs->first() !=null){
+    $post_contents=Editor::find($post_configs[0]->id);
+  }
+
 @endphp
 
 @section('content')
@@ -33,7 +38,7 @@
           @foreach($post_contents->postContents as $config)
 
           <div class="container mt-5" data-id="{{$config->id}}">
-            
+
             <table class="table">
               <thead>
                 <tr>
@@ -71,7 +76,7 @@
 
           @endforeach
         </div>
-        
+
 
     </div>
 
@@ -127,7 +132,7 @@
     </div>
 
     <script>
-      
+
       //const deleteButton= document.querySelector(".delete_config");
       const createDocButton= document.querySelector(".create_doc");
       const postContent=document.querySelector('.post-content')
@@ -138,7 +143,7 @@
       const paragraphs= document.getElementById('paragraphs').value;
       const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
       const user_id= document.querySelector('.user_id')
-      
+
 
 
 
@@ -153,7 +158,7 @@
 
 
       generateContentButtons.forEach((button,i) => {
-  
+
         button.addEventListener('click', function () {
           const modal = document.querySelector('.modal');
           modal.classList.add('show');
@@ -177,7 +182,7 @@
             </circle>
           <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
           </svg>
-          
+
           `
           loading.innerHTML=loadingSVG;
 
@@ -190,7 +195,7 @@
                 body: JSON.stringify({
                     id: data_id,
                     topic: Theme,
-                    languages: languages,  
+                    languages: languages,
                     style: writing_style,
                     writing_tone: writing_tone,
                     sections: sections,
@@ -199,9 +204,9 @@
                 }),
                 headers: { "Content-Type": "application/json" }
             });
-        
+
         // Remove o SVG de loading após a conclusão da query
-        
+
         if(query.ok){
           Swal.fire({
             title: 'Content Sucefully created',
@@ -218,7 +223,7 @@
           })
         }
         modalDialog.removeChild(loading);
-        
+
         // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
     } catch (error) {
         console.error('Ocorreu um erro:', error);
@@ -237,10 +242,10 @@
 
       postButton.forEach((button,i)=>{
         const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
-        const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner 
+        const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
         const loading= document.createElement('span');
-        
-        
+
+
         loading.innerHTML='loading....'
         button.addEventListener('click',async()=>{
           button.insertAdjacentElement("beforebegin", loading);

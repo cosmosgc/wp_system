@@ -52,7 +52,7 @@
 
         document.addEventListener('DOMContentLoaded',()=>{
 
-        const topics = document.querySelector('.gpt_topics').value;
+        const topics = document.getElementById('topic').value;
         const languages=document.querySelector('#languages').value;
         const style=document.querySelector('#style').value;
         const tone = document.querySelector('#tone').value;
@@ -63,17 +63,25 @@
         const gpt_button=document.querySelector('.gpt_submit');
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
         gpt_button.addEventListener('click',async ()=>{
+            let topics = document.getElementById('topic').value;
+            let languages = document.querySelector('#languages').value;
+            let style = document.querySelector('#style').value;
+            let tone = document.querySelector('#tone').value;
+            let sections = document.querySelector('#sections').value;
+            let paragraph = document.querySelector('#paragraphs').value;
+            let data = {
+                topic: topics,
+                languages: languages,
+                style: style,
+                writing_tone: tone,
+                sections: sections,
+                paragraphs: paragraph,
+                _token: csrfToken
+            }
+            console.log("log: ", data);
             const query= await fetch('/gpt_query',{
                 method:'POST',
-                body:JSON.stringify({
-                    topic:topics,
-                    languages:languages,
-                    style:style,
-                    writing_tone:tone,
-                    sections:sections,
-                    paragraphs:paragraph,
-                    _token: csrfToken
-                }),
+                body:JSON.stringify(data),
                 headers:{"Content-Type":"application/json"}
             })
 
