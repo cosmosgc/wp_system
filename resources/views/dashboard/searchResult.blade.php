@@ -155,7 +155,7 @@
                 console.log(data);
                 return;
 
-                const updateQuery= await fetch('/update_user',{
+                const updateQuery= await fetch('/update_post',{
                     method:'PUT',
                     body:JSON.stringify({
                         id:selected_id,
