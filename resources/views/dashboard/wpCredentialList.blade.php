@@ -2,48 +2,53 @@
 
         @section('content')
         <style>
-            .editor_modal{
-                height: 100vh;
-                width: 100%;
-                position: absolute;
-                top: 0;
-                background: rgba(0,0,0,.6);
-                display: none;
-                color: #fff;
-    
-            }
-    
-            .editor_modal_content{
-                width:50%
-            }
-    
-            .editor_modal_content>input{
-                margin-bottom: 2%;
-            }
-    
-            .open_editor_modal{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
-    
-            .upgrade_button {
-                border-radius: 20px; /* Ajuste o valor conforme desejado */
-                width: 25%;
-          
-            }
-    
-            .close_modal_button{
-                position: absolute;
-                top: 15px;
-                right: 316px;
-            }
-    
+            .editor_modal {
+            height: 80vh;
+            width: 70vw;
+            max-width: 600px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgb(0 0 0 / 63%);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            display: none;
+            color: #fff;
+        }
+
+        .editor_modal_content{
+            padding: 30px;
+            width: 90%;
+        }
+
+        .editor_modal_content>input{
+            margin-bottom: 2%;
+        }
+
+        .open_editor_modal{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .upgrade_button {
+            border-radius: 20px; /* Ajuste o valor conforme desejado */
+            width: 25%;
+
+        }
+
+        .close_modal_button{
+            position: absolute;
+            top: 15px;
+            right: 17px;
+        }
+
         </style>
 
         <div>
-            
+
             <table class="table">
                 <thead>
                     <tr>
@@ -54,10 +59,10 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody> 
+                <tbody>
 
                     @foreach($credentiais as $key=>$credential)
-                     
+
                         <input type="hidden" name="user_id" class="id" value="{{$editor[$key]->id}}">
                         <tr>
                             <td class="editor_name">{{$editor[$key]->name}}</td>
