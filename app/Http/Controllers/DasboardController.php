@@ -85,7 +85,7 @@ class DasboardController extends Controller
             $token=Ia_credential::all();
         }
         
-        return view('dashboard.configia',['ia_token'=>$token]);
+        return view('dashboard.configIa',['ia_token'=>$token]);
     }
 
     public function insertWpCredential(){
