@@ -82,7 +82,7 @@
                 <button class="btn btn-primary post_wp">Postar</button>
                 <button class="btn btn-danger delete_config">Deletar</button>
                 <button class="btn btn-success create_content">Gerar conteúdo</button>
-                <button class="btn btn-success update_content">Atualizar conteúdo</button>
+                <button class="btn btn-success update_content" onclick="open_modal('{{$config->id}}','{{$config}}')">Atualizar conteúdo</button>
               </td>
             </tr>
             <!-- Fim do exemplo de linha de dados -->
@@ -91,6 +91,7 @@
       </div>
         <div class="editor_modal">
             <div class="editor_modal_content">
+                <input disabled type="text" name="post_id" id="post_id" class="form-control" placeholder="0">
                 <input type="text" name="Tema" id="Tema" class="form-control" placeholder="Tema">
                 <input type="text" name="Palavra-chave" id="Palavra_chave" class="form-control" placeholder="Palavra-chave">
                 <input type="text" name="Categoria" id="Categoria" class="form-control" placeholder="Categoria">
@@ -102,8 +103,10 @@
             <button class="btn btn-primary upgrade_button">Atualizar</button>
             <button class="btn btn-danger close_modal_button">X</button>
         </div>
-        <script>
-            const update=document.querySelectorAll('.update_content');
+
+
+    @endforeach
+    <script>
             const modal= document.querySelector(".editor_modal");
             const closeModalButton=document.querySelector(".close_modal_button");
             const upgradeButton=document.querySelector(".upgrade_button")
@@ -112,7 +115,7 @@
 
 
             //pegar listas
-            const id = document.querySelectorAll('.config_id');
+            let id = document.querySelectorAll('.config_id');
             const theme =document.querySelectorAll('.theme');
             const keyword =document.querySelectorAll('.keyword');
             const category =document.querySelectorAll('.category');
@@ -121,25 +124,20 @@
             const domain =document.querySelectorAll('.domain');
 
             //pegar modal
-            const _theme=document.getElementById("Tema");
-            const _keyword=document.getElementById("Palavra_chave");
-            const _category=document.getElementById("Categoria");
-            const _post_content=document.getElementById("post_content");
-            const _insert_image=document.getElementById("Inserir_Imagem");
-            const _domain=document.getElementById("domain");
+            let _post_id=document.getElementById("post_id");
+            let _theme=document.getElementById("Tema");
+            let _keyword=document.getElementById("Palavra_chave");
+            let _category=document.getElementById("Categoria");
+            let _post_content=document.getElementById("post_content");
+            let _insert_image=document.getElementById("Inserir_Imagem");
+            let _domain=document.getElementById("domain");
 
-            const selected_id = 0;
+            let selected_id = 0;
 
+            const update=document.querySelectorAll('.update_content');
             update.forEach((e,i)=>{
                 e.addEventListener('click',()=>{
-                    modal.classList.add('open_editor_modal');
-                    _theme.value=theme[i].innerText;
-                    _keyword.value=keyword[i].innerText;
-                    _category.value=category[i].innerText;
-                    _post_content.value=post_content[i].innerText;
-                    _insert_image.value=insert_image[i].innerText;
-                    _domain.value=domain[i].innerText;
-                    selected_id=id[i].innerText;
+                    open_modal(i);
                 })
             })
             upgradeButton.addEventListener('click',async ()=>{
@@ -184,7 +182,23 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
-        </script>
 
-    @endforeach
+            function open_modal(i = 0, data = null) {
+                let parsedData = JSON.parse(data);
+                console.log(parsedData);
+
+                modal.classList.add('open_editor_modal');
+
+                _theme.value = parsedData.theme;
+                _keyword.value = parsedData.keyword;
+                _category.value = parsedData.category;
+                _post_content.value = parsedData.post_content ? 'Sim' : 'Não';
+                _insert_image.value = parsedData.insert_image == 1 ? 'Sim' : 'Não';
+                _domain.value = parsedData.domain;
+                _post_id.value = parsedData.id;
+                selected_id = parsedData.id;
+            }
+
+
+        </script>
 @endsection
