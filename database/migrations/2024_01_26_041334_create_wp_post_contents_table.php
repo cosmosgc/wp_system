@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("theme")->nullable();
             $table->string("keyword")->nullable();
-            $table->integer('Editor_id')->unsigned();
-            $table->integer('Credential_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('Editor_id');
+            $table->unsignedBigInteger('Credential_id')->nullable();
             $table->string("category")->nullable();
             $table->string("anchor_1")->nullable();
             $table->string("url_link_1")->nullable();
@@ -38,11 +38,13 @@ return new class extends Migration
 
             $table->foreign('Editor_id')
             ->references('id')
-            ->on('editors');
+            ->on('editors')
+            ->onDelete('cascade');
 
             $table->foreign('Credential_id')
             ->references('id')
-            ->on('wp_credentials');
+            ->on('wp_credentials')
+            ->onDelete('cascade');
         });
     }
 
