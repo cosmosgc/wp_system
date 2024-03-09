@@ -402,7 +402,7 @@ $user=explode('+',base64_decode($valorCodificado));
                             confirmButtonText: 'continue'
                         })
                         }
-                    })
+                    }})
                 
         }
 </script>

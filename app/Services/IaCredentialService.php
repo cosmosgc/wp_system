@@ -7,7 +7,7 @@ use App\Models\Ia_credential;
 class IaCredentialService{
 
     public function insertToken($data){
-        $retrieve_token=Ia_credential::where('open_ai',$data)->get()[0];
+        $retrieve_token=Ia_credential::where('open_ai',$data)->get();
         if(!empty($retrieve_token)){
             $token=Ia_credential::create([
                 'open_ai'=>$data

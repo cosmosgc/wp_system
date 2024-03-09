@@ -79,7 +79,12 @@ class DasboardController extends Controller
     }
 
     public function insertGptToken(){
-        $token=Ia_credential::all()[0];
+        if(empty(Ia_credential::all())){
+            $token=null;
+        }else{
+            $token=Ia_credential::all();
+        }
+        
         return view('dashboard.configia',['ia_token'=>$token]);
     }
 
