@@ -110,6 +110,23 @@ class DasboardController extends Controller
 
     }
 
+
+    public function listIaCredentials(){
+        $user_credentials=Editor::all();
+        $editor_ia_credentials=[];
+        foreach($user_credentials as $credentials){
+            if(!empty($credentials->iaCredentials)){
+                foreach ($credentials->iaCredentials as $iaCredential) {
+                    $editor_ia_credentials[] = $iaCredential;
+                }
+            }
+            
+        }
+
+        return view('dashboard.IatokenList',['Iacredentials'=>$editor_ia_credentials,'editor'=>$user_credentials]);
+        
+    }
+
     public function siteCredentialCreated(){
         return view('dashboard.SiteCredentialCreated');
     }

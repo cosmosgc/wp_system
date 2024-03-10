@@ -25,4 +25,5 @@ class iaCredentialController extends Controller
     public function deleteCredential($id){
         $removed_token=$this->iaCredentialService->removeToken($id);
     }
+
 }
