@@ -153,7 +153,6 @@
                     _token:csrfToken
                 };
                 console.log(data);
-                return;
 
                 const updateQuery= await fetch('/update_post',{
                     method:'PUT',
