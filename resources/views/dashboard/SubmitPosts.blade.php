@@ -43,9 +43,10 @@
 
         .open_editor_modal{
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: column;
+            overflow: auto;
         }
 
         .upgrade_button {
@@ -87,6 +88,7 @@
             <table class="table">
               <thead>
                 <tr>
+                    <th>id</th>
                   <th>Tema</th>
                   <th>Palavra-chave</th>
                   <th>Categoria</th>
@@ -102,6 +104,8 @@
                 <!-- Aqui você pode iterar sobre os dados do seu banco de dados para preencher as linhas da tabela -->
                 <!-- Exemplo de uma linha de dados -->
                 <tr>
+                <td class="config_id">{{$config->id}}</td>
+
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
                   <td>{{$config->category}}</td>
@@ -122,9 +126,10 @@
             </table>
             </div>
 
-          </div>
 
           @endforeach
+
+          </div>
         </div>
 
 
@@ -132,13 +137,31 @@
     <div class="editor_modal">
         <div class="editor_modal_content">
             <input disabled type="text" name="post_id" id="post_id" class="form-control" placeholder="0">
-            <input type="text" name="Tema" id="Tema" class="form-control" placeholder="Tema">
-            <input type="text" name="Palavra-chave" id="Palavra_chave" class="form-control" placeholder="Palavra-chave">
-            <input type="text" name="Categoria" id="Categoria" class="form-control" placeholder="Categoria">
-            <input type="text" name="Conteúdo do Post" id="post_content" class="form-control" placeholder="Conteúdo do Post">
-            <input type="text" name="Inserir Imagem" id="Inserir_Imagem" class="form-control" placeholder="Inserir Imagem">
-            <input type="text" name="domain" id="domain" class="form-control" placeholder="Dominío">
             <input type="hidden" name="id" id="id">
+            <input type="text" name="editor_id" id="editor_id" class="form-control" placeholder="Editor ID" disabled>
+            <input type="text" name="anchor_1" id="anchor_1" class="form-control" placeholder="Anchor 1">
+            <input type="text" name="anchor_2" id="anchor_2" class="form-control" placeholder="Anchor 2">
+            <input type="text" name="anchor_3" id="anchor_3" class="form-control" placeholder="Anchor 3">
+            <input type="text" name="category" id="category" class="form-control" placeholder="Category">
+            <input type="text" name="created_at" id="created_at" class="form-control" placeholder="Created At" disabled>
+            <input type="text" name="do_follow_link_1" id="do_follow_link_1" class="form-control" placeholder="Do Follow Link 1">
+            <input type="text" name="do_follow_link_2" id="do_follow_link_2" class="form-control" placeholder="Do Follow Link 2">
+            <input type="text" name="do_follow_link_3" id="do_follow_link_3" class="form-control" placeholder="Do Follow Link 3">
+            <input type="text" name="domain" id="domain" class="form-control" placeholder="Domain">
+            <input type="text" name="id" id="id" class="form-control" placeholder="ID">
+            <input type="text" name="insert_image" id="insert_image" class="form-control" placeholder="Insert Image">
+            <input type="text" name="internal_link" id="internal_link" class="form-control" placeholder="Internal Link">
+            <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Keyword">
+            <input type="text" name="post_content" id="post_content" class="form-control" placeholder="Post Content">
+            <input type="text" name="post_image" id="post_image" class="form-control" placeholder="Post Image">
+            <input type="text" name="schedule_date" id="schedule_date" class="form-control" placeholder="Schedule Date">
+            <input type="text" name="status" id="status" class="form-control" placeholder="Status">
+            <input type="text" name="theme" id="theme" class="form-control" placeholder="Theme">
+            <input type="text" name="updated_at" id="updated_at" class="form-control" placeholder="Updated At" disabled>
+            <input type="text" name="url_link_1" id="url_link_1" class="form-control" placeholder="URL Link 1">
+            <input type="text" name="url_link_2" id="url_link_2" class="form-control" placeholder="URL Link 2">
+            <input type="text" name="url_link_3" id="url_link_3" class="form-control" placeholder="URL Link 3">
+
         </div>
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
@@ -161,48 +184,95 @@
             const domain =document.querySelectorAll('.domain');
 
             //pegar modal
-            let _post_id=document.getElementById("post_id");
-            let _theme=document.getElementById("Tema");
-            let _keyword=document.getElementById("Palavra_chave");
-            let _category=document.getElementById("Categoria");
-            let _post_content=document.getElementById("post_content");
-            let _insert_image=document.getElementById("Inserir_Imagem");
-            let _domain=document.getElementById("domain");
+            let _editor_id = document.getElementById("editor_id");
+            let _anchor_1 = document.getElementById("anchor_1");
+            let _anchor_2 = document.getElementById("anchor_2");
+            let _anchor_3 = document.getElementById("anchor_3");
+            let _category = document.getElementById("category");
+            let _created_at = document.getElementById("created_at");
+            let _do_follow_link_1 = document.getElementById("do_follow_link_1");
+            let _do_follow_link_2 = document.getElementById("do_follow_link_2");
+            let _do_follow_link_3 = document.getElementById("do_follow_link_3");
+            let _domain = document.getElementById("domain");
+            let _id = document.getElementById("post_id");
+            let _post_id = id;
+            let _insert_image = document.getElementById("insert_image");
+            let _internal_link = document.getElementById("internal_link");
+            let _keyword = document.getElementById("keyword");
+            let _post_content = document.getElementById("post_content");
+            let _post_image = document.getElementById("post_image");
+            let _schedule_date = document.getElementById("schedule_date");
+            let _status = document.getElementById("status");
+            let _theme = document.getElementById("theme");
+            let _updated_at = document.getElementById("updated_at");
+            let _url_link_1 = document.getElementById("url_link_1");
+            let _url_link_2 = document.getElementById("url_link_2");
+            let _url_link_3 = document.getElementById("url_link_3");
+
 
             let selected_id = 0;
 
             const update=document.querySelectorAll('.update_content');
-            update.forEach((e,i)=>{
-                e.addEventListener('click',()=>{
-                    open_modal(i);
-                })
-            })
+
             upgradeButton.addEventListener('click',async ()=>{
 
                 let data={
-                    id:selected_id,
-                    theme:_theme.value,
-                    keyword:_keyword.value,
-                    category:_category.value,
-                    post_content:_post_content.value,
-                    insert_image:_insert_image.value,
-                    domain:_domain.value,
-                    _token:csrfToken
+                    id: _id.value,
+                    editor_id: _editor_id.value,
+                    anchor_1: _anchor_1.value,
+                    anchor_2: _anchor_2.value,
+                    anchor_3: _anchor_3.value,
+                    category: _category.value,
+                    created_at: _created_at.value,
+                    do_follow_link_1: _do_follow_link_1.value,
+                    do_follow_link_2: _do_follow_link_2.value,
+                    do_follow_link_3: _do_follow_link_3.value,
+                    domain: _domain.value,
+                    insert_image: _insert_image.value,
+                    internal_link: _internal_link.value,
+                    keyword: _keyword.value,
+                    post_content: _post_content.value,
+                    post_image: _post_image.value,
+                    schedule_date: _schedule_date.value,
+                    status: _status.value,
+                    theme: _theme.value,
+                    updated_at: _updated_at.value,
+                    url_link_1: _url_link_1.value,
+                    url_link_2: _url_link_2.value,
+                    url_link_3: _url_link_3.value,
+                    _token: csrfToken
                 };
                 console.log(data);
 
-                const updateQuery= await fetch('/update_post',{
+                const updateQuery= await fetch('/update_config',{
                     method:'PUT',
-                    body:JSON.stringify({
-                        id:selected_id,
-                        theme:_theme.value,
-                        keyword:_keyword.value,
-                        category:_category.value,
-                        post_content:_post_content.value,
-                        insert_image:_insert_image.value,
-                        domain:_domain.value,
-                        _token:csrfToken
+                    body: JSON.stringify({
+                        editor_id: _editor_id.value,
+                        anchor_1: _anchor_1.value,
+                        anchor_2: _anchor_2.value,
+                        anchor_3: _anchor_3.value,
+                        category: _category.value,
+                        created_at: _created_at.value,
+                        do_follow_link_1: _do_follow_link_1.value,
+                        do_follow_link_2: _do_follow_link_2.value,
+                        do_follow_link_3: _do_follow_link_3.value,
+                        domain: _domain.value,
+                        id: _id.value,
+                        insert_image: _insert_image.value,
+                        internal_link: _internal_link.value,
+                        keyword: _keyword.value,
+                        post_content: _post_content.value,
+                        post_image: _post_image.value,
+                        schedule_date: _schedule_date.value,
+                        status: _status.value,
+                        theme: _theme.value,
+                        updated_at: _updated_at.value,
+                        url_link_1: _url_link_1.value,
+                        url_link_2: _url_link_2.value,
+                        url_link_3: _url_link_3.value,
+                        _token: csrfToken
                     }),
+
 
                     headers:{"Content-Type":"application/json"}
 
@@ -210,6 +280,7 @@
 
                 if(updateQuery.ok){
                     alert('atualização feita com sucesso');
+                    console.log(updateQuery);
                 }else{
                     alert('atualização falhou');
                 }
@@ -225,14 +296,29 @@
 
                 modal.classList.add('open_editor_modal');
 
-                _theme.value = parsedData.theme;
-                _keyword.value = parsedData.keyword;
+                _editor_id.value = parsedData.editor_id;
+                _anchor_1.value = parsedData.anchor_1;
+                _anchor_2.value = parsedData.anchor_2;
+                _anchor_3.value = parsedData.anchor_3;
                 _category.value = parsedData.category;
-                _post_content.value = parsedData.post_content ? 'Sim' : 'Não';
-                _insert_image.value = parsedData.insert_image == 1 ? 'Sim' : 'Não';
+                _created_at.value = parsedData.created_at;
+                _do_follow_link_1.value = parsedData.do_follow_link_1;
+                _do_follow_link_2.value = parsedData.do_follow_link_2;
+                _do_follow_link_3.value = parsedData.do_follow_link_3;
                 _domain.value = parsedData.domain;
-                _post_id.value = parsedData.id;
-                selected_id = parsedData.id;
+                _id.value = parsedData.id;
+                _insert_image.value = parsedData.insert_image;
+                _internal_link.value = parsedData.internal_link;
+                _keyword.value = parsedData.keyword;
+                _post_content.value = parsedData.post_content;
+                _post_image.value = parsedData.post_image;
+                _schedule_date.value = parsedData.schedule_date;
+                _status.value = parsedData.status;
+                _theme.value = parsedData.theme;
+                _updated_at.value = parsedData.updated_at;
+                _url_link_1.value = parsedData.url_link_1;
+                _url_link_2.value = parsedData.url_link_2;
+                _url_link_3.value = parsedData.url_link_3;
             }
 
 
