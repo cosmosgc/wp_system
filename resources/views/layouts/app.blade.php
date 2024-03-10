@@ -315,10 +315,13 @@
             <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>configurações <span class="arrow">></span></li>
             <div class="configs_content">
             <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class=""></i>Sites</a></ol>
-            @if(/*$test[0]->is_admin==1*/ true)
+            @if($test[0]->is_admin==1)
             <ol><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class=""></i>Registrar Editor</a></ol>
             @endif
-            <ol><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class=""></i>Token OpenAi</a></ol>
+            <ol><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class=""></i>Registrar Token OpenAi</a></ol>
+            @if($test[0]->is_admin==1)
+            <ol><a href="{{ route('listIaCredentials', ['page' => 'listGptToken']) }}"><i class=""></i>Listar Tokens</a></ol>
+            @endif
             <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class=""></i> Criar config</a></ol>
             </div>
             <li style="cursor: pointer" class="open_box"><i class="fas fa-file-alt"></i>Artigos <span class="arrow">></span></li>

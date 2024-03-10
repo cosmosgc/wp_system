@@ -1,4 +1,4 @@
-@extends('layouts')
+@extends('layouts.app')
 
 @section('content')
 
@@ -8,17 +8,19 @@
     <table class="table">
         <thead>
             <tr>
-                <th>nome</th>
-                 <th>{{ csrf_token() }}</th>
+                <th>Nome do Editor</th>
+                <th>token</th>
+                <th>Ações</th>
+                
             </tr>
         </thead>
         <tbody>
-            @foreach ($editors as $editor)
+            @foreach ($editor as $edit)
                 <tr>
-                    <td class="id">{{ $editor->id }}</td>
-                    <td class="name">{{ $editor->name }}</td>
+                    <td class="id">{{ $edit->name }}</td>
+                    <td class="name">{{$edit->iaCredentials->open_ai}}</td>
                     <td>
-                        <form action="{{ route('editor.destroy', $editor->id) }}" method="POST">
+                        <form action="" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Excluir</button>

@@ -121,21 +121,26 @@ $user=explode('+',base64_decode($valorCodificado));
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
 
             
             ///carregar categorias do domino
-            var domain=document.querySelector('.domain')
-            var category= document.querySelector('.category')
-            if(!domain.value==null){
-                await dynamicCategories();
+            var domain=document.querySelectorAll('.domain')
+            var category= document.querySelectorAll('.category')
+            domain.forEach(async (e,i)=>{
+                if(!e.value==""){
+                await dynamicCategories(e.value,i);
             }
-            
-            domain.addEventListener('change',async (e)=>{
-                        await dynamicCategories();
+
+            e.addEventListener('change',async (j)=>{
+                        await dynamicCategories(e.value,i);
                     })
+            })
+
             
-            async function dynamicCategories(){
+
+            
+            async function dynamicCategories(domain,index){
 
                                     
                     async function getSiteCategories(domain){
@@ -159,23 +164,17 @@ $user=explode('+',base64_decode($valorCodificado));
                      }
 
                      try {
-                        let categories= await getSiteCategories(domain.value);
+                        let categories= await getSiteCategories(domain);
                         categories.forEach((e)=>{
                         const option=document.createElement('option');
                         option.value=e.name;
                         option.innerText=e.name;
-                        category.appendChild(option);
+                        category[index].appendChild(option);
                         })
                      } catch (error) {
                         console.error(error);
                      }
-
-
-
-
-
-
-            }
+                }
 
 
 
@@ -280,10 +279,12 @@ $user=explode('+',base64_decode($valorCodificado));
     
         adddocumentButton.addEventListener('click', function(event) {
             event.preventDefault();
+
     
             var newdocument = createNewdocument();
             document.body.appendChild(newdocument);
             bindSubmitEvent(newdocument);
+
         });
     
         removedocumentButton.addEventListener('click', function(event) {

@@ -51,6 +51,7 @@ Route::get('/submit_wp',[DasboardController::class,'insertWpCredential'])->name(
 Route::get('/site_credential_created',[DasboardController::class,'siteCredentialCreated'])->name('credentialCreated');
 Route::get('/search',[searchController::class,'searchByQuery']);
 Route::get('/list_credential',[DasboardController::class,'listWpCredential'])->name('listCredential');
+Route::get('/list_ia_credential',[DasboardController::class,'listIaCredentials'])->name('listIaCredentials');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

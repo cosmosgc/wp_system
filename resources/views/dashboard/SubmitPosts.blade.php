@@ -95,6 +95,7 @@
                   <th>Data de Criação</th>
                   <th>Domain</th>
                   <th>Agendado</th>
+                  <th>Status</th>
                   <th>Ações</th>
                 </tr>
               </thead>
@@ -110,6 +111,7 @@
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
                   <td class="schedule_date">{{$config->schedule_date}}</td>
+                  <td class="status">{{$config->status}}</td>
                   <td>
                     <button class="btn btn-primary post_wp">Postar</button>
                     <button class="btn btn-danger delete_config">Deletar</button>
