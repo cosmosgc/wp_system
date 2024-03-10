@@ -9,5 +9,9 @@ class Ia_credential extends Model
 {
     use HasFactory;
 
-    protected $fillable=['open_ai'];
+    protected $fillable=['open_ai','Editor_id'];
+
+    public function editor(){
+        return $this->belongsTo(Editor::class);
+    }
 }

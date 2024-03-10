@@ -84,8 +84,11 @@ class DasboardController extends Controller
         }else{
             $token=Ia_credential::all();
         }
+
+        $valorCodificado = request()->cookie('editor');
+        $user=explode('+',base64_decode($valorCodificado));
         
-        return view('dashboard.configIa',['ia_token'=>$token]);
+        return view('dashboard.configIa',['ia_token'=>$token,'editor'=>$user[0]]);
     }
 
     public function insertWpCredential(){

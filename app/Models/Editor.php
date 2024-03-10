@@ -18,4 +18,8 @@ class Editor extends Model
     public function links(){
         return $this->hasMany(Wp_credential::class,'Editor_id');
     }
+
+    public function iaCredentials(){
+        return $this->hasOne(Ia_credential::class);
+    }
 }

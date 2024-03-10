@@ -17,7 +17,7 @@ class iaCredentialController extends Controller
 
 
     public function insertCredential(Request $request){
-        $this->iaCredentialService->insertToken($request->token);
+        $this->iaCredentialService->insertToken($request);
 
         return redirect()->route('tokenInserted');
     }

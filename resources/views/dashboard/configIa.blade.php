@@ -10,6 +10,7 @@
                 <div class="card-body">
               
                     <form method="POST" action="{{ route('insertIaToken') }}">
+                        
                         <div class="form-group row">
                             <label for="token" class="col-md-4 col-form-label text-md-right">{{ __('Token') }}</label>
 
@@ -26,7 +27,7 @@
                         <br>
                         <div class="form-group row mb-0">
                             <div class="token_buttons" class="col-md-6 offset-md-4">
-                            
+                                <input type="hidden" name="editor" value="{{$editor}}">
                                     @csrf
                                     @method('POST')
                                 <button type="submit" class="btn btn-primary">

@@ -32,19 +32,19 @@ $user=explode('+',base64_decode($valorCodificado));
             <th>Input</th>
         </tr>
         <tr>
-            <td>Theme</td>
+            <td>Tema</td>
             <td class="theme" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Keyword</td>
+            <td>Palavra chave</td>
             <td class="keyword" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Category</td>
+            <td>Categoria</td>
             <td><select class="category" name="" id=""></select></td>
         </tr>
         <tr>
-            <td>Anchor 1</td>
+            <td>Ancora 1</td>
             <td class="anchor_1" contenteditable="true"></td>
         </tr>
         <tr>
@@ -52,11 +52,11 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_link_1" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Do Follow Link 1</td>
+            <td>Seguir Link 1</td>
             <td><input type="checkbox" class="do_follow_link_1" name="" id=""></td>
         </tr>
         <tr>
-            <td>Anchor 2</td>
+            <td>Ancora 2</td>
             <td class="anchor_2" contenteditable="true"></td>
         </tr>
         <tr>
@@ -64,11 +64,11 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_link_2" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Do Follow Link 2</td>
+            <td>Seguir Link 2</td>
             <td><input type="checkbox" class="do_follow_link_2" name="" id=""></td>
         </tr>
         <tr>
-            <td>Anchor 3</td>
+            <td>Ancora 3</td>
             <td class="anchor_3" contenteditable="true"></td>
         </tr>
         <tr>
@@ -76,11 +76,11 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_link_3" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Do Follow Link 3</td>
+            <td>Seguir Link 3</td>
             <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
         </tr>
         <tr>
-            <td>Image URL</td>
+            <td>Imagem URL</td>
             <td class="url_image" contenteditable="true"></td>
         </tr>
         <tr>
@@ -88,23 +88,23 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="gdrive_url" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Folder ID</td>
+            <td>ID da pasta do drive</td>
             <td class="image_folder_id" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Use Featured image</td>
+            <td>Imagem de destaque</td>
             <td class="insert_image"><input type="checkbox"></td>
         </tr>
         <tr>
-            <td>Post Image</td>
+            <td>Imagem do post</td>
             <td class="sys_image"><input type="file"></td>
         </tr>
         <tr>
-            <td>Schedule</td>
+            <td>Agendar</td>
             <td class="schedule_date" contenteditable="true"><input class="schedule" type="date"></td>
         </tr>
         <tr>
-            <td>Domain</td>
+            <td>Site</td>
             <td>
             <select class="domain">
                 @foreach($credentials as $credential)
@@ -155,14 +155,20 @@ $user=explode('+',base64_decode($valorCodificado));
    
                      }
 
-                    let categories= await getSiteCategories(domain.value);
-
-                    categories.forEach((e)=>{
+                     try {
+                        let categories= await getSiteCategories(domain.value);
+                        categories.forEach((e)=>{
                         const option=document.createElement('option');
                         option.value=e.name;
                         option.innerText=e.name;
                         category.appendChild(option);
-                    })
+                        })
+                     } catch (error) {
+                        console.error(error);
+                     }
+
+
+
 
 
 
@@ -230,17 +236,24 @@ $user=explode('+',base64_decode($valorCodificado));
                     })
                     .then(response => {
                         if (!response.ok) {
-                            Swal.fire({
-                            title: 'Erro ao salvar configuração',
-                            text: 'Do you want to continue',
-                            icon: 'error',
-                            confirmButtonText: 'continue'
-                        })
-                            loading.innerText='';
+                            return response.text().then(errorMessage => {
+                                console.log(errorMessage);
+                                if (errorMessage) {
+                                    alert(errorMessage);
+                                } else {
+                                    // Se a resposta estiver truncada ou vazia, mostra uma mensagem genérica de erro
+                                    Swal.fire({
+                                        title: 'Erro',
+                                        text: 'A resposta foi truncada ou está vazia. Por favor, tente novamente.',
+                                        icon: 'error',
+                                        confirmButtonText: 'continue'
+                                    });
+                                }
+                            });
                         }else{
                             Swal.fire({
                             title: 'Configuração salva com sucesso',
-                            text: 'Do you want to continue',
+                            text: 'DVoce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
                         })
