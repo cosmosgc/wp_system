@@ -172,11 +172,11 @@
             let selected_id = 0;
 
             const update=document.querySelectorAll('.update_content');
-            update.forEach((e,i)=>{
-                e.addEventListener('click',()=>{
-                    open_modal(i);
-                })
-            })
+            // update.forEach((e,i)=>{
+            //     e.addEventListener('click',()=>{
+            //         open_modal(i);
+            //     })
+            // })
             upgradeButton.addEventListener('click',async ()=>{
 
                 let data={

@@ -127,7 +127,10 @@ $user=explode('+',base64_decode($valorCodificado));
             ///carregar categorias do domino
             var domain=document.querySelector('.domain')
             var category= document.querySelector('.category')
-            await dynamicCategories();
+            if(!domain.value==null){
+                await dynamicCategories();
+            }
+            
             domain.addEventListener('change',async (e)=>{
                         await dynamicCategories();
                     })
