@@ -61,16 +61,17 @@
                 </thead>
                 <tbody>
 
-                    @foreach($credentiais as $key=>$credential)
+                    @foreach($editor as $edit)
+                        @foreach($edit->links as $links)
+                        <input type="hidden" name="user_id" class="id" value="{{$edit->id}}">
 
-                        <input type="hidden" name="user_id" class="id" value="{{$editor[$key]->id}}">
                         <tr>
-                            <td class="editor_name">{{$editor[$key]->name}}</td>
-                            <td class="wp_login">{{$credential->wp_login}}</td>
-                            <td class="wp_password">{{$credential->wp_password}}</td>
-                            <td class="wp_domain">{{$credential->wp_domain}}</td>
+                            <td class="editor_name">{{$edit->name}}</td>
+                            <td class="wp_login">{{$links->wp_login}}</td>
+                            <td class="wp_password">{{$links->wp_password}}</td>
+                            <td class="wp_domain">{{$links->wp_domain}}</td>
                             <td>
-                                <form action="{{route('credentialDelete',$credential->id)}}" method="POST">
+                                <form action="{{route('credentialDelete',$links->id)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit">Excluir</button>
@@ -79,6 +80,10 @@
                                 <button class="update">Alterar</button>
                             </td>
                         </tr>
+
+                        
+                        @endforeach
+
                     @endforeach
                 </tbody>
             </table>

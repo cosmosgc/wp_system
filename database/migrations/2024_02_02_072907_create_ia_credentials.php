@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string("open_ai");
             $table->timestamps();
+            $table->unsignedBigInteger('Editor_id');
+            $table->foreign('Editor_id')
+            ->references('id')
+            ->on('editors')
+            ->onDelete('cascade');
         });
     }
 

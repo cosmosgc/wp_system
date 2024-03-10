@@ -52,7 +52,8 @@
 
         .sidebar h2 {
             color: white;
-            text-align: center;
+            text-align: left;
+            padding-left: 5%;
         }
 
         .sidebar ul {
@@ -63,7 +64,7 @@
         .sidebar li {
             padding: 8px;
             padding-top: 0px;
-            text-align: center;
+            text-align: left;
             transition: 0.3s;
         }
 
@@ -71,7 +72,7 @@
             text-decoration: none;
             color: white;
             padding: 5px;
-            text-align: end;
+            text-align: left;
             display: block;
             transition: 0.3s;
         }
@@ -266,6 +267,40 @@
         backdrop-filter: blur(10px);
     }
 
+    .token_buttons{
+        display: flex;
+        gap: 5%;
+        justify-content: center;
+        align-content: center;
+    }
+
+    li{
+        color: white;
+    }
+
+    .arrow{
+        transform: rotate(90deg);
+        display: inline-block;
+        transition: .6s;
+    }
+
+    .arrow_up{
+        transform: rotate(-90deg);
+        transition: .6s;
+    }
+
+    .configs_content{
+        display: none;
+        
+    }
+
+    .open_box{
+        padding-left: 6% !important;
+    }
+    .open{
+        display: block;
+    }
+
         
 
     </style>
@@ -277,17 +312,28 @@
         <h2>Dashboard</h2>
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
-            <li><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-user"></i>Listagem de Configurações</a></li>
+            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>configurações <span class="arrow">></span></li>
+            <div class="configs_content">
+            <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class=""></i>Sites</a></ol>
             @if(/*$test[0]->is_admin==1*/ true)
-                 <li><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-plus"></i>Registrar Editor</a></li>
+            <ol><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class=""></i>Registrar Editor</a></ol>
             @endif
-            <li><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-cog"></i> Criar config</a></li>
-            <li><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-key"></i> Inserir credenciais Wordpress</a></li>
+            <ol><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class=""></i>Token OpenAi</a></ol>
+            <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class=""></i> Criar config</a></ol>
+            </div>
+            <li style="cursor: pointer" class="open_box"><i class="fas fa-file-alt"></i>Artigos <span class="arrow">></span></li>
+            <div class="configs_content">
+            <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class=""></i>Publicar em sites</a></ol>
+            <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class=""></i>Criar no Google Docs</a></ol>
+            <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class=""></i>Importar config</a></ol>
+            </div>
+            
+            
             <li><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i> Listagem de credenciais</a></li>
-            <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li>
-            <li><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fab fa-google"></i> Google Docs</a></li>
-            <li><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-edit"></i>Importar config</a></li>
-            <li><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class="fas fa-robot"></i> Configurar IA</a></li>
+            {{-- <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li> --}}
+            
+            
+            
             <li class="quit"><a href="#" onclick="logoff()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
 
 
@@ -340,21 +386,7 @@
             return c.trim().startsWith(name + '=');
         });
     }   
-    // close_side.addEventListener('click',(e)=>{
-    //     sidebar.style="margin-left: -234px;";
-    //     content.style="margin-left: 20px;";
-    //     e.target.style='display:none';
-    //     open_side.style="display:block";
 
-    // })
-
-    // open_side.addEventListener('click',(e)=>{
-    //     sidebar.style="";
-    //     content.style="";
-    //     e.target.style='display:none';
-    //     close_side.style="display:block";
-
-    // })
     close_side.addEventListener('click', () => {
         sidebar.classList.add('closed');
         content.classList.add('expanded');
@@ -397,6 +429,16 @@
         });
     }
 
+      const menuOpenbox=document.querySelectorAll(".open_box");
+      const openBoxContent=document.querySelectorAll(".configs_content")
+      const arrow=document.querySelectorAll(".arrow");
+      menuOpenbox.forEach((e,i)=>{
+        e.addEventListener('click',()=>{
+            openBoxContent[i].classList.toggle("open");
+            arrow[i].classList.toggle("arrow_up");
+        })
+
+      })
 </script>
 
 </html>
