@@ -538,7 +538,7 @@
          const query_2= await fetch('/update_yoaust',{
             method:'POST',
             body:JSON.stringify({
-               id:test,
+               id:test.id,
                domain:domain.innerText,
                keyword:keyword.innerText,
               _token:csrfToken
