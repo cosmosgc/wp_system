@@ -78,6 +78,8 @@ class Wp_service{
                 'title' => $title,
                 'content' => $content,
                 'featured_media' => $imageID,
+                'status' => 'publish'
+                
                 // Adicione mais parâmetros conforme necessário
             ],
         ]);
