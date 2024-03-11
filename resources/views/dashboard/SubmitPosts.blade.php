@@ -474,16 +474,9 @@
         try {
           if(query.ok){
           Swal.fire({
-            title: 'Quer continuar?',
+            title: 'Post publicado com sucesso?',
             text: 'Do you want to continue',
             icon: 'success',
-            confirmButtonText: 'continue'
-          })
-        }else{
-          Swal.fire({
-            title: 'Quer continuar?',
-            text: 'Do you want to continue',
-            icon: 'error',
             confirmButtonText: 'continue'
           })
         }
