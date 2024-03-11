@@ -17,11 +17,21 @@ class GptController extends Controller
     protected $helper;
 
     
-    public function __construct(GptService $gptService, Wp_service $blogService,Sys_helper $helper)
+    public function __construct(GptService $gptService, Wp_service $blogService)
     {
         $this->gptService=$gptService;
         $this->wpService=$blogService;
-        $this->helper=$helper;
+    }
+
+    public function replace_variables($commands, $variables) {
+        foreach ($commands as &$command) {
+            $command = str_replace(
+                array_map(function ($var) { return "%%$var%%"; }, array_keys($variables)),
+                array_values($variables),
+                $command
+            );
+        }
+        return $commands;
     }
 
 
@@ -74,7 +84,7 @@ class GptController extends Controller
 
         );
 
-        $clean_command=$this->helper->replace_variables($commands,array(
+        $clean_command=$this->replace_variables($commands,array(
             'title' => $title,
             'language' => $language,
             'writing_style' => $writing_style,
@@ -95,7 +105,7 @@ class GptController extends Controller
 
         for($i=0;$i<$sections_count;$i++){
             $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% paragraphs in the section. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%%  add this element into the text: <a href="%%Anchor_link_1%%" rel="%%Follow_1%%follow">%%Ancora 1%%</a>, for %%Ancora 2%% add this element into the text: <a href="%%Anchor_link_2%%" rel="%%Follow_2%%follow">%%Ancora 2%%</a>,for %%Ancora 3%% add this element into the text: <a href="%%Anchor_link_3%%" rel="%%Follow_3%%follow">%%Ancora 3%%</a>'];
-            $complete_text=$this->helper->replace_variables($sections,array(
+            $complete_text=$this->replace_variables($sections,array(
                 'current_section'=>$i,
                 'Ancora 1'=>$anchor_1,
                 'Anchor_link_1'=>$anchor_1_url,
@@ -139,7 +149,7 @@ class GptController extends Controller
 
 
 
-        $qa_command=$this->helper->replace_variables(['Write a Q&A for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%. This Q&A must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%'],array(
+        $qa_command=$this->replace_variables(['Write a Q&A for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%. This Q&A must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%'],array(
 
             'language' => $language,
             'title' => $title,
@@ -152,7 +162,7 @@ class GptController extends Controller
 
 
         
-        $conclusion_command=$this->helper->replace_variables( ['Write an outro for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%'],array(
+        $conclusion_command=$this->replace_variables( ['Write an outro for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%'],array(
             'language' => $language,
             'title' => $title,
             'writing_style' => $writing_style,
