@@ -567,12 +567,7 @@
           }
             
           } catch (error) {
-            Swal.fire({
-            title: error.message,
-            text: 'Continuar?',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
+            alert(error)
           }
 
 
