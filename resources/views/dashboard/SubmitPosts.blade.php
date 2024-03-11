@@ -533,6 +533,7 @@
           })
 
           const test=await query.json();
+          console.log(test.id)
 
          const query_2= await fetch('/update_yoaust',{
             method:'POST',
@@ -572,7 +573,7 @@
             icon: 'error',
             confirmButtonText: 'continue'
           })
-            button.remove(loading);
+            loading.remove(this);
           }
 
 
