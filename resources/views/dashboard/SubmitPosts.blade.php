@@ -11,6 +11,9 @@
   //dd($post_configs);
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
+    $post_contents->postContents->each(function ($config) {
+        unset($config->post_content);
+    });
   }
 
 @endphp
@@ -19,7 +22,7 @@
 <style>
         .editor_modal {
             height: 80vh;
-            width: 70vw;
+            width: 90vw;
             max-width: 600px;
             position: absolute;
             left: 50%;
@@ -47,6 +50,10 @@
             align-items: center;
             flex-direction: column;
             overflow: auto;
+        }
+        .editor_list_flex{
+            display: flex;
+            flex-direction:column;
         }
 
         .upgrade_button {
@@ -116,11 +123,11 @@
                   <td class="domain">{{$config->domain}}</td>
                   <td class="schedule_date">{{$config->schedule_date}}</td>
                   <td class="status">{{$config->status}}</td>
-                  <td>
+                  <td class="editor_list_flex">
                     <button class="btn btn-primary post_wp">Postar</button>
                     <button class="btn btn-danger delete_config">Deletar</button>
                     <button class="btn btn-success create_content">Gerar conteúdo</button>
-                    <button class="btn btn-success update_content" onclick="open_modal('{{$config->id}}','{{$config}}')">Atualizar conteúdo</button>
+                    <button class="btn btn-success update_content" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">Atualizar conteúdo</button>
                   </td>
                 </tr>
                 <!-- Fim do exemplo de linha de dados -->
@@ -290,7 +297,7 @@
             })
 
             function open_modal(i = 0, data = null) {
-                // let parsedData = JSON.parse(data);
+                let parsedData = JSON.parse(data);
                 // console.log(parsedData);
 
                 modal.classList.add('open_editor_modal');
@@ -480,7 +487,7 @@
             confirmButtonText: 'continue'
           })
         }
-          
+
         } catch (error) {
           Swal.fire({
             title: error,
@@ -515,58 +522,86 @@ postButton.forEach((button,i)=>{
       const loading= document.createElement('span');
 
 
-      loading.innerHTML='loading....'
-      button.addEventListener('click',async()=>{
-        button.insertAdjacentElement("beforebegin", loading);
-        const domain=document.querySelectorAll('.domain')[i];
-        const keyword=document.querySelectorAll('.keyword')[i]
-        const query= await fetch('/post_content',{
-          method:'POST',
-          body:JSON.stringify({
-             id:data_id,
-             user_id:user_id.value,
-             domain:domain.innerText,
-            _token:csrfToken
-          }),
-          headers:{"Content-Type":"application/json"}
-        })
-        
-        const test= await query.json()
-        console.log(test);
-        const query_2= await fetch('/update_yoaust',{
-          method:'POST',
-          body:JSON.stringify({
-             id:test.id,
-             domain:domain.innerText,
-             keyword:keyword.innerText,
-            _token:csrfToken
-          }),
-          headers:{"Content-Type":"application/json"}
-        })
+        loading.innerHTML='loading....'
+        button.addEventListener('click',async()=>{
+          button.insertAdjacentElement("beforebegin", loading);
+          const domain=document.querySelectorAll('.domain')[i];
+          const keyword=document.querySelectorAll('.keyword')[i]
+          console.log("Postando em: "+domain.innerText);
+            try {
+                const query = await fetch('/post_content', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: data_id,
+                        user_id: user_id.value,
+                        domain: domain.innerText,
+                        _token: csrfToken
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                });
 
-        if(query.ok && query_2.ok){
-          Swal.fire({
-          title: 'Post sucefully created on wordpress',
-          text: 'Do you want to continue',
-          icon: 'success',
-          confirmButtonText: 'continue'
+                if (query.ok) {
+                    const data = await query.json();
+                    console.log(data);
+                    try {
+                        body = {id: data.id,
+                                domain: domain.innerText,
+                                keyword: keyword.innerText,
+                                _token: csrfToken}
+                                console.log(body);
+                        const query_2 = await fetch('/update_yoaust', {
+                            method: 'POST',
+                            body: JSON.stringify(body),
+                            headers: { "Content-Type": "application/json" }
+                        });
+
+                        if (query_2.ok) {
+                            const data_2 = await query_2.json();
+                            console.log(data_2);
+                            //fazer o query mais uma vez não resolveu o bug
+
+                            // const query_3 = await fetch('/update_yoaust', {
+                            //     method: 'POST',
+                            //     body: JSON.stringify(body),
+                            //     headers: { "Content-Type": "application/json" }
+                            // });
+                            Swal.fire({
+                                title: 'Post criado com sucesso no wordpress',
+                                text: 'Continuar?',
+                                icon: 'success',
+                                confirmButtonText: 'continue'
+                            })
+                            loading.remove(this);
+                        } else {
+                            console.error("Second fetch failed with status:", query_2.status);
+                        }
+                    } catch (error_2) {
+                        console.error("Second fetch error:", error_2);
+                        Swal.fire({
+                            title: query.statusText,
+                            text: 'Continuar?',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        })
+                        loading.remove(this);
+                    }
+
+
+
+                } else {
+                    console.error("Fetch failed with status:", query.status);
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+
+
+
+
+
+
         })
-          loading.remove(this)
-        }else{
-          Swal.fire({
-          title: 'Error on the process',
-          text: 'Do you want to continue',
-          icon: 'error',
-          confirmButtonText: 'continue'
-        })
-          loading.remove(this)
-        }
       })
-    })
-
-
-
-
 
 });
 

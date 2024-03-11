@@ -1,8 +1,8 @@
 <!-- resources/views/layouts/app.blade.php -->
-@php  
+@php
     use App\Models\Editor;
     use Illuminate\Http\Request;
-    
+
 
     $valorCodificado = request()->cookie('editor');
     $user=explode('+',base64_decode($valorCodificado));
@@ -43,15 +43,16 @@
             z-index: 1;
             top: 0;
             left: 0;
-            background-color: #86C995; /* Verde leve */
+            background-color: rgba(33, 33, 33, 0.9); /* Dark background */
             padding-top: 20px;
-            transition:.8s;
+            transition: 0.8s;
             font-family: 'Roboto', sans-serif;
-            box-shadow: -2px 0px 11px rgb(0 0 0);
+            box-shadow: -2px 0px 11px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px); /* Glass effect */
         }
 
         .sidebar h2 {
-            color: white;
+            color: #FFFFFF; /* White text color */
             text-align: left;
             padding-left: 5%;
         }
@@ -70,7 +71,7 @@
 
         .sidebar a {
             text-decoration: none;
-            color: white;
+            color: #FFFFFF; /* White link color */
             padding: 5px;
             text-align: left;
             display: block;
@@ -78,13 +79,15 @@
         }
 
         .sidebar a:hover {
-            background-color: #5EAD78; /* Verde mais escuro ao passar o mouse */
-            transition: .5s;
+            background-color: rgba(50, 50, 50, 0.9); /* Darker background on hover */
+            transition: 0.5s;
             border-radius: 10px;
         }
+
         .sidebar li:hover {
             transform: scale(1.05);
         }
+
 
         .content {
             margin-left: 250px;
@@ -103,7 +106,7 @@
 
         .sidebar i {
             margin-right: 8px;
-    
+
         }
         .sidebar .fa, .sidebar .fas {
             align-self: center;
@@ -122,7 +125,8 @@
             margin-left: 237px;
             display: none;
             border-radius: 30px;
-            background: #86c995;
+            background: #373737;
+            color: white;
             border: none;
             box-shadow: 4px 0px 5px 0px rgb(255 255 255);
         }
@@ -234,12 +238,14 @@
     border-collapse: collapse;
     margin: 20px 0;
     box-shadow: 0px 0px 9px 0px black;
+    word-wrap: break-word;
     }
 
     th, td {
     border: 1px solid #ddd;
-    padding: 9px;
+    padding: 3px;
     text-align: left;
+    font-size: small;
     }
 
     th {
@@ -291,7 +297,7 @@
 
     .configs_content{
         display: none;
-        
+
     }
 
     .open_box{
@@ -301,14 +307,14 @@
         display: block;
     }
 
-        
+
 
     </style>
 </head>
 <body>
     <div class="sidebar">
         <button class="close_side">X</button>
-        <button class="open_side"><<</button>     
+        <button class="open_side"><<</button>
         <h2>Dashboard</h2>
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
@@ -331,19 +337,19 @@
             <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class=""></i>Criar no Google Docs</a></ol>
             <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class=""></i>Importar config</a></ol>
             </div>
-            
-            
+
+
             <li><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i> Listagem de credenciais</a></li>
             {{-- <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li> --}}
-            
-            
-            
+
+
+
             <li class="quit"><a href="#" onclick="logoff()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
 
 
             <!-- Adicione outras páginas conforme necessário -->
         </ul>
-        
+
     </div>
 
     <div class="content">
@@ -389,7 +395,7 @@
         return document.cookie.split(';').some(c => {
             return c.trim().startsWith(name + '=');
         });
-    }   
+    }
 
     close_side.addEventListener('click', () => {
         sidebar.classList.add('closed');
