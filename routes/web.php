@@ -53,6 +53,7 @@ Route::get('/search',[searchController::class,'searchByQuery']);
 Route::get('/list_credential',[DasboardController::class,'listWpCredential'])->name('listCredential');
 Route::get('/list_ia_credential',[DasboardController::class,'listIaCredentials'])->name('listIaCredentials');
 Route::get('/deleted_token',[DasboardController::class,'tokenDeleted'])->name('deletedToken');
+Route::get('/list_editor',[DasboardController::class,'ListEditor'])->name('listEditor');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

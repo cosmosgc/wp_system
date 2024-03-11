@@ -30,6 +30,11 @@ class DasboardController extends Controller
         return view('dashboard.profile');
     }
 
+    public function ListEditor(){
+        $editors = Editor::all();
+        return view('dashboard.editorList',['editors'=>$editors]);
+    }
+
     public function register(){
         return view('dashboard.register');
     }
@@ -71,7 +76,7 @@ class DasboardController extends Controller
     }
 
     public function tokenInserted(){
-        return view('dashboard.tokeninserted');
+        return view('dashboard.tokenInserted');
     }
 
     public function importCsv(){

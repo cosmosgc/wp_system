@@ -80,7 +80,7 @@
             </div>
           </div>
           <!-- Formulário de Cadastro de Usuário -->
-          <input type="hidden" name="user_id" class="user_id" value={{$post_configs[0]->id}}>
+          <input type="hidden" name="user_id" class="user_id" value={{isset($post_configs[0]->id)?$post_configs[0]->id:0}}>
           @foreach($post_contents->postContents as $config)
 
           <div class="container mt-5" data-id="{{$config->id}}">
@@ -348,8 +348,13 @@
               <div class="form-group">
                 <label for="style">Estilo de escrita</label>
                 <select name="style" id="style">
-                  <option value="blog">Blog</option>
-                  <option value="first_person">First Person</option>
+                  <option value="narrative">Narrative</option>
+                  <option value="descriptive">Descriptive</option>
+                  <option value="expository">Expository</option>
+                  <option value="persuasive">Persuasive</option>
+                  <option value="creative">Creative</option>
+                  <option value="objective">Objective</option>
+                  <option value="subjective">Subjective</option>
                 </select>
               </div>
               <div class="form-group">
@@ -357,6 +362,16 @@
                 <select name="tone" id="writing_tone">
                   <option value="casual">Casual</option>
                   <option value="eloquent">Eloquent</option>
+                  <option value="informal">Informal</option>
+                  <option value="optimistic">Optimistic</option>
+                  <option value="worried">Worried</option>
+                  <option value="friendly">Friendly</option>
+                  <option value="curious">Curious</option>
+                  <option value="assertive">Assertive</option>
+                  <option value="encouraging">Encouraging</option>
+                  <option value="surprised">Surprised</option>
+                  <option value="neutral">Neutral</option>
+
                 </select>
               </div>
               <div class="form-group">

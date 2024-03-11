@@ -125,8 +125,13 @@
                     <div class="form-group">
                       <label for="style">Estilo de escrita</label>
                       <select name="style" id="style">
-                        <option value="blog">Blog</option>
-                        <option value="first_person">First Person</option>
+                        <option value="narrative">Narrative</option>
+                        <option value="descriptive">Descriptive</option>
+                        <option value="expository">Expository</option>
+                        <option value="persuasive">Persuasive</option>
+                        <option value="creative">Creative</option>
+                        <option value="objective">Objective</option>
+                        <option value="subjective">Subjective</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -134,6 +139,15 @@
                       <select name="tone" id="writing_tone">
                         <option value="casual">Casual</option>
                         <option value="eloquent">Eloquent</option>
+                        <option value="informal">Informal</option>
+                        <option value="optimistic">Optimistic</option>
+                        <option value="worried">Worried</option>
+                        <option value="friendly">Friendly</option>
+                        <option value="curious">Curious</option>
+                        <option value="assertive">Assertive</option>
+                        <option value="encouraging">Encouraging</option>
+                        <option value="surprised">Surprised</option>
+                        <option value="neutral">Neutral</option>
                       </select>
                     </div>
                     <div class="form-group">
