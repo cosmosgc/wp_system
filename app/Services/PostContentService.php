@@ -13,7 +13,6 @@ class PostContentService{
 
     public function insertPostContent($data,$doContent){
 
-            //dd($data->domain);
            $image= $this->processImage($data);
 
 

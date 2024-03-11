@@ -319,6 +319,7 @@
             <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class=""></i>Sites</a></ol>
             @if($test[0]->is_admin==1)
             <ol><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class=""></i>Registrar Editor</a></ol>
+            <ol><a href="{{ route('listEditor', ['page' => 'editor_list']) }}"><i class=""></i>Editores cadastrados</a></ol>
             @endif
             <ol><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class=""></i>Registrar Token OpenAi</a></ol>
             @if($test[0]->is_admin==1)

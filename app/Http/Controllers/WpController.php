@@ -24,9 +24,6 @@ class WpController extends Controller
                     $image=Wp_post_content::find($request->id);
                     $login=Wp_credential::where('wp_domain',$request->domain)->get();
                     $newPost=$this->wpService->postBlogContent($image->keyword,$image->theme,$image->post_content,$image->insert_image,$image->post_image,$login[0]->wp_domain,$login[0]->wp_login,$login[0]->wp_password);
-                    $response=json_decode($newPost);
-                    $update_meta=$this->wpService->updateYoastRankMath($request->domain,intval($response->id),isset($image->keyword)?$image->keyword:'placeholder');
-                    return $update_meta; 
                 }else{
                     return response('sem dominio',400);
                 }
@@ -36,7 +33,6 @@ class WpController extends Controller
             public function updateYoast(Request $request){
                 $update_meta=$this->wpService->updateYoastRankMath($request->domain,intval($request->id),isset($request->keyword)?$request->keyword:'placeholder');
 
-                return 'aqui'.$update_meta;
             }
 
 }

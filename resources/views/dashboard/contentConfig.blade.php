@@ -221,7 +221,6 @@ $user=explode('+',base64_decode($valorCodificado));
 
 
 
-                    console.log(postData);
                     const loading=document.createElement('span');
                     loading.classList.add('loading')
                     loading.innerText='loading....'
@@ -284,6 +283,53 @@ $user=explode('+',base64_decode($valorCodificado));
             var newdocument = createNewdocument();
             document.body.appendChild(newdocument);
             bindSubmitEvent(newdocument);
+            var domain=document.querySelectorAll('.domain')
+            var category= document.querySelectorAll('.category')
+            domain.forEach(async (e,i)=>{
+                if(!e.value==""){
+                await dynamicCategories(e.value,i);
+            }
+
+            e.addEventListener('change',async (j)=>{
+                        await dynamicCategories(e.value,i);
+                    })
+            })
+
+            async function dynamicCategories(domain,index){
+
+                                    
+            async function getSiteCategories(domain){
+                try {
+                    const regex = /^(https?:\/\/)/i;
+                    let new_domain=domain.replace(regex,'');
+                    console.log(new_domain);
+                    const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);  
+                    const response =await domain_query.json();
+                    return response; 
+                    
+                } catch (error) {
+                    Swal.fire({
+                    title: error,
+                    text: 'Do you want to continue',
+                    icon: 'error',
+                    confirmButtonText: 'continue'
+                })
+                }
+
+            }
+
+            try {
+                let categories= await getSiteCategories(domain);
+                categories.forEach((e)=>{
+                const option=document.createElement('option');
+                option.value=e.name;
+                option.innerText=e.name;
+                category[index].appendChild(option);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+            }
 
         });
     
@@ -330,19 +376,19 @@ $user=explode('+',base64_decode($valorCodificado));
                         <th>Input</th>
                     </tr>
                     <tr>
-                        <td>Theme</td>
+                        <td>Tema</td>
                         <td class="theme" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Keyword</td>
+                        <td>Palavra chave</td>
                         <td class="keyword" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Category</td>
-                        <td class="category" contenteditable="true"></td>
+                        <td>Categoria</td>
+                        <td><select class="category" name="" id=""></select></td>
                     </tr>
                     <tr>
-                        <td>Anchor 1</td>
+                        <td>Ancora 1</td>
                         <td class="anchor_1" contenteditable="true"></td>
                     </tr>
                     <tr>
@@ -350,11 +396,11 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="url_link_1" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Do Follow Link 1</td>
+                        <td>Seguir Link 1 1</td>
                         <td><input type="checkbox" class="do_follow_link_1" name="" id=""></td>
                     </tr>
                     <tr>
-                        <td>Anchor 2</td>
+                        <td>Ancora 2</td>
                         <td class="anchor_2" contenteditable="true"></td>
                     </tr>
                     <tr>
@@ -362,11 +408,11 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="url_link_2" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Do Follow Link 2</td>
+                        <td>Seguir Link  2</td>
                         <td><input type="checkbox" class="do_follow_link_2" name="" id=""></td>
                     </tr>
                     <tr>
-                        <td>Anchor 3</td>
+                        <td>Ancora 3</td>
                         <td class="anchor_3" contenteditable="true"></td>
                     </tr>
                     <tr>
@@ -374,7 +420,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="url_link_3" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Do Follow Link 3</td>
+                        <td>Seguir Link  3</td>
                         <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
                     </tr>
                     <tr>
@@ -386,11 +432,11 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="gdrive_url" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Folder ID</td>
+                        <td>ID da pasta do drive</td>
                         <td class="image_folder_id" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Use Featured image</td>
+                        <td>Imagem de destaque</td>
                         <td class="insert_image"><input type="checkbox"></td>
                     </tr>
                     <tr>
@@ -398,11 +444,11 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="sys_image_custom"><input type="file"></td>
                     </tr>
                     <tr>
-                        <td>Schedule</td>
+                        <td>Agendar</td>
                         <td class="schedule_date" contenteditable="true"><input type="date"></td>
                     </tr>
                     <tr>
-                        <td>Domain</td>
+                        <td>Site</td>
                         <td>
                         <select class="domain">
                             ${Object.keys(domain).map(key => `<option value="${domain[key].value}">${domain[key].value}</option>`).join('')}
@@ -424,11 +470,12 @@ $user=explode('+',base64_decode($valorCodificado));
 
         function getDataFromTable(element) {
             var inputElements = element;
+            const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
             var postData = {
                         theme: inputElements.querySelector('.theme').innerText,
                         keyword: inputElements.querySelector('.keyword').innerText,
-                        category: inputElements.querySelector('.category').innerText,
+                        category: inputElements.querySelector('.category').value,
                         anchor_1: inputElements.querySelector('.anchor_1').innerText,
                         url_link_2: inputElements.querySelector('.url_link_2').innerText,
                         do_follow_link_1: inputElements.querySelector('.do_follow_link_1').checked ? 1 : 0,
@@ -443,10 +490,15 @@ $user=explode('+',base64_decode($valorCodificado));
                         insert_image: inputElements.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule_date: inputElements.querySelector('.schedule_date input[type="date"]').value,
                         domain: inputElements.querySelector('.domain').value,
-                        //session_user: inputElements.querySelector('.user').value
+                        session_user: document.querySelector('.user').value
                     };
 
-                    console.log(postData);
+                    const loading=document.createElement('span');
+                    loading.classList.add('loading')
+                    loading.innerText='loading....'
+                    const content=document.querySelector(".content");
+                    // Faz a requisição AJAX
+                    content.appendChild(loading);
                     fetch('/insert_post_content', {
                         method: 'POST',
                         headers: {
@@ -457,22 +509,29 @@ $user=explode('+',base64_decode($valorCodificado));
                     })
                     .then(response => {
                         if (!response.ok) {
-                            if (!response.ok) {
-                            Swal.fire({
-                            title: 'Erro ao salvar configuração',
-                            text: 'Do you want to continue',
-                            icon: 'error',
-                            confirmButtonText: 'continue'
-                        })
+                            return response.text().then(errorMessage => {
+                                console.log(errorMessage);
+                                if (errorMessage) {
+                                    alert(errorMessage);
+                                } else {
+                                    // Se a resposta estiver truncada ou vazia, mostra uma mensagem genérica de erro
+                                    Swal.fire({
+                                        title: 'Erro',
+                                        text: 'A resposta foi truncada ou está vazia. Por favor, tente novamente.',
+                                        icon: 'error',
+                                        confirmButtonText: 'continue'
+                                    });
+                                }
+                            });
                         }else{
                             Swal.fire({
                             title: 'Configuração salva com sucesso',
-                            text: 'Do you want to continue',
+                            text: 'DVoce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
                         })
-                        }
                     }})
+                    loading.innerText='';
                 
         }
 </script>

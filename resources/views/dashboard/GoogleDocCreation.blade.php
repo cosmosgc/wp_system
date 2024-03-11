@@ -10,7 +10,7 @@
                     <form action="/create_doc" method="post">
                         @csrf
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="title" id="title" placeholder="Tema da documento">
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Tema da da configuração do post">
                         </div>
                         <button type="submit" class="btn btn-primary">Criar documento</button>
                     </form>
@@ -26,7 +26,7 @@
                             <input type="text" class="form-control" name="google_docs" id="google_docs" placeholder="Id do documento">
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="title" id="title" placeholder="Tema do documento">
+                            <input type="text" class="form-control" name="title" id="title" placeholder="Tema da da configuração do post">
                         </div>
                         <button type="submit" class="btn btn-primary">Criar conteúdo via documento</button>
                     </form>

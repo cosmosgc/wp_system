@@ -84,7 +84,7 @@
             </div>
           </div>
           <!-- Formulário de Cadastro de Usuário -->
-          <input type="hidden" name="user_id" class="user_id" value={{$post_configs[0]->id}}>
+          <input type="hidden" name="user_id" class="user_id" value={{isset($post_configs[0]->id)?$post_configs[0]->id:0}}>
           @foreach($post_contents->postContents as $config)
 
           <div class="container mt-5" data-id="{{$config->id}}">
@@ -158,7 +158,6 @@
             <input type="text" name="insert_image" id="insert_image" class="form-control" placeholder="Insert Image">
             <input type="text" name="internal_link" id="internal_link" class="form-control" placeholder="Internal Link">
             <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Keyword">
-            <input type="text" name="post_content" id="post_content" class="form-control" placeholder="Post Content">
             <input type="text" name="post_image" id="post_image" class="form-control" placeholder="Post Image">
             <input type="text" name="schedule_date" id="schedule_date" class="form-control" placeholder="Schedule Date">
             <input type="text" name="status" id="status" class="form-control" placeholder="Status">
@@ -237,7 +236,6 @@
                     insert_image: _insert_image.value,
                     internal_link: _internal_link.value,
                     keyword: _keyword.value,
-                    post_content: _post_content.value,
                     post_image: _post_image.value,
                     schedule_date: _schedule_date.value,
                     status: _status.value,
@@ -267,7 +265,6 @@
                         insert_image: _insert_image.value,
                         internal_link: _internal_link.value,
                         keyword: _keyword.value,
-                        post_content: _post_content.value,
                         post_image: _post_image.value,
                         schedule_date: _schedule_date.value,
                         status: _status.value,
@@ -297,8 +294,8 @@
             })
 
             function open_modal(i = 0, data = null) {
-                let parsedData = JSON.parse(data);
-                console.log(parsedData);
+                // let parsedData = JSON.parse(data);
+                // console.log(parsedData);
 
                 modal.classList.add('open_editor_modal');
 
@@ -352,8 +349,13 @@
               <div class="form-group">
                 <label for="style">Estilo de escrita</label>
                 <select name="style" id="style">
-                  <option value="blog">Blog</option>
-                  <option value="first_person">First Person</option>
+                  <option value="narrative">Narrative</option>
+                  <option value="descriptive">Descriptive</option>
+                  <option value="expository">Expository</option>
+                  <option value="persuasive">Persuasive</option>
+                  <option value="creative">Creative</option>
+                  <option value="objective">Objective</option>
+                  <option value="subjective">Subjective</option>
                 </select>
               </div>
               <div class="form-group">
@@ -361,6 +363,16 @@
                 <select name="tone" id="writing_tone">
                   <option value="casual">Casual</option>
                   <option value="eloquent">Eloquent</option>
+                  <option value="informal">Informal</option>
+                  <option value="optimistic">Optimistic</option>
+                  <option value="worried">Worried</option>
+                  <option value="friendly">Friendly</option>
+                  <option value="curious">Curious</option>
+                  <option value="assertive">Assertive</option>
+                  <option value="encouraging">Encouraging</option>
+                  <option value="surprised">Surprised</option>
+                  <option value="neutral">Neutral</option>
+
                 </select>
               </div>
               <div class="form-group">
@@ -456,22 +468,33 @@
             });
 
         // Remove o SVG de loading após a conclusão da query
-
-        if(query.ok){
+        try {
+          if(query.ok){
           Swal.fire({
-            title: 'Content Sucefully created',
+            title: 'Quer continuar?',
             text: 'Do you want to continue',
             icon: 'success',
             confirmButtonText: 'continue'
           })
         }else{
           Swal.fire({
-            title: 'Error on Generate Content',
+            title: 'Quer continuar?',
             text: 'Do you want to continue',
             icon: 'error',
             confirmButtonText: 'continue'
           })
         }
+          
+        } catch (error) {
+          Swal.fire({
+            title: error,
+            text: 'Quer continuar?',
+            icon: 'error',
+            confirmButtonText: 'continue'
+          })
+        }
+
+
         modalDialog.removeChild(loading);
 
         // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
@@ -512,12 +535,14 @@
             }),
             headers:{"Content-Type":"application/json"}
           })
-          const test= await query.json()
 
-          const query_2= await fetch('/update_yoaust',{
+          const test=await query.json();
+          console.log(test.id)
+
+         const query_2= await fetch('/update_yoaust',{
             method:'POST',
             body:JSON.stringify({
-               id:test,
+               id:test.id,
                domain:domain.innerText,
                keyword:keyword.innerText,
               _token:csrfToken
@@ -525,25 +550,31 @@
             headers:{"Content-Type":"application/json"}
           })
 
-          console.log(test)
 
-          if(query.ok && query_2.ok){
-            Swal.fire({
-            title: 'Post sucefully created on wordpress',
-            text: 'Do you want to continue',
-            icon: 'success',
-            confirmButtonText: 'continue'
-          })
-            container.remove(loading);
+          try {
+            if(query.ok){
+              Swal.fire({
+              title: 'Post criado comsucesso no wordpress',
+              text: 'Continuar?',
+              icon: 'success',
+              confirmButtonText: 'continue'
+            })
+            loading.remove(this);
           }else{
             Swal.fire({
-            title: 'Error on the process',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
-            button.remove(loading);
+              title: query.statusText,
+              text: 'Continuar?',
+              icon: 'error',
+              confirmButtonText: 'continue'
+            })
+            loading.remove(this);
           }
+            
+          } catch (error) {
+            alert(error)
+          }
+
+
         })
       })
 
