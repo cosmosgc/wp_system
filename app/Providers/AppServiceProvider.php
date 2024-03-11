@@ -7,6 +7,7 @@ use App\Services\EditorService;
 use App\Services\LoginService;
 use App\Services\ScheduleService;
 use App\Services\PostContentService;
+use App\Services\GoogleDriveService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(ScheduleService::class,function($app){
             return new ScheduleService();
+        });
+
+        $this->app->singleton(GoogleDriveService::class,function($app){
+            return new GoogleDriveService();
         });
 
 

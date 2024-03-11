@@ -516,10 +516,10 @@
 
 
 
-      postButton.forEach((button,i)=>{
-        const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
-        const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
-        const loading= document.createElement('span');
+postButton.forEach((button,i)=>{
+      const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
+      const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
+      const loading= document.createElement('span');
 
 
         loading.innerHTML='loading....'
