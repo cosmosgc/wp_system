@@ -573,9 +573,10 @@
             icon: 'error',
             confirmButtonText: 'continue'
           })
-            loading.remove(this);
           }
 
+
+        })
       })
 
 });
