@@ -154,7 +154,6 @@
             <input type="text" name="insert_image" id="insert_image" class="form-control" placeholder="Insert Image">
             <input type="text" name="internal_link" id="internal_link" class="form-control" placeholder="Internal Link">
             <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Keyword">
-            <input type="text" name="post_content" id="post_content" class="form-control" placeholder="Post Content">
             <input type="text" name="post_image" id="post_image" class="form-control" placeholder="Post Image">
             <input type="text" name="schedule_date" id="schedule_date" class="form-control" placeholder="Schedule Date">
             <input type="text" name="status" id="status" class="form-control" placeholder="Status">
@@ -233,7 +232,6 @@
                     insert_image: _insert_image.value,
                     internal_link: _internal_link.value,
                     keyword: _keyword.value,
-                    post_content: _post_content.value,
                     post_image: _post_image.value,
                     schedule_date: _schedule_date.value,
                     status: _status.value,
@@ -263,7 +261,6 @@
                         insert_image: _insert_image.value,
                         internal_link: _internal_link.value,
                         keyword: _keyword.value,
-                        post_content: _post_content.value,
                         post_image: _post_image.value,
                         schedule_date: _schedule_date.value,
                         status: _status.value,
@@ -293,8 +290,8 @@
             })
 
             function open_modal(i = 0, data = null) {
-                let parsedData = JSON.parse(data);
-                console.log(parsedData);
+                // let parsedData = JSON.parse(data);
+                // console.log(parsedData);
 
                 modal.classList.add('open_editor_modal');
 
@@ -467,22 +464,33 @@
             });
 
         // Remove o SVG de loading após a conclusão da query
-
-        if(query.ok){
+        try {
+          if(query.ok){
           Swal.fire({
-            title: 'Content Sucefully created',
+            title: 'Quer continuar?',
             text: 'Do you want to continue',
             icon: 'success',
             confirmButtonText: 'continue'
           })
         }else{
           Swal.fire({
-            title: 'Error on Generate Content',
+            title: 'Quer continuar?',
             text: 'Do you want to continue',
             icon: 'error',
             confirmButtonText: 'continue'
           })
         }
+          
+        } catch (error) {
+          Swal.fire({
+            title: error,
+            text: 'Quer continuar?',
+            icon: 'error',
+            confirmButtonText: 'continue'
+          })
+        }
+
+
         modalDialog.removeChild(loading);
 
         // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
