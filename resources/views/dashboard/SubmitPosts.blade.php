@@ -531,9 +531,8 @@
             }),
             headers:{"Content-Type":"application/json"}
           })
-          const test= await query.json()
 
-          const query_2= await fetch('/update_yoaust',{
+        /*  const query_2= await fetch('/update_yoaust',{
             method:'POST',
             body:JSON.stringify({
                id:test,
@@ -542,27 +541,39 @@
               _token:csrfToken
             }),
             headers:{"Content-Type":"application/json"}
-          })
+          })*/
 
-          console.log(test)
 
-          if(query.ok && query_2.ok){
-            Swal.fire({
-            title: 'Post sucefully created on wordpress',
-            text: 'Do you want to continue',
-            icon: 'success',
-            confirmButtonText: 'continue'
-          })
-            container.remove(loading);
+          try {
+            if(query.ok){
+              Swal.fire({
+              title: 'Post criado comsucesso no wordpress',
+              text: 'Continuar?',
+              icon: 'success',
+              confirmButtonText: 'continue'
+            })
+            loading.remove(this);
           }else{
             Swal.fire({
-            title: 'Error on the process',
-            text: 'Do you want to continue',
+              title: query.statusText,
+              text: 'Continuar?',
+              icon: 'error',
+              confirmButtonText: 'continue'
+            })
+            loading.remove(this);
+          }
+            
+          } catch (error) {
+            Swal.fire({
+            title: error.message,
+            text: 'Continuar?',
             icon: 'error',
             confirmButtonText: 'continue'
           })
             button.remove(loading);
           }
+
+
         })
       })
 
