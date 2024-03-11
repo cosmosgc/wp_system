@@ -43,15 +43,16 @@
             z-index: 1;
             top: 0;
             left: 0;
-            background-color: #86C995; /* Verde leve */
+            background-color: rgba(33, 33, 33, 0.9); /* Dark background */
             padding-top: 20px;
-            transition:.8s;
+            transition: 0.8s;
             font-family: 'Roboto', sans-serif;
-            box-shadow: -2px 0px 11px rgb(0 0 0);
+            box-shadow: -2px 0px 11px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px); /* Glass effect */
         }
 
         .sidebar h2 {
-            color: white;
+            color: #FFFFFF; /* White text color */
             text-align: left;
             padding-left: 5%;
         }
@@ -70,7 +71,7 @@
 
         .sidebar a {
             text-decoration: none;
-            color: white;
+            color: #FFFFFF; /* White link color */
             padding: 5px;
             text-align: left;
             display: block;
@@ -78,13 +79,15 @@
         }
 
         .sidebar a:hover {
-            background-color: #5EAD78; /* Verde mais escuro ao passar o mouse */
-            transition: .5s;
+            background-color: rgba(50, 50, 50, 0.9); /* Darker background on hover */
+            transition: 0.5s;
             border-radius: 10px;
         }
+
         .sidebar li:hover {
             transform: scale(1.05);
         }
+
 
         .content {
             margin-left: 250px;
