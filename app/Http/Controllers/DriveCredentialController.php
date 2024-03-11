@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use GoogleDriveService;
+use App\Services\GoogleDriveService;
 use Illuminate\Http\Request;
 
 class DriveCredentialController extends Controller
