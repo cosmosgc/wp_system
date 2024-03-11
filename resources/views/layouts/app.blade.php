@@ -125,7 +125,8 @@
             margin-left: 237px;
             display: none;
             border-radius: 30px;
-            background: #86c995;
+            background: #373737;
+            color: white;
             border: none;
             box-shadow: 4px 0px 5px 0px rgb(255 255 255);
         }

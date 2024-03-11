@@ -527,55 +527,77 @@
           button.insertAdjacentElement("beforebegin", loading);
           const domain=document.querySelectorAll('.domain')[i];
           const keyword=document.querySelectorAll('.keyword')[i]
-          console.log(domain.innerText);
-          const query= await fetch('/post_content',{
-            method:'POST',
-            body:JSON.stringify({
-               id:data_id,
-               user_id:user_id.value,
-               domain:domain.innerText,
-              _token:csrfToken
-            }),
-            headers:{"Content-Type":"application/json"}
-          })
+          console.log("Postando em: "+domain.innerText);
+            try {
+                const query = await fetch('/post_content', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: data_id,
+                        user_id: user_id.value,
+                        domain: domain.innerText,
+                        _token: csrfToken
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                });
 
-          const test=await query.json();
-          console.log(test.id)
+                if (query.ok) {
+                    const data = await query.json();
+                    console.log(data);
+                    try {
+                        body = {id: data.id,
+                                domain: domain.innerText,
+                                keyword: keyword.innerText,
+                                _token: csrfToken}
+                                console.log(body);
+                        const query_2 = await fetch('/update_yoaust', {
+                            method: 'POST',
+                            body: JSON.stringify(body),
+                            headers: { "Content-Type": "application/json" }
+                        });
 
-         const query_2= await fetch('/update_yoaust',{
-            method:'POST',
-            body:JSON.stringify({
-               id:test.id,
-               domain:domain.innerText,
-               keyword:keyword.innerText,
-              _token:csrfToken
-            }),
-            headers:{"Content-Type":"application/json"}
-          })
+                        if (query_2.ok) {
+                            const data_2 = await query_2.json();
+                            console.log(data_2);
+                            //fazer o query mais uma vez não resolveu o bug
+
+                            // const query_3 = await fetch('/update_yoaust', {
+                            //     method: 'POST',
+                            //     body: JSON.stringify(body),
+                            //     headers: { "Content-Type": "application/json" }
+                            // });
+                            Swal.fire({
+                                title: 'Post criado com sucesso no wordpress',
+                                text: 'Continuar?',
+                                icon: 'success',
+                                confirmButtonText: 'continue'
+                            })
+                            loading.remove(this);
+                        } else {
+                            console.error("Second fetch failed with status:", query_2.status);
+                        }
+                    } catch (error_2) {
+                        console.error("Second fetch error:", error_2);
+                        Swal.fire({
+                            title: query.statusText,
+                            text: 'Continuar?',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        })
+                        loading.remove(this);
+                    }
 
 
-          try {
-            if(query.ok){
-              Swal.fire({
-              title: 'Post criado comsucesso no wordpress',
-              text: 'Continuar?',
-              icon: 'success',
-              confirmButtonText: 'continue'
-            })
-            loading.remove(this);
-          }else{
-            Swal.fire({
-              title: query.statusText,
-              text: 'Continuar?',
-              icon: 'error',
-              confirmButtonText: 'continue'
-            })
-            loading.remove(this);
-          }
 
-          } catch (error) {
-            alert(error)
-          }
+                } else {
+                    console.error("Fetch failed with status:", query.status);
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+
+
+
+
 
 
         })
