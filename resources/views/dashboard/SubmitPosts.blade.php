@@ -19,7 +19,7 @@
 <style>
         .editor_modal {
             height: 80vh;
-            width: 70vw;
+            width: 90vw;
             max-width: 600px;
             position: absolute;
             left: 50%;
@@ -47,6 +47,10 @@
             align-items: center;
             flex-direction: column;
             overflow: auto;
+        }
+        .editor_list_flex{
+            display: flex;
+            flex-direction:column;
         }
 
         .upgrade_button {
@@ -116,7 +120,7 @@
                   <td class="domain">{{$config->domain}}</td>
                   <td class="schedule_date">{{$config->schedule_date}}</td>
                   <td class="status">{{$config->status}}</td>
-                  <td>
+                  <td class="editor_list_flex">
                     <button class="btn btn-primary post_wp">Postar</button>
                     <button class="btn btn-danger delete_config">Deletar</button>
                     <button class="btn btn-success create_content">Gerar conteúdo</button>

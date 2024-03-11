@@ -1,8 +1,8 @@
 <!-- resources/views/layouts/app.blade.php -->
-@php  
+@php
     use App\Models\Editor;
     use Illuminate\Http\Request;
-    
+
 
     $valorCodificado = request()->cookie('editor');
     $user=explode('+',base64_decode($valorCodificado));
@@ -103,7 +103,7 @@
 
         .sidebar i {
             margin-right: 8px;
-    
+
         }
         .sidebar .fa, .sidebar .fas {
             align-self: center;
@@ -234,12 +234,14 @@
     border-collapse: collapse;
     margin: 20px 0;
     box-shadow: 0px 0px 9px 0px black;
+    word-wrap: break-word;
     }
 
     th, td {
     border: 1px solid #ddd;
-    padding: 9px;
+    padding: 3px;
     text-align: left;
+    font-size: small;
     }
 
     th {
@@ -291,7 +293,7 @@
 
     .configs_content{
         display: none;
-        
+
     }
 
     .open_box{
@@ -301,14 +303,14 @@
         display: block;
     }
 
-        
+
 
     </style>
 </head>
 <body>
     <div class="sidebar">
         <button class="close_side">X</button>
-        <button class="open_side"><<</button>     
+        <button class="open_side"><<</button>
         <h2>Dashboard</h2>
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
@@ -330,19 +332,19 @@
             <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class=""></i>Criar no Google Docs</a></ol>
             <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class=""></i>Importar config</a></ol>
             </div>
-            
-            
+
+
             <li><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i> Listagem de credenciais</a></li>
             {{-- <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li> --}}
-            
-            
-            
+
+
+
             <li class="quit"><a href="#" onclick="logoff()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
 
 
             <!-- Adicione outras páginas conforme necessário -->
         </ul>
-        
+
     </div>
 
     <div class="content">
@@ -388,7 +390,7 @@
         return document.cookie.split(';').some(c => {
             return c.trim().startsWith(name + '=');
         });
-    }   
+    }
 
     close_side.addEventListener('click', () => {
         sidebar.classList.add('closed');
