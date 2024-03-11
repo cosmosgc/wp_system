@@ -22,4 +22,8 @@ class Editor extends Model
     public function iaCredentials(){
         return $this->hasOne(Ia_credential::class);
     }
+
+    public function GoogleCredentials(){
+        return $this->hasOne(Drive_credential::class);
+    }
 }

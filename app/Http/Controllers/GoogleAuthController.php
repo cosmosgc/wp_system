@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Drive_credential;
+use App\Models\Editor;
 use Illuminate\Http\Request;
 use Google\Client;
 
 class GoogleAuthController extends Controller
 {
-    public function redirectToGoogle()
+    public function redirectToGoogle($editor)
     {
         // Ler as credenciais do arquivo JSON
-        $credentials = json_decode(file_get_contents(base_path('credentials.json')), true);
+        $credentials = Editor::where('name',$editor)->get();
 
         $client = new Client();
-        $client->setClientId($credentials['web']['client_id']);
-        $client->setClientSecret($credentials['web']['client_secret']);
+        $client->setClientId($credentials[0]->GoogleCredentials->client_id);
+        $client->setClientSecret($credentials[0]->GoogleCredentials->client_secret);
         $client->setRedirectUri(route('google.callback'));
         $client->addScope('https://www.googleapis.com/auth/documents'); // Escopo para acesso ao Google Docs
         $client->setAccessType('offline'); // Garantir que o token de atualização seja retornado durante o processo de autorização inicial
@@ -26,11 +28,11 @@ class GoogleAuthController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         // Ler as credenciais do arquivo JSON
-        $credentials = json_decode(file_get_contents(base_path('credentials.json')), true);
+        $credentials = Editor::where('name',$request->editor)->get();
 
         $client = new Client();
-        $client->setClientId($credentials['web']['client_id']);
-        $client->setClientSecret($credentials['web']['client_secret']);
+        $client->setClientId($credentials[0]->GoogleCredentials->client_id);
+        $client->setClientSecret($credentials[0]->GoogleCredentials->client_secret);
         $client->setRedirectUri(route('google.callback'));
 
         try {

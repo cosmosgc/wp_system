@@ -138,9 +138,9 @@ class PostContentService{
         {
             // Cria uma instância do cliente Google Client
             $client = new Google_Client();
-            $credentials = json_decode(file_get_contents(base_path('credentials.json')), true);
+            $credentials = Editor::where('name',$data->editor)->get();
             $client->setApplicationName('Google Drive API');
-            $client->setDeveloperKey($credentials['web']['api_key']); // Usando a chave de API
+            $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
 
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
