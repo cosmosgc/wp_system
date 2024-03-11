@@ -34,6 +34,7 @@ class WpController extends Controller
             }
 
             public function updateYoast(Request $request){
+                dd($request);
                 $update_meta=$this->wpService->updateYoastRankMath($request->domain,intval($request->id),isset($request->keyword)?$request->keyword:'placeholder');
 
                 return 'aqui'.$update_meta;
