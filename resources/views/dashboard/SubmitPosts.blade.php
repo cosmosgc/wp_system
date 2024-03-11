@@ -117,7 +117,7 @@
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
                   <td>{{$config->category}}</td>
-                  <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
+                  <td class="post-content">{{isset($config->post_content)?'Sim':'Não'}}</td>
                   <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
