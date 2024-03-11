@@ -532,7 +532,7 @@
             headers:{"Content-Type":"application/json"}
           })
 
-        /*  const query_2= await fetch('/update_yoaust',{
+         const query_2= await fetch('/update_yoaust',{
             method:'POST',
             body:JSON.stringify({
                id:test,
@@ -541,7 +541,7 @@
               _token:csrfToken
             }),
             headers:{"Content-Type":"application/json"}
-          })*/
+          })
 
 
           try {
