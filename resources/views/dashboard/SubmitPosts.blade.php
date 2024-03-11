@@ -11,6 +11,9 @@
   //dd($post_configs);
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
+    $post_contents->postContents->each(function ($config) {
+        unset($config->post_content);
+    });
   }
 
 @endphp
@@ -124,7 +127,7 @@
                     <button class="btn btn-primary post_wp">Postar</button>
                     <button class="btn btn-danger delete_config">Deletar</button>
                     <button class="btn btn-success create_content">Gerar conteúdo</button>
-                    <button class="btn btn-success update_content" onclick="open_modal('{{$config->id}}','{{$config}}')">Atualizar conteúdo</button>
+                    <button class="btn btn-success update_content" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">Atualizar conteúdo</button>
                   </td>
                 </tr>
                 <!-- Fim do exemplo de linha de dados -->
@@ -294,7 +297,7 @@
             })
 
             function open_modal(i = 0, data = null) {
-                // let parsedData = JSON.parse(data);
+                let parsedData = JSON.parse(data);
                 // console.log(parsedData);
 
                 modal.classList.add('open_editor_modal');
@@ -484,7 +487,7 @@
             confirmButtonText: 'continue'
           })
         }
-          
+
         } catch (error) {
           Swal.fire({
             title: error,
@@ -569,7 +572,7 @@
             })
             loading.remove(this);
           }
-            
+
           } catch (error) {
             alert(error)
           }
