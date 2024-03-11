@@ -401,11 +401,11 @@
       //const deleteButton= document.querySelector(".delete_config");
       const createDocButton= document.querySelector(".create_doc");
       const postContent=document.querySelector('.post-content')
-      const languages=document.getElementById("languages").value;
-      const writing_style=document.getElementById("style").value;
-      const writing_tone=document.getElementById('writing_tone').value;
-      const sections=document.getElementById('sections').value;
-      const paragraphs= document.getElementById('paragraphs').value;
+      const languages=document.getElementById("languages");
+      const writing_style=document.getElementById("style");
+      const writing_tone=document.getElementById('writing_tone');
+      const sections=document.getElementById('sections');
+      const paragraphs= document.getElementById('paragraphs');
       //const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
       const user_id= document.querySelector('.user_id')
 
@@ -454,19 +454,20 @@
           const modalDialog = document.querySelector('.modal-dialog');
           modalDialog.appendChild(loading);
 
+            let body = {
+                topic: Theme,
+                languages: languages.value,
+                style: writing_style.value,
+                writing_tone: writing_tone.value,
+                sections: sections.value,
+                paragraphs: paragraphs.value,
+                _token: csrfToken
+            }
+            console.log(body);
           try {
             const query = await fetch('/gpt_query', {
                 method: 'POST',
-                body: JSON.stringify({
-                    id: data_id,
-                    topic: Theme,
-                    languages: languages,
-                    style: writing_style,
-                    writing_tone: writing_tone,
-                    sections: sections,
-                    paragraphs: paragraphs,
-                    _token: csrfToken
-                }),
+                body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" }
             });
 
