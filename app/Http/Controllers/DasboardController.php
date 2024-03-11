@@ -131,4 +131,8 @@ class DasboardController extends Controller
         return view('dashboard.SiteCredentialCreated');
     }
 
+    public function tokenDeleted(){
+        return view('dashboard.deletedToken');
+    }
+
 }
