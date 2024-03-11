@@ -509,70 +509,64 @@
 
 
 
-      postButton.forEach((button,i)=>{
-        const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
-        const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
-        const loading= document.createElement('span');
+postButton.forEach((button,i)=>{
+      const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
+      const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
+      const loading= document.createElement('span');
 
 
-        loading.innerHTML='loading....'
-        button.addEventListener('click',async()=>{
-          button.insertAdjacentElement("beforebegin", loading);
-          const domain=document.querySelectorAll('.domain')[i];
-          const keyword=document.querySelectorAll('.keyword')[i]
-          console.log(domain.innerText);
-          const query= await fetch('/post_content',{
-            method:'POST',
-            body:JSON.stringify({
-               id:data_id,
-               user_id:user_id.value,
-               domain:domain.innerText,
-              _token:csrfToken
-            }),
-            headers:{"Content-Type":"application/json"}
-          })
-
-          const test=await query.json();
-          console.log(test.id)
-
-         const query_2= await fetch('/update_yoaust',{
-            method:'POST',
-            body:JSON.stringify({
-               id:test.id,
-               domain:domain.innerText,
-               keyword:keyword.innerText,
-              _token:csrfToken
-            }),
-            headers:{"Content-Type":"application/json"}
-          })
-
-
-          try {
-            if(query.ok){
-              Swal.fire({
-              title: 'Post criado comsucesso no wordpress',
-              text: 'Continuar?',
-              icon: 'success',
-              confirmButtonText: 'continue'
-            })
-            loading.remove(this);
-          }else{
-            Swal.fire({
-              title: query.statusText,
-              text: 'Continuar?',
-              icon: 'error',
-              confirmButtonText: 'continue'
-            })
-            loading.remove(this);
-          }
-            
-          } catch (error) {
-            alert(error)
-          }
-
-
+      loading.innerHTML='loading....'
+      button.addEventListener('click',async()=>{
+        button.insertAdjacentElement("beforebegin", loading);
+        const domain=document.querySelectorAll('.domain')[i];
+        const keyword=document.querySelectorAll('.keyword')[i]
+        const query= await fetch('/post_content',{
+          method:'POST',
+          body:JSON.stringify({
+             id:data_id,
+             user_id:user_id.value,
+             domain:domain.innerText,
+            _token:csrfToken
+          }),
+          headers:{"Content-Type":"application/json"}
         })
+        
+        const test= await query.json()
+        console.log(test);
+        const query_2= await fetch('/update_yoaust',{
+          method:'POST',
+          body:JSON.stringify({
+             id:test.id,
+             domain:domain.innerText,
+             keyword:keyword.innerText,
+            _token:csrfToken
+          }),
+          headers:{"Content-Type":"application/json"}
+        })
+
+        if(query.ok && query_2.ok){
+          Swal.fire({
+          title: 'Post sucefully created on wordpress',
+          text: 'Do you want to continue',
+          icon: 'success',
+          confirmButtonText: 'continue'
+        })
+          loading.remove(this)
+        }else{
+          Swal.fire({
+          title: 'Error on the process',
+          text: 'Do you want to continue',
+          icon: 'error',
+          confirmButtonText: 'continue'
+        })
+          loading.remove(this)
+        }
       })
+    })
+
+
+
+
 
 });
 
