@@ -532,6 +532,8 @@
             headers:{"Content-Type":"application/json"}
           })
 
+          const test=await query.json();
+
          const query_2= await fetch('/update_yoaust',{
             method:'POST',
             body:JSON.stringify({
