@@ -1,5 +1,15 @@
 @extends('layouts.app')
+@php
+use App\Models\Editor;
+//use App\Models\Wp_credential;
+$valorCodificado = request()->cookie('editor');
+//$credentials=Wp_credential::all();
 
+
+$user=explode('+',base64_decode($valorCodificado));
+$user_session=Editor::where('name',$user[0])->get();
+$user_id = $user_session[0]->id
+@endphp
 @section('content')
 <div class="container">
     <div class="row">
@@ -10,7 +20,7 @@
                     <form action="/create_google_credential" method="post">
                         @csrf
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="client_id" id="client_id" placeholder="client_id">
+                            <input disabled type="text" class="form-control" name="client_id" id="client_id" placeholder="{{$user_id}}">
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" name="project_id" id="project_id" placeholder="project_id">
@@ -34,7 +44,7 @@
                             <input type="text" class="form-control" name="api_key" id="api_key" placeholder="api_key">
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" name="editor_id" id="editor_id" placeholder="editor_id">
+                            <input disabled type="text" class="form-control" name="editor_id" id="editor_id" placeholder="{{$user_id}}">
                         </div>
                         <button type="submit" class="btn btn-primary">Criar credenciais google</button>
                     </form>
