@@ -116,7 +116,7 @@
 
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
-                  <td>{{$config->category}}</td>
+                  <td class="category">{{$config->category}}</td>
                   <td class="post-content">{{isset($config->post_content)?'Sim':'Não'}}</td>
                   <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                   <td>{{$config->created_at}}</td>
@@ -375,8 +375,7 @@
                   <option value="encouraging">Encouraging</option>
                   <option value="surprised">Surprised</option>
                   <option value="neutral">Neutral</option>
-
-                </select>
+              </select>
               </div>
               <div class="form-group">
                 <label for="sections">Número de Seções</label>

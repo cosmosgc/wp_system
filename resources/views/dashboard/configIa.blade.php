@@ -16,6 +16,41 @@
 
                             <div class="col-md-6">
                                 <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus value="{{isset($ia_token[0])?$ia_token[0]->open_ai:null}}">
+                                <label for="language">Linguagem</label>
+                                <select name="language" id="language" class="language">
+                                    <option value="portuguese">Postuguês</option>
+                                    <option value="spanish">Espanhol</option>
+                                    <option value="English">Inglês</option>
+                                </select>
+                                <label for="style">Estilo de escrita</label>
+                                <select name="writing_style" id="style" class="style">
+                                    <option value="narrative">Narrative</option>
+                                    <option value="descriptive">Descriptive</option>
+                                    <option value="expository">Expository</option>
+                                    <option value="persuasive">Persuasive</option>
+                                    <option value="creative">Creative</option>
+                                    <option value="objective">Objective</option>
+                                    <option value="subjective">Subjective</option>
+                                </select>
+                                <label for="tone">Ton de Escrita</label>
+                                <select name="writing_tone" id="tone" class="tone">
+                                    <option value="casual">Casual</option>
+                                    <option value="eloquent">Eloquent</option>
+                                    <option value="informal">Informal</option>
+                                    <option value="optimistic">Optimistic</option>
+                                    <option value="worried">Worried</option>
+                                    <option value="friendly">Friendly</option>
+                                    <option value="curious">Curious</option>
+                                    <option value="assertive">Assertive</option>
+                                    <option value="encouraging">Encouraging</option>
+                                    <option value="surprised">Surprised</option>
+                                    <option value="neutral">Neutral</option>
+                                </select>
+
+                                <label for="paragraphs">Número de paragrafos por seções</label>
+                                <input type="number" name="paragraphs" id="paragraphs">
+                                <label for="sections">Número de seções por paragrafo</label>
+                                <input type="number" name="sections" id="sections">
 
                                 @error('token')
                                     <span class="invalid-feedback" role="alert">

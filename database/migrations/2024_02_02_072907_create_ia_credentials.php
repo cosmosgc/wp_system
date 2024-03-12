@@ -14,8 +14,13 @@ return new class extends Migration
         Schema::create('ia_credentials', function (Blueprint $table) {
             $table->id();
             $table->string("open_ai");
-            $table->timestamps();
+            $table->string("language");
+            $table->string("writing_style");
+            $table->string("writing_tone");
+            $table->integer("sections");
+            $table->integer("pagraphs");
             $table->unsignedBigInteger('Editor_id');
+            $table->timestamps();
             $table->foreign('Editor_id')
             ->references('id')
             ->on('editors')
