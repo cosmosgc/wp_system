@@ -83,6 +83,8 @@ class DasboardController extends Controller
         return view('dashboard.upload');
     }
 
+    
+
     public function insertGptToken(){
         if(empty(Ia_credential::all())){
             $token=null;
