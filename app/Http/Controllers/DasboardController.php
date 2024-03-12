@@ -65,8 +65,8 @@ class DasboardController extends Controller
 
     public function listPostConfig(){
         return view('dashboard.SubmitPosts');
-    }  
-    
+    }
+
     public function docCreated(){
         return view('dashboard.DocumentCreated');
     }
@@ -82,8 +82,11 @@ class DasboardController extends Controller
     public function importCsv(){
         return view('dashboard.upload');
     }
+    public function gDrivePort(){
+        return view('dashboard.gdriveport');
+    }
 
-    
+
 
     public function insertGptToken(){
         if(empty(Ia_credential::all())){
@@ -94,7 +97,7 @@ class DasboardController extends Controller
 
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
-        
+
         return view('dashboard.configIa',['ia_token'=>$token,'editor'=>$user[0]]);
     }
 
@@ -111,7 +114,7 @@ class DasboardController extends Controller
                     $editor_credentials[] = $link;
                 }
             }
-            
+
         }
         return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials]);
 
@@ -127,11 +130,11 @@ class DasboardController extends Controller
                     $editor_ia_credentials[] = $iaCredential;
                 }
             }
-            
+
         }
 
         return view('dashboard.IatokenList',['Iacredentials'=>$editor_ia_credentials,'editor'=>$user_credentials]);
-        
+
     }
 
     public function siteCredentialCreated(){

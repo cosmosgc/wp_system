@@ -335,6 +335,7 @@
             <div class="configs_content">
             <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class=""></i>Publicar em sites</a></ol>
             <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class=""></i>Criar no Google Docs</a></ol>
+            <ol><a href="{{ route('dashboard.gDrivePort', ['page' => 'dashboard.gDrivePort']) }}"><i class=""></i>Criar credenciais Google</a></ol>
             <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class=""></i>Importar config</a></ol>
             </div>
 

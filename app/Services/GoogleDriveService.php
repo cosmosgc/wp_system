@@ -7,7 +7,8 @@ use App\Models\Drive_credential;
 class GoogleDriveService{
 
     public function insertDriveCredentials($data){
-       $google_credentials= Drive_credential::create([
+        // dd($data->request);
+        $google_credentials= Drive_credential::create([
             'client_id'=>$data->client_id,
             'project_id'=>$data->project_id,
             'auth_uri'=>$data->auth_uri,
@@ -16,10 +17,9 @@ class GoogleDriveService{
             'client_secret'=>$data->client_secret,
             'redirect_uris'=>$data->redirect_uris,
             'api_key'=>$data->api_key,
-            'Editor_id'=>$data->editor_id,
-
-
+            'Editor_id'=>intval($data->editor_id),
         ]);
+        return $google_credentials;
     }
 
     public function updateCredential($data){
@@ -33,10 +33,5 @@ class GoogleDriveService{
         $new_google_credentials->redirect_uris=$data->redirect_uris;
         $new_google_credentials->api_key=$data->api_key;
         $new_google_credentials->save();
-
-
-
-
-
     }
 }
