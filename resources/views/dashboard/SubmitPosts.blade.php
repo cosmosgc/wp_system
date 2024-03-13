@@ -53,7 +53,7 @@
         }
         .editor_list_flex{
             display: flex;
-            flex-direction:column;
+            flex-direction:row;
         }
 
         .upgrade_button {
@@ -88,12 +88,13 @@
           </div>
           <!-- Formulário de Cadastro de Usuário -->
           <input type="hidden" name="user_id" class="user_id" value={{isset($post_configs[0]->id)?$post_configs[0]->id:0}}>
-          @foreach($post_contents->postContents as $config)
 
-          <div class="container mt-5" data-id="{{$config->id}}">
+
+          <div class="container mt-5">
 
             <table class="table">
               <thead>
+
                 <tr>
                     <th>id</th>
                   <th>Tema</th>
@@ -111,8 +112,9 @@
               <tbody>
                 <!-- Aqui você pode iterar sobre os dados do seu banco de dados para preencher as linhas da tabela -->
                 <!-- Exemplo de uma linha de dados -->
+                @foreach($post_contents->postContents as $config)
                 <tr>
-                <td class="config_id">{{$config->id}}</td>
+                    <td class="config_id">{{$config->id}}</td>
 
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
@@ -124,19 +126,36 @@
                   <td class="schedule_date">{{$config->schedule_date}}</td>
                   <td class="status">{{$config->status}}</td>
                   <td class="editor_list_flex">
-                    <button class="btn btn-primary post_wp">Postar</button>
-                    <button class="btn btn-danger delete_config">Deletar</button>
-                    <button class="btn btn-success create_content">Gerar conteúdo</button>
-                    <button class="btn btn-success update_content" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">Atualizar conteúdo</button>
+                    <!-- Postar Button with Font Awesome icon and alt attribute -->
+                    <button class="btn btn-primary post_wp" data-toggle="tooltip" data-placement="top" title="Postar">
+                    <i class="fas fa-upload"></i>
+                    </button>
+
+                    <!-- Deletar Button with Font Awesome icon and alt attribute -->
+                    <button class="btn btn-danger delete_config" data-toggle="tooltip" data-placement="top" title="Deletar">
+                    <i class="fas fa-trash"></i>
+                    </button>
+
+                    <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
+                    <button class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <i class="fas fa-file"></i>
+                    </button>
+
+                    <!-- Atualizar conteúdo Button with Font Awesome icon, alt attribute, and popover -->
+                    <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
+                    <i class="fas fa-sync-alt"></i>
+                    </button>
+
                   </td>
                 </tr>
+                @endforeach
                 <!-- Fim do exemplo de linha de dados -->
               </tbody>
             </table>
             </div>
 
 
-          @endforeach
+
 
           </div>
         </div>
@@ -147,34 +166,43 @@
         <div class="editor_modal_content">
             <input disabled type="text" name="post_id" id="post_id" class="form-control" placeholder="0">
             <input type="hidden" name="id" id="id">
-            <input type="text" name="editor_id" id="editor_id" class="form-control" placeholder="Editor ID" disabled>
-            <input type="text" name="anchor_1" id="anchor_1" class="form-control" placeholder="Anchor 1">
-            <input type="text" name="anchor_2" id="anchor_2" class="form-control" placeholder="Anchor 2">
-            <input type="text" name="anchor_3" id="anchor_3" class="form-control" placeholder="Anchor 3">
+            <input type="text" name="_theme" id="_theme" class="form-control" placeholder="Theme">
+            <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Keyword">
             <input type="text" name="category" id="category" class="form-control" placeholder="Category">
-            <input type="text" name="created_at" id="created_at" class="form-control" placeholder="Created At" disabled>
-            <input type="text" name="do_follow_link_1" id="do_follow_link_1" class="form-control" placeholder="Do Follow Link 1">
-            <input type="text" name="do_follow_link_2" id="do_follow_link_2" class="form-control" placeholder="Do Follow Link 2">
-            <input type="text" name="do_follow_link_3" id="do_follow_link_3" class="form-control" placeholder="Do Follow Link 3">
             <input type="text" name="domain" id="domain" class="form-control" placeholder="Domain">
-            <input type="text" name="id" id="id" class="form-control" placeholder="ID">
+
             <input type="text" name="insert_image" id="insert_image" class="form-control" placeholder="Insert Image">
             <input type="text" name="internal_link" id="internal_link" class="form-control" placeholder="Internal Link">
-            <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Keyword">
             <input type="text" name="post_image" id="post_image" class="form-control" placeholder="Post Image">
             <input type="text" name="schedule_date" id="schedule_date" class="form-control" placeholder="Schedule Date">
             <input type="text" name="status" id="status" class="form-control" placeholder="Status">
-            <input type="text" name="theme" id="theme" class="form-control" placeholder="Theme">
+
+            <input type="text" name="anchor_1" id="anchor_1" class="form-control" placeholder="Anchor 1">
+            <input type="text" name="anchor_2" id="anchor_2" class="form-control" placeholder="Anchor 2">
+            <input type="text" name="anchor_3" id="anchor_3" class="form-control" placeholder="Anchor 3">
+            <input type="text" name="do_follow_link_1" id="do_follow_link_1" class="form-control" placeholder="Do Follow Link 1">
+            <input type="text" name="do_follow_link_2" id="do_follow_link_2" class="form-control" placeholder="Do Follow Link 2">
+            <input type="text" name="do_follow_link_3" id="do_follow_link_3" class="form-control" placeholder="Do Follow Link 3">
+            <input type="text" name="created_at" id="created_at" class="form-control" placeholder="Created At" disabled>
             <input type="text" name="updated_at" id="updated_at" class="form-control" placeholder="Updated At" disabled>
             <input type="text" name="url_link_1" id="url_link_1" class="form-control" placeholder="URL Link 1">
             <input type="text" name="url_link_2" id="url_link_2" class="form-control" placeholder="URL Link 2">
             <input type="text" name="url_link_3" id="url_link_3" class="form-control" placeholder="URL Link 3">
+            <input type="text" name="editor_id" id="editor_id" class="form-control" placeholder="Editor ID" disabled>
 
         </div>
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
     <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+    });
+    </script>
+
+    <script>
+
             const modal= document.querySelector(".editor_modal");
             const closeModalButton=document.querySelector(".close_modal_button");
             const upgradeButton=document.querySelector(".upgrade_button")
@@ -211,7 +239,7 @@
             let _post_image = document.getElementById("post_image");
             let _schedule_date = document.getElementById("schedule_date");
             let _status = document.getElementById("status");
-            let _theme = document.getElementById("theme");
+            let _theme = document.getElementById("_theme");
             let _updated_at = document.getElementById("updated_at");
             let _url_link_1 = document.getElementById("url_link_1");
             let _url_link_2 = document.getElementById("url_link_2");
@@ -298,7 +326,7 @@
 
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
-                // console.log(parsedData);
+                console.log(parsedData);
 
                 modal.classList.add('open_editor_modal');
 
@@ -316,7 +344,7 @@
                 _insert_image.value = parsedData.insert_image;
                 _internal_link.value = parsedData.internal_link;
                 _keyword.value = parsedData.keyword;
-                _post_content.value = parsedData.post_content;
+                //_post_content.value = parsedData.post_content;
                 _post_image.value = parsedData.post_image;
                 _schedule_date.value = parsedData.schedule_date;
                 _status.value = parsedData.status;

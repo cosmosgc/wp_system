@@ -318,14 +318,17 @@
         <h2>Dashboard</h2>
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
-            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>configurações <span class="arrow">></span></li>
+
+            <li style="cursor: pointer" class="open_box"><i class="fas fa-file-alt"></i>Artigos <span class="arrow">></span></li>
+
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class=""></i>Publicar em sites</a></ol>
                 <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class=""></i>Criar Artigo</a></ol>
 
                 <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class=""></i>Criar no Google Docs</a></ol>
             </div>
-            <li style="cursor: pointer" class="open_box"><i class="fas fa-file-alt"></i>Artigos <span class="arrow">></span></li>
+
+            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>configurações <span class="arrow">></span></li>
 
 
             <div class="configs_content">
