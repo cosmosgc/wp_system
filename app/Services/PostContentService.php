@@ -35,7 +35,7 @@ class PostContentService{
             'internal_link'=>$data->internal_link,
             'post_content'=>isset($doContent)?$doContent:null,
             'insert_image'=>$data->has('insert_image')?1:0,
-            'status'=>'unpublished',
+            'status'=>'Não publicado',
             'schedule_date'=>$data->schedule,
             'domain'=>$data->domain,
             'Editor_id'=>$user_id[0]->id
@@ -69,7 +69,7 @@ class PostContentService{
         $updated_content->internal_link = isset($data->internal_link) ? $data->internal_link : '';
         $updated_content->post_content = isset($data->post_content) ? $data->post_content : '';
         $updated_content->insert_image = isset($data->insert_image) ? $data->insert_image : '';
-        $updated_content->status = isset($data->status) ? $data->status : '';
+        $updated_content->status = isset($data->status) ? $data->status : 'Não postado';
         $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : '';
         $updated_content->domain = isset($data->domain) ? $data->domain : '';
 
