@@ -9,7 +9,7 @@ $valorCodificado = request()->cookie('editor');
 $credentials=Wp_credential::all();
 
 
-$user=explode('+',base64_decode($valorCodificado));  
+$user=explode('+',base64_decode($valorCodificado));
 
 @endphp
 
@@ -52,7 +52,7 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_link_1" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Seguir Link 1</td>
+            <td>Follow Link 1</td>
             <td><input type="checkbox" class="do_follow_link_1" name="" id=""></td>
         </tr>
         <tr>
@@ -64,7 +64,7 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_link_2" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Seguir Link 2</td>
+            <td>Follow Link 2</td>
             <td><input type="checkbox" class="do_follow_link_2" name="" id=""></td>
         </tr>
         <tr>
@@ -76,7 +76,7 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_link_3" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Seguir Link 3</td>
+            <td>Follow Link 3</td>
             <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
         </tr>
         <tr>
@@ -123,7 +123,7 @@ $user=explode('+',base64_decode($valorCodificado));
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            
+
             ///carregar categorias do domino
             var domain=document.querySelectorAll('.domain')
             var category= document.querySelectorAll('.category')
@@ -137,21 +137,21 @@ $user=explode('+',base64_decode($valorCodificado));
                     })
             })
 
-            
 
-            
+
+
             async function dynamicCategories(domain,index){
 
-                                    
+
                     async function getSiteCategories(domain){
                         try {
                             const regex = /^(https?:\/\/)/i;
                             let new_domain=domain.replace(regex,'');
                             console.log(new_domain);
-                            const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);  
+                            const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);
                             const response =await domain_query.json();
-                            return response; 
-                            
+                            return response;
+
                         } catch (error) {
                             Swal.fire({
                             title: error,
@@ -160,7 +160,7 @@ $user=explode('+',base64_decode($valorCodificado));
                             confirmButtonText: 'continue'
                         })
                         }
-   
+
                      }
 
                      try {
@@ -187,9 +187,9 @@ $user=explode('+',base64_decode($valorCodificado));
             submitButtons.forEach(function(submitButton) {
                 submitButton.addEventListener('click', function(event) {
                     event.preventDefault(); // Evita o comportamento padrão de envio do formulário
-        
+
                     // Encontra o "document" pai do botão clicado
-        
+
                     // Coleta dos dados do formulário dentro do "document" atual
                     var formData = new FormData();
                     var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
@@ -262,9 +262,9 @@ $user=explode('+',base64_decode($valorCodificado));
                         loading.innerText='';
 
                         }
-                        
+
                     })
-                                        
+
 
                 });
             });
@@ -275,11 +275,11 @@ $user=explode('+',base64_decode($valorCodificado));
     var adddocumentButton = document.getElementById('adddocument');
         var removedocumentButton = document.getElementById('removedocument');
         const domain= document.querySelectorAll(".domain_options")
-    
+
         adddocumentButton.addEventListener('click', function(event) {
             event.preventDefault();
 
-    
+
             var newdocument = createNewdocument();
             document.body.appendChild(newdocument);
             bindSubmitEvent(newdocument);
@@ -297,16 +297,16 @@ $user=explode('+',base64_decode($valorCodificado));
 
             async function dynamicCategories(domain,index){
 
-                                    
+
             async function getSiteCategories(domain){
                 try {
                     const regex = /^(https?:\/\/)/i;
                     let new_domain=domain.replace(regex,'');
                     console.log(new_domain);
-                    const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);  
+                    const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);
                     const response =await domain_query.json();
-                    return response; 
-                    
+                    return response;
+
                 } catch (error) {
                     Swal.fire({
                     title: error,
@@ -332,10 +332,10 @@ $user=explode('+',base64_decode($valorCodificado));
             }
 
         });
-    
+
         removedocumentButton.addEventListener('click', function(event) {
             event.preventDefault();
-    
+
             var selecteddocument = document.querySelector('.editable-document.selected');
             if (selecteddocument) {
                 selecteddocument.remove();
@@ -359,10 +359,10 @@ $user=explode('+',base64_decode($valorCodificado));
 
                 // Coleta dos dados do formulário dentro do elemento do documento
 
-                
+
             });
         }
-    
+
         function createNewdocument(id = 1) {
             var newdocument = document.createElement('div');
             newdocument.classList.add('content');
@@ -396,7 +396,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="url_link_1" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Seguir Link 1 1</td>
+                        <td>Follow Link 1 1</td>
                         <td><input type="checkbox" class="do_follow_link_1" name="" id=""></td>
                     </tr>
                     <tr>
@@ -408,7 +408,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="url_link_2" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Seguir Link  2</td>
+                        <td>Follow Link  2</td>
                         <td><input type="checkbox" class="do_follow_link_2" name="" id=""></td>
                     </tr>
                     <tr>
@@ -420,7 +420,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         <td class="url_link_3" contenteditable="true"></td>
                     </tr>
                     <tr>
-                        <td>Seguir Link  3</td>
+                        <td>Follow Link  3</td>
                         <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
                     </tr>
                     <tr>
@@ -532,7 +532,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         })
                     }})
                     loading.innerText='';
-                
+
         }
 </script>
 @endsection
