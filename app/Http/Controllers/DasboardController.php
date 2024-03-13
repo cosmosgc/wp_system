@@ -86,6 +86,15 @@ class DasboardController extends Controller
         return view('dashboard.gdriveport');
     }
 
+    public function gptTeste(){
+        
+        $valorCodificado = request()->cookie('editor');
+        $user=explode('+',base64_decode($valorCodificado));
+        $editor=Editor::where('name',$user)->get();
+        $contents=Editor::find($editor[0]->id);
+
+        return view('demandTest',['contents'=>$contents->postContents]);
+    }
 
 
     public function insertGptToken(){

@@ -56,6 +56,7 @@ Route::get('/list_credential',[DasboardController::class,'listWpCredential'])->n
 Route::get('/list_ia_credential',[DasboardController::class,'listIaCredentials'])->name('listIaCredentials');
 Route::get('/deleted_token',[DasboardController::class,'tokenDeleted'])->name('deletedToken');
 Route::get('/list_editor',[DasboardController::class,'ListEditor'])->name('listEditor');
+Route::get('/teste',[DasboardController::class,'gptTeste']);
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');
