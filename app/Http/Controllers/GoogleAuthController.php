@@ -22,6 +22,7 @@ class GoogleAuthController extends Controller
         $client->setClientSecret($keys->GoogleCredentials->client_secret);
         $client->setRedirectUri(route('google.callback'));
         $client->addScope('https://www.googleapis.com/auth/documents'); // Escopo para acesso ao Google Docs
+        $client->addScope('https://www.googleapis.com/auth/drive');
         $client->setAccessType('offline'); // Garantir que o token de atualização seja retornado durante o processo de autorização inicial
 
         // Redirecionar para a URL de autorização do Google

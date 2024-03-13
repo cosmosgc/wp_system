@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Wp_post_content;
 use Google\Client;
 use Google\Service\Docs;
+use Google\Service\Drive;
 use Google\Service\Docs\Request;
 
 
@@ -80,7 +81,7 @@ class PostFileService{
         }
     }
 
-    public function createAndPopulateGoogleDoc($title,$data)
+    public function createAndPopulateGoogleDoc($title,$data,$folderId)
     {
         $accessToken = session('google_access_token');
 
@@ -91,17 +92,26 @@ class PostFileService{
         $client = new Client();
         $client->setAccessToken($accessToken);
 
- 
+       $driveService = new Drive($client);
        $service = new Docs($client);
 
         try {
-            $document = new \Google\Service\Docs\Document([
-                'title' => $title
+            // $document = new \Google\Service\Docs\Document([
+            //     'title' => $title
+            // ]);
+
+            $driveDocument = new \Google\Service\Drive\DriveFile([
+                'name' => $title,
+                'parents' => [$folderId], // Especifica a pasta pai
+                'mimeType' => 'application/vnd.google-apps.document'
             ]);
 
-            $createdDocument = $service->documents->create($document);
-            $documentId = $createdDocument->documentId;
+            $createdDocument = $driveService->files->create($driveDocument, array(
+                'fields' => 'id'
+            ));
 
+           // $createdDocument = $service->documents->create($document);
+            $documentId = $createdDocument->id;
             // Adiciona conteúdo ao documento
             $requests = [
                 new \Google\Service\Docs\Request([
@@ -122,7 +132,8 @@ class PostFileService{
 
             return 'Documento criado e populado com sucesso! Link: ' . "https://docs.google.com/document/d/$documentId/edit";
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Falha ao criar o documento: ' . $e->getMessage());
+            //return redirect()->back()->with('error', 'Falha ao criar o documento: ' . $e->getMessage());
+            return "$e";
         }
     }
     

@@ -50,9 +50,13 @@ send.addEventListener('click',async ()=>{
 
 
 docButton.addEventListener('click',async ()=>{
-
+    let folderLink='https://drive.google.com/drive/folders/1iGQA7TFu1f7mp3r0SY7MTNDqPF72Ucl8?usp=sharing'
+    const folderId=folderLink.split('/folders/');
+    const folder=folderId[1];
+    const realForlderId=folder.split('?usp=sharing');
     let body = {
                 title: 'teste',
+                folder_id:realForlderId[0],
                 _token: csrfToken
             }
             const query = await fetch('/create_doc', {
@@ -63,7 +67,7 @@ docButton.addEventListener('click',async ()=>{
 
     const response=await query.json()
 
-    console.log(response);
+   // console.log(realForlderId[0]);
 
 })
 
