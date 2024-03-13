@@ -120,7 +120,7 @@ class PostFileService{
 
             $service->documents->batchUpdate($documentId, $batchUpdateRequest);
 
-            return 'Documento criado e populado com sucesso! ID: ' . $documentId;
+            return 'Documento criado e populado com sucesso! Link: ' . "https://docs.google.com/document/d/$documentId/edit";
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Falha ao criar o documento: ' . $e->getMessage());
         }

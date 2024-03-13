@@ -44,7 +44,6 @@ class GoogleAuthController extends Controller
         try {
             // Obter o token de acesso usando o código de autorização
             $token = $client->fetchAccessTokenWithAuthCode($request->get('code'));
-
             // Armazenar o token de acesso e o token de atualização na sessão
             session(['google_access_token' => $token['access_token']]);
             session(['google_refresh_token' => $token['refresh_token']]);

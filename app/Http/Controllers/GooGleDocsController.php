@@ -45,7 +45,7 @@ public function createDocFromDb(Request $request){
 
     $content=Wp_post_content::where('theme',$request->title)->get();
     $doc_created=$this->googleDocsService->createAndPopulateGoogleDoc($content[0]->theme,$content[0]->post_content);
-    return redirect()->route('dashboard.DocumentImported');
+    return $doc_created;
 
 
 }
