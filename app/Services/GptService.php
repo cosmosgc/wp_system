@@ -8,6 +8,7 @@ class GptService {
 
     public function sendRequest($command, $topic,$token) {
         // URL da API do GPT
+        ini_set('max_execution_time', 0);
         $apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 

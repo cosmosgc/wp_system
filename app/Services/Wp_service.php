@@ -14,7 +14,7 @@ class Wp_service{
         $this->client=new Client();
     }
 
-    public function postBlogContent($keyword,$title,$content,$featured,$image,$domain,$login,$password){
+    public function postBlogContent($keyword,$title,$category,$content,$featured,$image,$domain,$login,$password){
         //$title = $title->input('title');
         //$content = $content->input('content');
         
@@ -71,21 +71,34 @@ class Wp_service{
          
 
  
+            $category_slug = $category; // Substitua 'nome_da_categoria' pelo slug (nome) da categoria desejada
 
-        $response = $this->client->post($domain.'/wp-json/wp/v2/posts', [
-            'auth' => [$login, $password],
-            'form_params' => [
-                'title' => $title,
-                'content' => $content,
-                'featured_media' => $imageID,
-                'status' => 'publish'
-                
-                // Adicione mais parâmetros conforme necessário
-            ],
-        ]);
+            $category_response = $this->client->get($domain.'/wp-json/wp/v2/categories?name=' . $category_slug);
+            $category_data = json_decode($category_response->getBody(), true);
+            if(!empty($category_data)){
+                $response = $this->client->post($domain.'/wp-json/wp/v2/posts', [
+                    'auth' => ['sistema', '$k9&VJCCL%9ysPHcEaj97#WL'],
+                    'form_params' => [
+                        'title' => $title,
+                        'content' => $content,
+                        'featured_media' => $imageID,
+                        'status' => 'publish',
+                        'categories'=>[$category_data[0]['id']]
+                        
+                        // Adicione mais parâmetros conforme necessário
+                    ],
+                ]);
+
+                return $response->getBody();
+
+            }else{
+                return 'nome da categoria não encontrado';
+            }
+            
 
 
-        return $response->getBody();
+
+        
     }
 
     public function updateYoastRankMath($domain,$post_id,$keyword){

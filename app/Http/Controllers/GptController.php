@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Sys_helper;
+use App\Models\Editor;
 use App\Models\Ia_credential;
 use App\Models\Wp_post_content;
 use App\Services\GptService;
@@ -34,16 +35,25 @@ class GptController extends Controller
         return $commands;
     }
 
-
     public function generatePost(Request $request){
+        foreach($request->topic as $topic){
+            $response=$this->gptThread($request,$topic);
+        }
+    }
+
+
+    public function gptThread($post_data,$post_title){
         $gptData='';
-        
-        $title = $request->topic;
-        $language = $request->languages;
-        $writing_style = $request->style;
-        $writing_tone = $request->writing_tone;
-        $sections_count = intval($request->sections);
-        $paragraphs_per_section = intval($request->paragraphs);
+        $valorCodificado = request()->cookie('editor');
+        $user=explode('+',base64_decode($valorCodificado));
+        $editor=Editor::where('name',$user)->get();
+        $token=Editor::find($editor[0]->id)->iaCredentials;
+        $title = $post_title;
+        $language = $token->language;
+        $writing_style = $token->wrinting_style;
+        $writing_tone = $token->writing_tone;
+        $sections_count = intval($token->sections);
+        $paragraphs_per_section = intval($token->paragraphs);
         $key=null;
         $anchor_1=null;
         $anchor_1_url=null;
@@ -55,26 +65,28 @@ class GptController extends Controller
         $anchor_2=null;
         $anchor_3=null;
         $id_content=null;
-        $token=Ia_credential::all()[0]->open_ai;
+        $token=$token->open_ai;
+        //return json_encode('chegou aqui');
 
-
-        foreach(Wp_post_content::where('id',intval($request->id))->get() as $post_config){
+        
+            foreach(Wp_post_content::where('theme',$post_title)->get() as $post_config){
             
-            
-            $key=$post_config->keyword;
-            $anchor_1=$post_config->anchor_1;
-            $anchor_2=$post_config->anchor_2;
-            $anchor_3=$post_config->anchor_3;
-            $id_content=$post_config->id;
-            $anchor_1_url=$post_config->url_link_1;
-            $anchor_2_url=$post_config->url_link_2;
-            $anchor_3_url=$post_config->url_link_3;
-            $do_follow_link_1=$post_config->do_follow_link_1;
-            $do_follow_link_2=$post_config->$do_follow_link_2;
-            $do_follow_link_3=$post_config->$do_follow_link_3;
+                $key=$post_config->keyword;
+                $anchor_1=$post_config->anchor_1;
+                $anchor_2=$post_config->anchor_2;
+                $anchor_3=$post_config->anchor_3;
+                $id_content=$post_config->id;
+                $anchor_1_url=$post_config->url_link_1;
+                $anchor_2_url=$post_config->url_link_2;
+                $anchor_3_url=$post_config->url_link_3;
+                $do_follow_link_1=$post_config->do_follow_link_1;
+                $do_follow_link_2=$post_config->$do_follow_link_2;
+                $do_follow_link_3=$post_config->$do_follow_link_3;
+            }
+
+        
 
 
-        }
 
 
 
@@ -96,8 +108,7 @@ class GptController extends Controller
 
 
         ));
-
-        //dd($clean_command);  
+ 
         $total_comands=[];
         $complete_post=[];
         $total_comands[]=$clean_command;
@@ -115,7 +126,7 @@ class GptController extends Controller
                 'Ancora 3'=>$anchor_3,
                 'Follow_1'=>($do_follow_link_1==1)?'do':'no',
                 'Follow_2'=>($do_follow_link_2==1)?'do':'no',
-                'Follow_3'=>($do_follow_link_3)?'do':'no',
+                'Follow_3'=>($do_follow_link_3==1)?'do':'no',
                 'language' => $language,
                 'title' => $title,
                 'writing_style' => $writing_style,
@@ -126,7 +137,7 @@ class GptController extends Controller
 
         }
         foreach($total_comands[0] as $command){
-            $gpt_request=$this->gptService->sendRequest($command,$request->topic,$token);
+            $gpt_request=$this->gptService->sendRequest($command,$post_title,$token);
             $data=$gpt_request['choices'][0]['message']['content'];
             $complete_post[]=$data;
             $gptData.=$data."\n\n";
@@ -178,7 +189,6 @@ class GptController extends Controller
         $conclusion_request=$this->gptService->sendRequest($conclusion_command[0],$heading,$token);
         $complete_post[]=$conclusion_request['choices'][0]['message']['content'];
         $newGptData.=$conclusion_request['choices'][0]['message']['content']."\n\n";
-
 
         
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$gptData]);
