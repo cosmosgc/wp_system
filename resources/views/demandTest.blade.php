@@ -13,13 +13,21 @@
  @endforeach
 
  <button class="enviar">enviar</button>
+ <button class="doc">Create Doc</button>
+
+ <form action="/create_doc" method="post">
+    @csrf
+    <button type="submit" class="btn btn-primary">Conectar comSua conta google</button>
+</form>
 
  <script>
 
 
 const  gptQuery=document.querySelectorAll('.theme')
 const send=document.querySelector(".enviar")
+const docButton= document.querySelector(".doc")
 let data=[]
+
 const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 gptQuery.forEach((e)=>{
  data.push(e.textContent);
@@ -37,6 +45,29 @@ send.addEventListener('click',async ()=>{
                 body: JSON.stringify(body),
                 headers: { "Content-Type": "application/json" }
             });
+
+})
+
+
+docButton.addEventListener('click',async ()=>{
+    let folderLink='https://drive.google.com/drive/folders/1iGQA7TFu1f7mp3r0SY7MTNDqPF72Ucl8?usp=sharing'
+    const folderId=folderLink.split('/folders/');
+    const folder=folderId[1];
+    const realForlderId=folder.split('?usp=sharing');
+    let body = {
+                title: 'teste',
+                folder_id:realForlderId[0],
+                _token: csrfToken
+            }
+            const query = await fetch('/create_doc', {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: { "Content-Type": "application/json" }
+            });
+
+    const response=await query.json()
+
+   // console.log(realForlderId[0]);
 
 })
 

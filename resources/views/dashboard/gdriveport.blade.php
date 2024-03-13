@@ -20,7 +20,7 @@ $user_id = $user_session[0]->id
                     <form action="/create_google_credential" method="post">
                         @csrf
                         <div class="mb-3">
-                            <input disabled type="text" class="form-control" name="client_id" id="client_id" placeholder="{{$user_id}}">
+                            <input  type="text" class="form-control" name="client_id" id="client_id" >
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" name="project_id" id="project_id" placeholder="project_id">
