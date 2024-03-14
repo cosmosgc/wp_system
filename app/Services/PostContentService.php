@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Google_Client;
 use Google_Service_Drive;
+use Monolog\Handler\DeduplicationHandler;
 
 class PostContentService{
 
@@ -138,15 +139,14 @@ class PostContentService{
         {
             // Cria uma instância do cliente Google Client
             $client = new Google_Client();
-            $credentials = Editor::where('name',$data->editor)->get();
+            $credentials = Editor::where('name',$data->session_user)->get();
             $client->setApplicationName('Google Drive API');
             $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
-
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
 
             // ID da pasta no Google Drive que contém as imagens
-            $folderId = $data->folder_id;
+            $folderId = $data->gdrive_url;
             // Lista os arquivos na pasta especificada
             $results = $service->files->listFiles([
                 'q' => "'$folderId' in parents",

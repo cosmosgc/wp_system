@@ -76,10 +76,6 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="gdrive_url" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>ID da pasta do drive</td>
-            <td class="image_folder_id" contenteditable="true"></td>
-        </tr>
-        <tr>
             <td>Ancora 1</td>
             <td class="anchor_1" contenteditable="true"></td>
         </tr>
@@ -201,6 +197,14 @@ $user=explode('+',base64_decode($valorCodificado));
                     // Coleta dos dados do formulário dentro do "document" atual
                     var formData = new FormData();
                     var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
+                    const str=document.querySelector('.gdrive_url').innerText;
+                    let folderId=null;
+                    if(str){
+
+                        folderId=str.split('/folders/')[1]
+                    }
+                    console.log(folderId);
+            
 
                     if (imageFile) {
                         formData.append('sys_image', imageFile);
@@ -218,9 +222,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         anchor_3: document.querySelector('.anchor_3').innerText,
                         url_link_3: document.querySelector('.url_link_3').innerText,
                         do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
-                        image_url: document.querySelector('.url_image').innerText,
-                        gdrive_url: document.querySelector('.gdrive_url').innerText,
-                        folder_id: document.querySelector('.image_folder_id').innerText,
+                        gdrive_url: folderId,
                         insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule: document.querySelector('.schedule').value,
                         domain: document.querySelector('.domain').value,
@@ -233,7 +235,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     loading.classList.add('loading')
                     loading.innerText='loading....'
                     const content=document.querySelector(".content");
-                    // Faz a requisição AJAX
+                    // // Faz a requisição AJAX
                     content.appendChild(loading);
                     fetch('/insert_post_content', {
                         method: 'POST',
@@ -479,6 +481,12 @@ $user=explode('+',base64_decode($valorCodificado));
         function getDataFromTable(element) {
             var inputElements = element;
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+            const str=inputElements.querySelector('.gdrive_url').innerText;
+            const folderId=null;
+            if(str.length){
+                folderId=str[1]
+            }
+            
 
             var postData = {
                         theme: inputElements.querySelector('.theme').innerText,
@@ -493,8 +501,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         url_link_3: inputElements.querySelector('.url_link_3').innerText,
                         do_follow_link_3: inputElements.querySelector('.do_follow_link_3').checked ? 1 : 0,
                         image_url: inputElements.querySelector('.url_image').innerText,
-                        gdrive_url: inputElements.querySelector('.gdrive_url').innerText,
-                        folder_id: inputElements.querySelector('.image_folder_id').innerText,
+                        gdrive_url:folderId,
                         insert_image: inputElements.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule_date: inputElements.querySelector('.schedule_date input[type="date"]').value,
                         domain: inputElements.querySelector('.domain').value,
