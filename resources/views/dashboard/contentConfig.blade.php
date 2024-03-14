@@ -43,6 +43,42 @@ $user=explode('+',base64_decode($valorCodificado));
             <td>Categoria</td>
             <td><select class="category" name="" id=""></select></td>
         </tr>
+
+        <tr>
+            <td>Site</td>
+            <td>
+            <select class="domain">
+                @foreach($credentials as $credential)
+                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
+
+                @endforeach
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Agendar</td>
+            <td class="schedule_date" contenteditable="true"><input class="schedule" type="date"></td>
+        </tr>
+        <tr>
+            <td>Imagem de destaque</td>
+            <td class="insert_image"><input type="checkbox"></td>
+        </tr>
+        <tr>
+            <td>Imagem do post</td>
+            <td class="sys_image"><input type="file"></td>
+        </tr>
+        <tr>
+            <td>Imagem URL</td>
+            <td class="url_image" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>GoogleDrive URL</td>
+            <td class="gdrive_url" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>ID da pasta do drive</td>
+            <td class="image_folder_id" contenteditable="true"></td>
+        </tr>
         <tr>
             <td>Ancora 1</td>
             <td class="anchor_1" contenteditable="true"></td>
@@ -79,41 +115,13 @@ $user=explode('+',base64_decode($valorCodificado));
             <td>Follow Link 3</td>
             <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
         </tr>
-        <tr>
-            <td>Imagem URL</td>
-            <td class="url_image" contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td>GoogleDrive URL</td>
-            <td class="gdrive_url" contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td>ID da pasta do drive</td>
-            <td class="image_folder_id" contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td>Imagem de destaque</td>
-            <td class="insert_image"><input type="checkbox"></td>
-        </tr>
-        <tr>
-            <td>Imagem do post</td>
-            <td class="sys_image"><input type="file"></td>
-        </tr>
-        <tr>
-            <td>Agendar</td>
-            <td class="schedule_date" contenteditable="true"><input class="schedule" type="date"></td>
-        </tr>
-        <tr>
-            <td>Site</td>
-            <td>
-            <select class="domain">
-                @foreach($credentials as $credential)
-                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
 
-                @endforeach
-            </select>
-            </td>
-        </tr>
+
+
+
+
+
+
         </table>
         <input type="hidden" name="user" class="user" value="{{$user[0]}}">
         <button type="button" class="btn btn-outline-primary submitForm">Salvar config</button>
