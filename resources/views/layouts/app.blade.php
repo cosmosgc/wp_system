@@ -322,41 +322,31 @@
             <li style="cursor: pointer" class="open_box"><i class="fas fa-file-alt"></i>Artigos <span class="arrow">></span></li>
 
             <div class="configs_content">
-                <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class=""></i>Publicar em sites</a></ol>
-                <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class=""></i>Criar Artigo</a></ol>
-
-                <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class=""></i>Criar no Google Docs</a></ol>
+                <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-upload"></i>Publicar em sites</a></ol>
+                <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-pen"></i>Criar Artigo</a></ol>
+                <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fas fa-file"></i>Criar no Google Docs</a></ol>
             </div>
 
             <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>configurações <span class="arrow">></span></li>
 
-
             <div class="configs_content">
-
-                <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class=""></i>Registrar Sites</a></ol>
+                <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-registered"></i>Registrar Sites</a></ol>
                 @if($test[0]->is_admin==1)
-                <ol><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class=""></i>Registrar Editor</a></ol>
-                <ol><a href="{{ route('listEditor', ['page' => 'editor_list']) }}"><i class=""></i>Editores cadastrados</a></ol>
+                <ol><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-plus"></i>Registrar Editor</a></ol>
+                <ol><a href="{{ route('listEditor', ['page' => 'editor_list']) }}"><i class="fas fa-users"></i>Editores cadastrados</a></ol>
                 @endif
-                <ol><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class=""></i>Registrar Token OpenAi</a></ol>
+                <ol><a href="{{ route('dashboard.configia', ['page' => 'ConfigGpt']) }}"><i class="fas fa-key"></i>Registrar Token OpenAi</a></ol>
                 @if($test[0]->is_admin==1)
-                <ol><a href="{{ route('listIaCredentials', ['page' => 'listGptToken']) }}"><i class=""></i>Listar Tokens</a></ol>
+                <ol><a href="{{ route('listIaCredentials', ['page' => 'listGptToken']) }}"><i class="fas fa-list"></i>Listar Tokens</a></ol>
                 @endif
-                <ol><a href="{{ route('dashboard.gDrivePort', ['page' => 'dashboard.gDrivePort']) }}"><i class=""></i>Criar credenciais Google</a></ol>
-                <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class=""></i>Importar config</a></ol>
-                <ol><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class=""></i> Listagem de credenciais</a></ol>
-
+                <ol><a href="{{ route('dashboard.gDrivePort', ['page' => 'dashboard.gDrivePort']) }}"><i class="fas fa-id-card"></i>Criar credenciais Google</a></ol>
+                <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-file-upload"></i>Importar config</a></ol>
+                <ol><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i>Listagem de credenciais</a></ol>
             </div>
-            <!-- <li><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i> Listagem de credenciais</a></li> -->
-            {{-- <li><a href="{{ route('dashboard.createPost', ['page' => 'post_creation']) }}"><i class="fas fa-file-alt"></i> Criar Conteúdo</a></li> --}}
-
-
 
             <li class="quit"><a href="#" onclick="logoff()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-
-
-            <!-- Adicione outras páginas conforme necessário -->
         </ul>
+
 
     </div>
 
