@@ -45,10 +45,14 @@
         top: 15px;
         right: 17px;
     }
+    .editor_list_flex{
+            display: flex;
+            flex-direction:row;
+        }
 
 </style>
 
-<h2>Usuários cadastrados</h2>
+<h2>Lista de editores</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -70,14 +74,19 @@
                         <td class="cpf">{{ $editor->cpf }}</td>
                         <td class="cnpj">{{ $editor->cnpj }}</td>
                         <td class="email">{{ $editor->email }}</td>
-                        <td>
-                            <form action="{{ route('editor.destroy', $editor->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Excluir</button>
-                            </form>
+                        <td class="editor_list_flex">
+                        <form action="{{ route('editor.destroy', $editor->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir">
+                                <i class="fas fa-trash-alt"></i> <span class="visually-hidden">Excluir</span>
+                            </button>
+                        </form>
 
-                            <button class="update">Alterar</button>
+                        <button class="update btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar">
+                            <i class="fas fa-edit"></i> <span class="visually-hidden">Alterar</span>
+                        </button>
+
                         </td>
                     </tr>
                 @endforeach
