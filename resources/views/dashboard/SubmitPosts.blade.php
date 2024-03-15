@@ -538,10 +538,10 @@
 
 
 postButton.forEach((button,i)=>{
-      const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
-      const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
+      const container = button.closest('tr'); // Encontra o contêiner mais próximo ao botão clicado
+      const configId = container.querySelector('.config_id').textContent; // Find the td with class "config_id" and get its text content
+        console.log('Config ID:', configId);
       const loading= document.createElement('span');
-
 
         loading.innerHTML='loading....'
         button.addEventListener('click',async()=>{
@@ -549,15 +549,18 @@ postButton.forEach((button,i)=>{
           const domain=document.querySelectorAll('.domain')[i];
           const keyword=document.querySelectorAll('.keyword')[i]
           console.log("Postando em: "+domain.innerText);
-            try {
-                const query = await fetch('/post_content', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        id: data_id,
+          data = {
+                        id: configId,
                         user_id: user_id.value,
                         domain: domain.innerText,
                         _token: csrfToken
-                    }),
+                    };
+
+            console.log(data);
+            try {
+                const query = await fetch('/post_content', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
                     headers: { "Content-Type": "application/json" }
                 });
 

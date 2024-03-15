@@ -327,7 +327,7 @@
                 <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fas fa-file"></i>Criar no Google Docs</a></ol>
             </div>
 
-            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>configurações <span class="arrow">></span></li>
+            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>Configurações <span class="arrow">></span></li>
 
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-registered"></i>Registrar Sites</a></ol>

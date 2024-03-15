@@ -17,7 +17,7 @@ class Wp_service{
     public function postBlogContent($keyword,$title,$category,$content,$featured,$image,$domain,$login,$password){
         //$title = $title->input('title');
         //$content = $content->input('content');
-        
+
 
         $featuredImagePath = storage_path('app/public/'.$image);
 
@@ -68,23 +68,23 @@ class Wp_service{
             // Caso a imagem não seja encontrada, você pode tomar ação apropriada aqui
             $imageID = null;
 }
-         
 
- 
+
+
             $category_slug = $category; // Substitua 'nome_da_categoria' pelo slug (nome) da categoria desejada
 
             $category_response = $this->client->get($domain.'/wp-json/wp/v2/categories?name=' . $category_slug);
             $category_data = json_decode($category_response->getBody(), true);
             if(!empty($category_data)){
                 $response = $this->client->post($domain.'/wp-json/wp/v2/posts', [
-                    'auth' => ['sistema', '$k9&VJCCL%9ysPHcEaj97#WL'],
+                    'auth' => [$login, $password],
                     'form_params' => [
                         'title' => $title,
                         'content' => $content,
                         'featured_media' => $imageID,
                         'status' => 'publish',
                         'categories'=>[$category_data[0]['id']]
-                        
+
                         // Adicione mais parâmetros conforme necessário
                     ],
                 ]);
@@ -94,11 +94,11 @@ class Wp_service{
             }else{
                 return 'nome da categoria não encontrado';
             }
-            
 
 
 
-        
+
+
     }
 
     public function updateYoastRankMath($domain,$post_id,$keyword){
@@ -107,15 +107,15 @@ class Wp_service{
             'post_id' => $post_id,
             'keyword' => $keyword
         );
-        
+
         $ch = curl_init($domain.'/wp-json/wp_manage/v1/update_yoast_keyword/');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        
+
         $response = curl_exec($ch);
         curl_close($ch);
-        
+
         return $response;
         // Verifique a resposta
         if ($response === false) {
