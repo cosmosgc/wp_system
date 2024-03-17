@@ -191,7 +191,7 @@ class GptController extends Controller
         $newGptData.=$conclusion_request['choices'][0]['message']['content']."\n\n";
 
         
-        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$gptData]);
+        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$newGptData]);
         return $insertPostContent;
     }
 }
