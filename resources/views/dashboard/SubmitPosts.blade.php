@@ -135,9 +135,8 @@
                     <button class="btn btn-danger delete_config" data-toggle="tooltip" data-placement="top" title="Deletar">
                     <i class="fas fa-trash"></i>
                     </button>
-
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post(`{{$config->theme}}`)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 
@@ -323,7 +322,74 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
+            async function generate_post(topic_to_generate){
+                const loading=document.createElement('div');
+                const loadingSVG = `
+                            <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" fill="none" r="10" stroke="#000" stroke-width="2">
+                    <animate attributeName="r" from="8" to="20" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+                    </circle>
+                <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
+                </svg>
 
+                `
+                loading.innerHTML=loadingSVG;
+
+                const modalDialog = document.querySelector('.modal-dialog');
+                modalDialog.appendChild(loading);
+
+                    let topics = [topic_to_generate];
+                    let body = {
+                        topics: topics,
+                        _token: csrfToken
+                    };
+                    console.log(body);
+                    try {
+                        const query = await fetch('/gpt_query', {
+                            method: 'POST',
+                            body: JSON.stringify(body),
+                            headers: { "Content-Type": "application/json" }
+                        });
+
+
+
+                // Remove o SVG de loading após a conclusão da query
+                try {
+                if(query.ok){
+                Swal.fire({
+                    title: 'Post publicado com sucesso?',
+                    text: 'Do you want to continue',
+                    icon: 'success',
+                    confirmButtonText: 'continue'
+                })
+                }
+
+                } catch (error) {
+                Swal.fire({
+                    title: error,
+                    text: 'Quer continuar?',
+                    icon: 'error',
+                    confirmButtonText: 'continue'
+                })
+                }
+
+
+                modalDialog.removeChild(loading);
+
+                // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
+            } catch (error) {
+                console.error('Ocorreu um erro:', error);
+                Swal.fire({
+                    title: 'Error on the process',
+                    text: 'Do you want to continue',
+                    icon: 'error',
+                    confirmButtonText: 'continue'
+                })
+                // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
+                document.body.removeChild(loadingSVG);
+            }
+        }
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
                 console.log(parsedData);
@@ -481,22 +547,20 @@
           const modalDialog = document.querySelector('.modal-dialog');
           modalDialog.appendChild(loading);
 
+            let topics = [Theme];
             let body = {
-                topic: Theme,
-                languages: languages.value,
-                style: writing_style.value,
-                writing_tone: writing_tone.value,
-                sections: sections.value,
-                paragraphs: paragraphs.value,
+                topics: topics,
                 _token: csrfToken
-            }
+            };
             console.log(body);
-          try {
-            const query = await fetch('/gpt_query', {
-                method: 'POST',
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" }
-            });
+            try {
+                const query = await fetch('/gpt_query', {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: { "Content-Type": "application/json" }
+                });
+
+
 
         // Remove o SVG de loading após a conclusão da query
         try {
@@ -534,6 +598,8 @@
         document.body.removeChild(loadingSVG);
     }
 })
+
+
 
 
 
