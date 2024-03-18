@@ -9,7 +9,7 @@
 </head>
 <body>
  @foreach($contents as $content)
-    <p class="theme">{{$content->theme}}</p>
+    <p class="theme" data-id="{{$content->id}}">{{$content->theme}}</p>
  @endforeach
 
  <button class="enviar">enviar</button>
@@ -27,17 +27,21 @@ const  gptQuery=document.querySelectorAll('.theme')
 const send=document.querySelector(".enviar")
 const docButton= document.querySelector(".doc")
 let data=[]
+let theme=[]
 
 const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 gptQuery.forEach((e)=>{
- data.push(e.textContent);
+    const id =e.getAttribute("data-id");
+ data.push(id);
+ theme.push(e.textContent);
 
 })
 
 send.addEventListener('click',async ()=>{
 
     let body = {
-                topic: data,
+                id: data,
+                title:theme,
                 _token: csrfToken
             }
             const query = await fetch('/gpt_query', {
