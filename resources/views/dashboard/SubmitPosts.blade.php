@@ -20,7 +20,7 @@
 
 @section('content')
 <style>
-        .editor_modal {
+        .editor_modal, .batch_modal {
             height: 80vh;
             width: 90vw;
             max-width: 600px;
@@ -89,7 +89,7 @@
           <!-- Formulário de Cadastro de Usuário -->
           <input type="hidden" name="user_id" class="user_id" value={{isset($post_configs[0]->id)?$post_configs[0]->id:0}}>
 
-
+          <button class="btn btn-primary btn-block" onclick="openBatch()">Gerar conteúdo em lote</button>
           <div class="container mt-5">
 
             <table class="table">
@@ -193,6 +193,39 @@
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
+
+    <div class="batch_modal">
+    <div class="batch_modal_content">
+        @foreach($post_contents->postContents as $config)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="theme{{$config->id}}" value="{{$config->theme}}">
+                <label class="form-check-label" for="theme{{$config->id}}">{{$config->theme}}</label>
+            </div>
+        @endforeach
+    </div>
+
+        <button class="btn btn-primary batch_button">Criar conteudo</button>
+        <button class="btn btn-danger close_batch_modal_button">X</button>
+    </div>
+    <script>
+        function getSelectedItems() {
+            // Select all the checkboxes with the class 'form-check-input'
+            var checkboxes = document.querySelectorAll('.form-check-input');
+            var selectedItems = [];
+
+            checkboxes.forEach(function(checkbox) {
+                // If the checkbox is checked, add an object with id and theme to the selectedItems array
+                if (checkbox.checked) {
+                    selectedItems.push({id: checkbox.id.replace('theme', ''), theme: checkbox.value});
+                }
+            });
+
+            // Display the selected items in the console as an array of objects
+            return(selectedItems);
+        }
+    </script>
+
+
     <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -203,8 +236,12 @@
     <script>
 
             const modal= document.querySelector(".editor_modal");
+            const batch_modal= document.querySelector(".batch_modal");
             const closeModalButton=document.querySelector(".close_modal_button");
             const upgradeButton=document.querySelector(".upgrade_button")
+
+            const batchCloseModalButton=document.querySelector(".close_batch_modal_button");
+            const batchStartButton=document.querySelector(".batch_button")
 
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
@@ -322,7 +359,15 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
-            async function generate_post(topic_to_generate){
+            batchCloseModalButton.addEventListener('click',()=>{
+                batch_modal.classList.remove('open_editor_modal');
+            })
+            batchStartButton.addEventListener('click',()=>{
+                batch_modal.classList.remove('open_editor_modal');
+                selected_items = getSelectedItems();
+                console.log(selected_items);
+            })
+            async function generate_post(topic_to_generate, id=null){
                 const loading=document.createElement('div');
                 const loadingSVG = `
                             <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -338,10 +383,11 @@
 
                 const modalDialog = document.querySelector('.modal-dialog');
                 modalDialog.appendChild(loading);
-
-                    let topics = [topic_to_generate];
+                let data=[]
+                let theme=[]
+                    theme.push(topic_to_generate);
                     let body = {
-                        topics: topics,
+                        title: theme,
                         _token: csrfToken
                     };
                     console.log(body);
@@ -390,6 +436,9 @@
                 document.body.removeChild(loadingSVG);
             }
         }
+            function openBatch(){
+                batch_modal.classList.add('open_editor_modal');
+            }
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
                 console.log(parsedData);
