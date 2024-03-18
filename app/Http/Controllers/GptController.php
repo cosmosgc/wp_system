@@ -38,7 +38,8 @@ class GptController extends Controller
     public function generatePost(Request $request){
         
         foreach($request->title as $key=>$topic){
-            $response=$this->gptThread($request->id[$key],$topic);
+            $id=isset($request->id[$key])?$request->id[$key]:null;
+            $response=$this->gptThread($id,$topic);
         }
     }
 

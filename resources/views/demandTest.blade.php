@@ -40,7 +40,6 @@ gptQuery.forEach((e)=>{
 send.addEventListener('click',async ()=>{
 
     let body = {
-                id: data,
                 title:theme,
                 _token: csrfToken
             }
