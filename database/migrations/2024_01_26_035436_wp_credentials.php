@@ -13,8 +13,8 @@ return new class extends Migration
     {
         //
         Schema::create('wp_credentials', function (Blueprint $table){
-            $table->id();
-            $table->unsignedBigInteger('Editor_id');
+            $table->uuid('id')->primary();
+            $table->uuid('Editor_id');
             $table->string("wp_login");
             $table->string("wp_password");
             $table->string("wp_domain");

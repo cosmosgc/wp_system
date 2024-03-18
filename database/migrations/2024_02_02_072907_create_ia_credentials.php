@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ia_credentials', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string("open_ai");
             $table->string("language");
             $table->string("writing_style");
             $table->string("writing_tone");
             $table->integer("sections");
             $table->integer("pagraphs");
-            $table->unsignedBigInteger('Editor_id');
+            $table->uuid('Editor_id');
             $table->timestamps();
             $table->foreign('Editor_id')
             ->references('id')

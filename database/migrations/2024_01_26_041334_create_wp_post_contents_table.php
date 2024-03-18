@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wp_post_contents', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string("theme")->nullable();
             $table->string("keyword")->nullable();
-            $table->unsignedBigInteger('Editor_id');
+            $table->uuid('Editor_id');
             $table->unsignedBigInteger('Credential_id')->nullable();
             $table->string("category")->nullable();
             $table->string("anchor_1")->nullable();

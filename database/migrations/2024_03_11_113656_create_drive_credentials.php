@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('drive_credentials', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('client_id');
             $table->string('project_id');
             $table->string('auth_uri');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('client_secret');
             $table->string('redirect_uris');
             $table->string('api_key');
-            $table->unsignedBigInteger('Editor_id');
+            $table->uuid('Editor_id');
 
             $table->foreign('Editor_id')
             ->references('id')

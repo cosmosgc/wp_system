@@ -36,16 +36,17 @@ class GptController extends Controller
     }
 
     public function generatePost(Request $request){
-        $topics = $request->input('topics'); // Retrieve the array of topics from the request
-        foreach($topics as $topic){
-            $response = $this->gptThread($request, $topic);
+
+        foreach($request->title as $key=>$topic){
+            $id=isset($request->id[$key])?$request->id[$key]:null;
+            $response=$this->gptThread($id,$topic);
         }
     }
 
 
 
 
-    public function gptThread($post_data,$post_title){
+    public function gptThread($id,$post_title){
         $gptData='';
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
@@ -72,7 +73,7 @@ class GptController extends Controller
         //return json_encode('chegou aqui');
 
 
-            foreach(Wp_post_content::where('theme',$post_title)->get() as $post_config){
+            foreach(Wp_post_content::where(['theme'=>$post_title,'id'=>$id])->get() as $post_config){
 
                 $key=$post_config->keyword;
                 $anchor_1=$post_config->anchor_1;
@@ -193,7 +194,7 @@ class GptController extends Controller
         $newGptData.=$conclusion_request['choices'][0]['message']['content']."\n\n";
 
 
-        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$gptData]);
+        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$newGptData]);
         return $insertPostContent;
     }
 }
