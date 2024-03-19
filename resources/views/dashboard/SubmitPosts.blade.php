@@ -223,6 +223,17 @@
             // Display the selected items in the console as an array of objects
             return(selectedItems);
         }
+        function separateThemesAndIDs(selectedItems) {
+            var themes = [];
+            var ids = [];
+
+            selectedItems.forEach(function(item) {
+                themes.push(item.theme);
+                ids.push(item.id);
+            });
+
+            return { themes: themes, ids: ids };
+        }
     </script>
 
 
@@ -365,7 +376,9 @@
             batchStartButton.addEventListener('click',()=>{
                 batch_modal.classList.remove('open_editor_modal');
                 selected_items = getSelectedItems();
-                console.log(selected_items);
+                separatedData = separateThemesAndIDs(selected_items);
+                console.log(separatedData.themes, separatedData.ids);
+                generate_post(separatedData.themes, separatedData.ids);
             })
             async function generate_post(topic_to_generate, id=null){
                 const loading=document.createElement('div');
@@ -390,6 +403,9 @@
                         title: theme,
                         _token: csrfToken
                     };
+                    if (id !== undefined) {
+                        body.id = separatedData.id;
+                    }
                     console.log(body);
                     try {
                         const query = await fetch('/gpt_query', {
