@@ -71,7 +71,7 @@ class GptController extends Controller
         //return json_encode('chegou aqui');
 
         
-            foreach(Wp_post_content::where(['theme'=>$post_title,'id'=>$id])->get() as $post_config){
+            foreach(Wp_post_content::where(['theme'=>$post_title])->orWhere(['id'=>$id])->get() as $post_config){
             
                 $key=$post_config->keyword;
                 $anchor_1=$post_config->anchor_1;
