@@ -360,12 +360,6 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
-            batchCloseModalButton.addEventListener('click',()=>{
-                batch_modal.classList.remove('open_editor_modal');
-            })
-            batchStartButton.addEventListener('click',()=>{
-              batch_generate();
-            })
               function batch_generate(){
                 selected_items = getSelectedItems();
                 separatedData = separateThemesAndIDs(selected_items);
