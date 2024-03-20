@@ -12,8 +12,9 @@
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
     $post_contents->postContents->each(function ($config) {
-        unset($config->post_content);
+        $config->post_content = true;
     });
+
   }
 
 @endphp
@@ -87,9 +88,9 @@
             </div>
           </div>
           <!-- Formulário de Cadastro de Usuário -->
-          <input type="hidden" name="user_id" class="user_id" value={{isset($post_configs[0]->id)?$post_configs[0]->id:0}}>
+          <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
-          <button class="btn btn-primary btn-block" onclick="openBatch()">Gerar conteúdo em lote</button>
+          <button class="btn btn-primary btn-block" onclick="batch_generate()">Gerar conteúdo em lote</button>
           <div class="container mt-5">
 
             <table class="table">
@@ -114,7 +115,10 @@
                 <!-- Exemplo de uma linha de dados -->
                 @foreach($post_contents->postContents as $config)
                 <tr>
-                    <td class="config_id">{{$config->id}}</td>
+                  <td class="config_id">
+                      <input class="form-check-input" type="checkbox" id="config{{$config->id}}" data-theme="{{$config->theme}}">
+                  </td>
+
 
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
@@ -136,7 +140,7 @@
                     <i class="fas fa-trash"></i>
                     </button>
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button onclick="generate_post(`{{$config->theme}}`)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post([`{{$config->theme}}`])" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 
@@ -209,20 +213,19 @@
     </div>
     <script>
         function getSelectedItems() {
-            // Select all the checkboxes with the class 'form-check-input'
-            var checkboxes = document.querySelectorAll('.form-check-input');
-            var selectedItems = [];
+          var checkboxes = document.querySelectorAll('.form-check-input');
+          var selectedItems = [];
 
-            checkboxes.forEach(function(checkbox) {
-                // If the checkbox is checked, add an object with id and theme to the selectedItems array
-                if (checkbox.checked) {
-                    selectedItems.push({id: checkbox.id.replace('theme', ''), theme: checkbox.value});
-                }
-            });
+          checkboxes.forEach(function(checkbox) {
+              if (checkbox.checked) {
+                  var id = checkbox.id.replace('config', '');
+                  var theme = checkbox.getAttribute('data-theme');
+                  selectedItems.push({ id: id, theme: theme });
+              }
+          });
 
-            // Display the selected items in the console as an array of objects
-            return(selectedItems);
-        }
+          return selectedItems;
+      }
         function separateThemesAndIDs(selectedItems) {
             var themes = [];
             var ids = [];
@@ -374,12 +377,16 @@
                 batch_modal.classList.remove('open_editor_modal');
             })
             batchStartButton.addEventListener('click',()=>{
+              batch_generate();
+            })
+              function batch_generate(){
                 batch_modal.classList.remove('open_editor_modal');
                 selected_items = getSelectedItems();
                 separatedData = separateThemesAndIDs(selected_items);
                 console.log(separatedData.themes, separatedData.ids);
+                //return;
                 generate_post(separatedData.themes, separatedData.ids);
-            })
+            }
             async function generate_post(topic_to_generate, id=null){
                 const loading=document.createElement('div');
                 const loadingSVG = `
@@ -397,14 +404,14 @@
                 const modalDialog = document.querySelector('.modal-dialog');
                 modalDialog.appendChild(loading);
                 let data=[]
-                let theme=[]
-                    theme.push(topic_to_generate);
+                let theme=topic_to_generate
+                //theme.push(topic_to_generate);
                     let body = {
                         title: theme,
                         _token: csrfToken
                     };
                     if (id !== undefined) {
-                        body.id = separatedData.id;
+                        body.id = id;
                     }
                     console.log(body);
                     try {
@@ -583,14 +590,15 @@
       generateContentButtons.forEach((button,i) => {
 
         button.addEventListener('click', function () {
-          const modal = document.querySelector('.modal');
-          modal.classList.add('show');
-          modal.style.display = 'block';
-          document.body.classList.add('modal-open');
+            //Não precisamos mais disso
+        //   const modal = document.querySelector('.modal');
+        //   modal.classList.add('show');
+        //   modal.style.display = 'block';
+        //   document.body.classList.add('modal-open');
 
-            data_id = button.closest('.container').getAttribute('data-id');
-            Theme = button.closest('.container').querySelector('.theme').innerText;
-          });
+        //     data_id = button.closest('.container').getAttribute('data-id');
+        //     Theme = button.closest('.container').querySelector('.theme').innerText;
+        //   });
 
         });
 
