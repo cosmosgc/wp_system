@@ -12,7 +12,10 @@
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
     $post_contents->postContents->each(function ($config) {
-        $config->post_content = true;
+        if (!empty($config->post_content) && isset($config->post_content)) {
+          // $config->post_content is not empty, null, or undefined
+          $config->post_content = true;
+        }
     });
 
   }
@@ -198,19 +201,6 @@
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
 
-    <div class="batch_modal">
-    <div class="batch_modal_content">
-        @foreach($post_contents->postContents as $config)
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="theme{{$config->id}}" value="{{$config->theme}}">
-                <label class="form-check-label" for="theme{{$config->id}}">{{$config->theme}}</label>
-            </div>
-        @endforeach
-    </div>
-
-        <button class="btn btn-primary batch_button">Criar conteudo</button>
-        <button class="btn btn-danger close_batch_modal_button">X</button>
-    </div>
     <script>
         function getSelectedItems() {
           var checkboxes = document.querySelectorAll('.form-check-input');
@@ -250,12 +240,9 @@
     <script>
 
             const modal= document.querySelector(".editor_modal");
-            const batch_modal= document.querySelector(".batch_modal");
             const closeModalButton=document.querySelector(".close_modal_button");
             const upgradeButton=document.querySelector(".upgrade_button")
 
-            const batchCloseModalButton=document.querySelector(".close_batch_modal_button");
-            const batchStartButton=document.querySelector(".batch_button")
 
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
@@ -380,7 +367,6 @@
               batch_generate();
             })
               function batch_generate(){
-                batch_modal.classList.remove('open_editor_modal');
                 selected_items = getSelectedItems();
                 separatedData = separateThemesAndIDs(selected_items);
                 console.log(separatedData.themes, separatedData.ids);
@@ -459,9 +445,6 @@
                 document.body.removeChild(loadingSVG);
             }
         }
-            function openBatch(){
-                batch_modal.classList.add('open_editor_modal');
-            }
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
                 console.log(parsedData);
