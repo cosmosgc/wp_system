@@ -478,7 +478,7 @@
 
         </script>
 
-{{-- 
+
     <div class="modal fade" id="generateContentModal" tabindex="-1" role="dialog" aria-labelledby="generateContentModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -541,7 +541,7 @@
           </div>
         </div>
       </div>
-    </div> --}}
+    </div>
 
     <script>
 
