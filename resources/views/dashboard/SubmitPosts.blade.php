@@ -93,7 +93,22 @@
           <!-- Formulário de Cadastro de Usuário -->
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
-          <button class="btn btn-primary btn-block" onclick="batch_generate()">Gerar conteúdo em lote</button>
+            <div class="row">
+                <div class="col-md-6" style="
+    display: flex;
+    justify-content: flex-end;
+">
+                    <button class="btn btn-success btn-block" onclick="batch_generate()">
+                    <i class="fas fa-file"> Gerar conteúdo em lote</i>
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" onclick="batch_post()">
+                    <i class="fas fa-upload"></i> Postar em lote
+                    </button>
+                </div>
+            </div>
+
           <div class="container mt-5">
 
             <table class="table">
@@ -367,6 +382,18 @@
                 //return;
                 generate_post(separatedData.themes, separatedData.ids);
             }
+            async function batch_post(){
+                selected_items = getSelectedItems();
+                separatedData = separateThemesAndIDs(selected_items);
+                console.log(separatedData.themes, separatedData.ids);
+
+                // Utilizando um loop for assíncrono com async/await para postar em lotes
+                for (const id of separatedData.ids) {
+                    await post_to_wp(id);
+                }
+            }
+
+
             async function generate_post(topic_to_generate, id=null){
                 const loading=document.createElement('div');
                 const loadingSVG = `
@@ -439,6 +466,79 @@
                 document.body.removeChild(loadingSVG);
             }
         }
+            async function post_to_wp(configId){
+                const user_id= document.querySelector('.user_id')
+                data = {
+                        id: configId,
+                        user_id: user_id.value,
+                        //domain: domain.innerText,
+                        _token: csrfToken
+                    };
+
+                console.log(data);
+                return;
+                try {
+                    const query = await fetch('/post_content', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    if (query.ok) {
+                        const data = await query.json();
+                        console.log(data);
+                        try {
+                            body = {id: data.id,
+                                    domain: domain.innerText,
+                                    keyword: keyword.innerText,
+                                    _token: csrfToken}
+                                    console.log(body);
+                            const query_2 = await fetch('/update_yoaust', {
+                                method: 'POST',
+                                body: JSON.stringify(body),
+                                headers: { "Content-Type": "application/json" }
+                            });
+
+                            if (query_2.ok) {
+                                const data_2 = await query_2.json();
+                                console.log(data_2);
+                                //fazer o query mais uma vez não resolveu o bug
+
+                                // const query_3 = await fetch('/update_yoaust', {
+                                //     method: 'POST',
+                                //     body: JSON.stringify(body),
+                                //     headers: { "Content-Type": "application/json" }
+                                // });
+                                Swal.fire({
+                                    title: 'Post criado com sucesso no wordpress',
+                                    text: 'Continuar?',
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                })
+                                loading.remove(this);
+                            } else {
+                                console.error("Second fetch failed with status:", query_2.status);
+                            }
+                        } catch (error_2) {
+                            console.error("Second fetch error:", error_2);
+                            Swal.fire({
+                                title: query.statusText,
+                                text: 'Continuar?',
+                                icon: 'error',
+                                confirmButtonText: 'continue'
+                            })
+                            loading.remove(this);
+                        }
+
+
+
+                    } else {
+                        console.error("Fetch failed with status:", query.status);
+                    }
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                }
+            }
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
                 console.log(parsedData);
