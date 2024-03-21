@@ -228,7 +228,7 @@
 
           checkboxes.forEach(function(checkbox) {
               if (checkbox.checked) {
-                  var id = checkbox.id.replace('config', '');
+                  var id = checkbox.getAttribute('data-id');
                   var theme = checkbox.getAttribute('data-theme');
                   selectedItems.push({ id: id, theme: theme });
               }
@@ -472,6 +472,7 @@
             }
         }
             async function post_to_wp(configId){
+                //Essa função não está tentando ajustar o rank do yoast ou arrumar o problema do rank
                 const user_id= document.querySelector('.user_id')
                 data = {
                         id: configId,
@@ -481,7 +482,7 @@
                     };
 
                 console.log(data);
-                return;
+                //return;
                 try {
                     const query = await fetch('/post_content', {
                         method: 'POST',
@@ -492,51 +493,6 @@
                     if (query.ok) {
                         const data = await query.json();
                         console.log(data);
-                        try {
-                            body = {id: data.id,
-                                    domain: domain.innerText,
-                                    keyword: keyword.innerText,
-                                    _token: csrfToken}
-                                    console.log(body);
-                            const query_2 = await fetch('/update_yoaust', {
-                                method: 'POST',
-                                body: JSON.stringify(body),
-                                headers: { "Content-Type": "application/json" }
-                            });
-
-                            if (query_2.ok) {
-                                const data_2 = await query_2.json();
-                                console.log(data_2);
-                                //fazer o query mais uma vez não resolveu o bug
-
-                                // const query_3 = await fetch('/update_yoaust', {
-                                //     method: 'POST',
-                                //     body: JSON.stringify(body),
-                                //     headers: { "Content-Type": "application/json" }
-                                // });
-                                Swal.fire({
-                                    title: 'Post criado com sucesso no wordpress',
-                                    text: 'Continuar?',
-                                    icon: 'success',
-                                    confirmButtonText: 'continue'
-                                })
-                                loading.remove(this);
-                            } else {
-                                console.error("Second fetch failed with status:", query_2.status);
-                            }
-                        } catch (error_2) {
-                            console.error("Second fetch error:", error_2);
-                            Swal.fire({
-                                title: query.statusText,
-                                text: 'Continuar?',
-                                icon: 'error',
-                                confirmButtonText: 'continue'
-                            })
-                            loading.remove(this);
-                        }
-
-
-
                     } else {
                         console.error("Fetch failed with status:", query.status);
                     }
