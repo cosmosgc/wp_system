@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@php  
+@php
     use Illuminate\Http\Request;
 
     $valorCodificado = request()->cookie('editor');

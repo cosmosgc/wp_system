@@ -15,10 +15,10 @@ $user=explode('+',base64_decode($valorCodificado));
 
 @section('content')
 <h3>Criar configuração para postagem</h3>
-<div class="flex-container-column">
+<!-- <div class="flex-container-column">
     <button id="adddocument" class="btn btn-primary">Adicionar documento</button>
     <button id="removedocument" class="btn btn-danger">Limpar documendos</button>
-</div>
+</div> -->
 @foreach($credentials as $credential)
     <input type="hidden" name="opt" class="domain_options" value="{{$credential->wp_domain}}">
 
@@ -204,7 +204,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         folderId=str.split('/folders/')[1]
                     }
                     console.log(folderId);
-            
+
 
                     if (imageFile) {
                         formData.append('sys_image', imageFile);
@@ -267,7 +267,11 @@ $user=explode('+',base64_decode($valorCodificado));
                             text: 'DVoce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
-                        })
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
 
                         loading.innerText='';
 
@@ -486,7 +490,7 @@ $user=explode('+',base64_decode($valorCodificado));
             if(str.length){
                 folderId=str[1]
             }
-            
+
 
             var postData = {
                         theme: inputElements.querySelector('.theme').innerText,
