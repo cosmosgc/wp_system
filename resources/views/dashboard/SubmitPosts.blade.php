@@ -471,6 +471,7 @@
                 document.body.removeChild(loadingSVG);
             }
         }
+
             async function post_to_wp(configId){
                 //Essa função não está tentando ajustar o rank do yoast ou arrumar o problema do rank
                 const user_id= document.querySelector('.user_id')
