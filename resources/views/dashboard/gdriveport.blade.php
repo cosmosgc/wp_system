@@ -83,7 +83,7 @@ $user_id = $user_session[0]->id
                     </div>
                     <div class="mb-3">
                         <label for="editor_id" class="form-label" data-bs-toggle="popover" data-bs-placement="right" title="Editor ID" data-bs-content="Este é o identificador exclusivo atribuído ao editor.">Editor ID</label>
-                        <input disabled type="text" class="form-control" name="editor_id" id="editor_id" placeholder="{{$user_id}}">
+                        <input disabled type="text" class="form-control" name="editor_id" value="{{$user_id}}" id="editor_id" placeholder="{{$user_id}}">
                     </div>
                         <button type="submit" class="btn btn-primary">Criar credenciais Google</button>
                     </form>
