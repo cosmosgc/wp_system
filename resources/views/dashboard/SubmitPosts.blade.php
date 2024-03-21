@@ -72,6 +72,11 @@
             right: 17px;
         }
 
+          /* Estilo para o efeito de blur */
+      .modal.show {
+        backdrop-filter: blur(4px);
+      }
+
     </style>
     <div class="dashboard-content">
         <h1>Lista de posts e configurações</h1>
@@ -118,8 +123,8 @@
                 <!-- Exemplo de uma linha de dados -->
                 @foreach($post_contents->postContents as $config)
                 <tr>
-                  <td class="config_id">
-                      <input class="form-check-input" type="checkbox" id="config{{$config->id}}" data-theme="{{$config->theme}}">
+                  <td>
+                      <input class="form-check-input config_id" type="checkbox"  data-id="{{$config->id}}" data-theme="{{$config->theme}}">
                   </td>
 
 
@@ -230,12 +235,12 @@
     </script>
 
 
-    <script>
+    {{-- <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
     });
-    </script>
+    </script> --}}
 
     <script>
 
@@ -407,7 +412,7 @@
                 try {
                 if(query.ok){
                 Swal.fire({
-                    title: 'Post publicado com sucesso?',
+                    title: 'Post publicado com sucesso',
                     text: 'Do you want to continue',
                     icon: 'success',
                     confirmButtonText: 'continue'
@@ -473,7 +478,7 @@
 
         </script>
 
-
+{{-- 
     <div class="modal fade" id="generateContentModal" tabindex="-1" role="dialog" aria-labelledby="generateContentModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -536,7 +541,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
 
     <script>
 
@@ -558,104 +563,103 @@
       document.addEventListener('DOMContentLoaded', function () {
       const generateContentButtons = document.querySelectorAll('.create_content');
       const postButton= document.querySelectorAll(".post_wp");
-      const generateButton=document.querySelector('.generateContentBtn');
+      //const generateButton=document.querySelector('.generateContentBtn');
       let data_id;
       let Theme;
-      console.log(generateButton);
 
 
-      generateContentButtons.forEach((button,i) => {
+      // generateContentButtons.forEach((button,i) => {
 
-        button.addEventListener('click', function () {
-            //Não precisamos mais disso
-        //   const modal = document.querySelector('.modal');
-        //   modal.classList.add('show');
-        //   modal.style.display = 'block';
-        //   document.body.classList.add('modal-open');
+      //   button.addEventListener('click', function () {
+      //       //Não precisamos mais disso
+      //   //   const modal = document.querySelector('.modal');
+      //   //   modal.classList.add('show');
+      //   //   modal.style.display = 'block';
+      //   //   document.body.classList.add('modal-open');
 
-        //     data_id = button.closest('.container').getAttribute('data-id');
-        //     Theme = button.closest('.container').querySelector('.theme').innerText;
-        //   });
+      //   //     data_id = button.closest('.container').getAttribute('data-id');
+      //   //     Theme = button.closest('.container').querySelector('.theme').innerText;
+      //   //   });
 
-        });
-
-
-        generateButton.addEventListener('click',async ()=>{
-          const loading=document.createElement('div');
-          const loadingSVG = `
-                    <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" fill="none" r="10" stroke="#000" stroke-width="2">
-              <animate attributeName="r" from="8" to="20" dur="1.5s" begin="0s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite"/>
-            </circle>
-          <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
-          </svg>
-
-          `
-          loading.innerHTML=loadingSVG;
-
-          const modalDialog = document.querySelector('.modal-dialog');
-          modalDialog.appendChild(loading);
-
-            let topics = [Theme];
-            let body = {
-                topics: topics,
-                _token: csrfToken
-            };
-            console.log(body);
-            try {
-                const query = await fetch('/gpt_query', {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: { "Content-Type": "application/json" }
-                });
+      //   });
 
 
+//         generateButton.addEventListener('click',async ()=>{
+//           const loading=document.createElement('div');
+//           const loadingSVG = `
+//                     <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+//             <circle cx="20" cy="20" fill="none" r="10" stroke="#000" stroke-width="2">
+//               <animate attributeName="r" from="8" to="20" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+//               <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+//             </circle>
+//           <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
+//           </svg>
 
-        // Remove o SVG de loading após a conclusão da query
-        try {
-          if(query.ok){
-          Swal.fire({
-            title: 'Post publicado com sucesso?',
-            text: 'Do you want to continue',
-            icon: 'success',
-            confirmButtonText: 'continue'
-          })
-        }
+//           `
+//           loading.innerHTML=loadingSVG;
 
-        } catch (error) {
-          Swal.fire({
-            title: error,
-            text: 'Quer continuar?',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
-        }
+//           const modalDialog = document.querySelector('.modal-dialog');
+//           modalDialog.appendChild(loading);
 
-
-        modalDialog.removeChild(loading);
-
-        // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
-    } catch (error) {
-        console.error('Ocorreu um erro:', error);
-        Swal.fire({
-            title: 'Error on the process',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
-        // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
-        document.body.removeChild(loadingSVG);
-    }
-})
+//             let topics = [Theme];
+//             let body = {
+//                 topics: topics,
+//                 _token: csrfToken
+//             };
+//             console.log(body);
+//             try {
+//                 const query = await fetch('/gpt_query', {
+//                     method: 'POST',
+//                     body: JSON.stringify(body),
+//                     headers: { "Content-Type": "application/json" }
+//                 });
 
 
 
+//         // Remove o SVG de loading após a conclusão da query
+//         try {
+//           if(query.ok){
+//           Swal.fire({
+//             title: 'Post publicado com sucesso?',
+//             text: 'Do you want to continue',
+//             icon: 'success',
+//             confirmButtonText: 'continue'
+//           })
+//         }
 
+//         } catch (error) {
+//           Swal.fire({
+//             title: error,
+//             text: 'Quer continuar?',
+//             icon: 'error',
+//             confirmButtonText: 'continue'
+//           })
+//         }
+
+
+//         modalDialog.removeChild(loading);
+
+//         // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
+//     } catch (error) {
+//         console.error('Ocorreu um erro:', error);
+//         Swal.fire({
+//             title: 'Error on the process',
+//             text: 'Do you want to continue',
+//             icon: 'error',
+//             confirmButtonText: 'continue'
+//           })
+//         // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
+//         document.body.removeChild(loadingSVG);
+//     }
+// })
+
+
+
+const container = document.querySelectorAll('.container');
 
 postButton.forEach((button,i)=>{
-      const container = button.closest('tr'); // Encontra o contêiner mais próximo ao botão clicado
-      const configId = container.querySelector('.config_id').textContent; // Find the td with class "config_id" and get its text content
+       // Encontra o contêiner mais próximo ao botão clicado
+      const configId = id[i].getAttribute('data-id'); // Find the td with class "config_id" and get its text content
         console.log('Config ID:', configId);
       const loading= document.createElement('span');
 
@@ -800,11 +804,4 @@ deletebutton.forEach((e,i)=>{
 </script>
 
 
-
-<style>
-  /* Estilo para o efeito de blur */
-  .modal.show {
-    backdrop-filter: blur(4px);
-  }
-</style>
 @endsection
