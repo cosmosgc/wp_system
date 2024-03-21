@@ -17,7 +17,7 @@ class GoogleDriveService{
             'client_secret'=>$data->client_secret,
             'redirect_uris'=>$data->redirect_uris,
             'api_key'=>$data->api_key,
-            'Editor_id'=>intval($data->editor_id),
+            'Editor_id'=>$data->editor_id,
         ]);
         return $google_credentials;
     }
