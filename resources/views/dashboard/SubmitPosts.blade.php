@@ -71,6 +71,18 @@
             top: 15px;
             right: 17px;
         }
+        tr.loading {
+            background: #8d8d8d54;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% {
+                background-color: #8d8d8d54;
+            }
+            100% {
+                background-color: #8d8d8d;
+            }
+        }
 
           /* Estilo para o efeito de blur */
       .modal.show {
@@ -180,7 +192,7 @@
                   </td>
                 </tr>
                 @endforeach
-                
+
                 @else
                 @foreach($post_contents->postContents as $config)
                 <tr>
@@ -283,7 +295,7 @@
             checkbox.checked = isChecked;
             });
         }
-        function getSelectedItems() {
+        function getSelectedItems(condition ='loading', remove = false) {
           var checkboxes = document.querySelectorAll('.form-check-input');
           var selectedItems = [];
 
@@ -292,6 +304,13 @@
                   var id = checkbox.getAttribute('data-id');
                   var theme = checkbox.getAttribute('data-theme');
                   selectedItems.push({ id: id, theme: theme });
+                  var parentTr = checkbox.closest('tr');
+                  console.log(parentTr);
+                  if(remove){
+                    parentTr.classList.remove(condition);
+                  }else{
+                    parentTr.classList.add(condition);
+                  }
               }
           });
 
@@ -441,22 +460,24 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
-              function batch_generate(){
-                selected_items = getSelectedItems();
+              async function batch_generate(){
+                selected_items = getSelectedItems('loading');
                 separatedData = separateThemesAndIDs(selected_items);
                 // console.log(separatedData.themes, separatedData.ids);
                 //return;
-                generate_post(separatedData.themes, separatedData.ids);
+                await generate_post(separatedData.themes, separatedData.ids);
+                removed = getSelectedItems('loading', true);
             }
             async function batch_post(){
-                selected_items = getSelectedItems();
+                selected_items = getSelectedItems('loading');
                 separatedData = separateThemesAndIDs(selected_items);
-                console.log(separatedData.themes, separatedData.ids);
-
+                // console.log(separatedData.themes, separatedData.ids);
+                // return;
                 // Utilizando um loop for assíncrono com async/await para postar em lotes
                 for (const id of separatedData.ids) {
                     await post_to_wp(id);
                 }
+                removed = getSelectedItems('loading', true);
             }
 
 
