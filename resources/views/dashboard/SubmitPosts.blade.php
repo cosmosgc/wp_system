@@ -3,14 +3,25 @@
 
 @php
   use App\Models\Editor;
+  use App\Models\Wp_post_content;
+use Illuminate\Http\Request;
+
 
   $valorCodificado = request()->cookie('editor');
   $user=explode('+',base64_decode($valorCodificado));
   //dd($user);
   $post_configs= Editor::where('name',$user[0])->get();
   //dd($post_configs);
+  $searchParam = request()->input('query');
+  $results=Wp_post_content::where ('theme','like','%'.request()->input('query').'%')->orWhere('domain','like','%'.request()->input('query').'%')->get();
+    //dd($results);
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
+    if(!empty($results))
+        $post_contents->postContents=$results;
+    else{
+        $searchParam = '';
+    }
     $post_contents->postContents->each(function ($config) {
         if (!empty($config->post_content) && isset($config->post_content)) {
           // $config->post_content is not empty, null, or undefined
@@ -102,7 +113,7 @@
               <div class="search_bar">
                 <form action="/list_content" method="get">
                   <div class="input-group">
-                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Nome do post ou Dominio">
+                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Nome do post ou Dominio" value="{{$searchParam}}">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit">Search</button>
                     </div>
