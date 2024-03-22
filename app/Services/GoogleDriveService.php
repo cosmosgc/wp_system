@@ -7,7 +7,6 @@ use App\Models\Drive_credential;
 class GoogleDriveService{
 
     public function insertDriveCredentials($data){
-        // dd($data->request);
         $google_credentials= Drive_credential::create([
             'client_id'=>$data->client_id,
             'project_id'=>$data->project_id,
