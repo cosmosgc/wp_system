@@ -79,14 +79,18 @@
 
     </style>
     <div class="dashboard-content">
+        @if(!empty($search))
+        <h1>Resultados da busca</h1>
+        @else
         <h1>Lista de posts e configurações</h1>
+        @endif
         <div class="row justify-content-center">
           <div class="card card-medium">
             <div class="card-body">
               <div class="search_bar">
-                <form action="/search" method="get">
+                <form action="/list_content" method="get">
                   <div class="input-group">
-                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Dominio">
+                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Nome do post ou Dominio">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit">Search</button>
                     </div>
@@ -95,7 +99,7 @@
               </div>
             </div>
           </div>
-          <!-- Formulário de Cadastro de Usuário -->
+
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
             <div class="row">
@@ -136,6 +140,48 @@
               <tbody>
                 <!-- Aqui você pode iterar sobre os dados do seu banco de dados para preencher as linhas da tabela -->
                 <!-- Exemplo de uma linha de dados -->
+                @if(!empty($search))
+                @foreach($search as $config)
+                <tr>
+                  <td>
+                      <input class="form-check-input config_id" type="checkbox"  data-id="{{$config->id}}" data-theme="{{$config->theme}}">
+                  </td>
+
+
+                  <td class="theme">{{$config->theme}}</td>
+                  <td class="keyword">{{$config->keyword}}</td>
+                  <td class="category">{{$config->category}}</td>
+                  <td class="post-content">{{isset($config->post_content)?'Sim':'Não'}}</td>
+                  <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
+                  <td>{{$config->created_at}}</td>
+                  <td class="domain">{{$config->domain}}</td>
+                  <td class="schedule_date">{{$config->schedule_date}}</td>
+                  <td class="status">{{$config->status}}</td>
+                  <td class="editor_list_flex">
+                    <!-- Postar Button with Font Awesome icon and alt attribute -->
+                    <button class="btn btn-primary post_wp" data-toggle="tooltip" data-placement="top" title="Postar">
+                    <i class="fas fa-upload"></i>
+                    </button>
+
+                    <!-- Deletar Button with Font Awesome icon and alt attribute -->
+                    <button class="btn btn-danger delete_config" data-toggle="tooltip" data-placement="top" title="Deletar">
+                    <i class="fas fa-trash"></i>
+                    </button>
+                    <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
+                    <button onclick="generate_post([`{{$config->theme}}`])" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <i class="fas fa-file"></i>
+                    </button>
+
+                    <!-- Atualizar conteúdo Button with Font Awesome icon, alt attribute, and popover -->
+                    <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
+                    <i class="fas fa-sync-alt"></i>
+                    </button>
+
+                  </td>
+                </tr>
+                @endforeach
+                
+                @else
                 @foreach($post_contents->postContents as $config)
                 <tr>
                   <td>
@@ -178,6 +224,7 @@
                   </td>
                 </tr>
                 @endforeach
+                @endif
                 <!-- Fim do exemplo de linha de dados -->
               </tbody>
             </table>

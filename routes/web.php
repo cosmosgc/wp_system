@@ -11,7 +11,6 @@ use App\Http\Controllers\GptController;
 use App\Http\Controllers\iaCredentialController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
-use App\Http\Controllers\searchController;
 use App\Http\Controllers\WpController;
 use App\Http\Controllers\WpCredentialController;
 use App\Services\PostFileService;
@@ -51,11 +50,11 @@ Route::get('/list_content',[DasboardController::class,'listPostConfig'])->name('
 Route::get('/insert_gpt_token',[DasboardController::class,'insertGptToken'])->name('dashboard.configia');
 Route::get('/submit_wp',[DasboardController::class,'insertWpCredential'])->name('dashboard.wp');
 Route::get('/site_credential_created',[DasboardController::class,'siteCredentialCreated'])->name('credentialCreated');
-Route::get('/search',[searchController::class,'searchByQuery']);
 Route::get('/list_credential',[DasboardController::class,'listWpCredential'])->name('listCredential');
 Route::get('/list_ia_credential',[DasboardController::class,'listIaCredentials'])->name('listIaCredentials');
 Route::get('/deleted_token',[DasboardController::class,'tokenDeleted'])->name('deletedToken');
 Route::get('/list_editor',[DasboardController::class,'ListEditor'])->name('listEditor');
+Route::get('/config_updated',[DasboardController::class,'configUpdated'])->name('configUpdated');
 Route::get('/teste',[DasboardController::class,'gptTeste']);
 
 
