@@ -108,6 +108,7 @@ if(empty($credential)){
 
                     </form>
 
+                    <a class="col-md-12" href="/auth/google"><button type="submit" class="btn btn-primary">Login Google</button></a>
                 </div>
             </div>
         </div>

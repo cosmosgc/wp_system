@@ -199,7 +199,7 @@ use Illuminate\Http\Request;
                     <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
                     <i class="fas fa-sync-alt"></i>
                     </button>
-                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->id}}`,`{{$config}}`)">
+                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`)">
                     <i class="fab fa-google"></i>
                     </button>
 
@@ -560,14 +560,15 @@ use Illuminate\Http\Request;
                     console.error("Fetch error:", error);
                 }
             }
-            async function create_gdoc(theme){
+            async function create_gdoc(theme, id){
                 //folderlink está hardcoded
-                let folderLink='https://drive.google.com/drive/folders/1iGQA7TFu1f7mp3r0SY7MTNDqPF72Ucl8?usp=sharing'
+                let folderLink='https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'
                 const folderId=folderLink.split('/folders/');
                 const folder=folderId[1];
                 const realForlderId=folder.split('?usp=sharing');
                 let body = {
                             title: theme,
+                            id:id,
                             folder_id:realForlderId[0],
                             _token: csrfToken
                         }

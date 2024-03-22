@@ -53,12 +53,13 @@ send.addEventListener('click',async ()=>{
 
 
 docButton.addEventListener('click',async ()=>{
-    let folderLink='https://drive.google.com/drive/folders/1iGQA7TFu1f7mp3r0SY7MTNDqPF72Ucl8?usp=sharing'
+    let folderLink='https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'
     const folderId=folderLink.split('/folders/');
     const folder=folderId[1];
     const realForlderId=folder.split('?usp=sharing');
     let body = {
                 title: 'teste',
+                id: '9b98d4ac-4ee1-40a1-93a6-7b537a95daca',
                 folder_id:realForlderId[0],
                 _token: csrfToken
             }
@@ -68,7 +69,7 @@ docButton.addEventListener('click',async ()=>{
                 headers: { "Content-Type": "application/json" }
             });
 
-    const response=await query.json()
+    const response=await query.json();
 
    // console.log(realForlderId[0]);
 

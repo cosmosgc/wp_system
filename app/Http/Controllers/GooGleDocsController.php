@@ -39,8 +39,14 @@ class GooGleDocsController extends Controller
             return redirect()->route('google.redirect');
         }
         //title não é unique key
-        $content=Wp_post_content::where('theme',$request->title)->get();
-        $doc_created=$this->googleDocsService->createAndPopulateGoogleDoc($content[0]->theme,$content[0]->post_content,$request->folder_id);
+        // $content=Wp_post_content::where('theme',$request->theme)->get();
+        $content=Wp_post_content::find($request->id);
+        // dd($content);
+        if(empty($content->post_content)){
+            $content->post_content = ' ';
+        }
+        $doc_created=$this->googleDocsService->createAndPopulateGoogleDoc($content->theme,$content->post_content,$request->folder_id);
+
         return $doc_created;
     }
 }

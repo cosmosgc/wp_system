@@ -54,6 +54,6 @@ class GoogleAuthController extends Controller
         }
 
         // Redirecionar para onde quer que você queira ir após o login bem-sucedido
-        return redirect()->route('dashboard.DocumentCreated');
+        return redirect()->route('dashboard.gDrivePort');
     }
 }
