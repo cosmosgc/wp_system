@@ -24,6 +24,7 @@ class DriveCredentialController extends Controller
 
     public function updateGoogleCredentials(Request $request){
         $update_credential=$this->google_credentials->updateCredential($request);
+        // dd($update_credential);
         return redirect()->route('configUpdated');
     }
 }

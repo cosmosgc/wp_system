@@ -71,6 +71,7 @@ Route::get('/quit',[loginController::class,'logoff'])->name('logoff');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
 Route::post('/submit_wp_credential',[WpCredentialController::class,'saveWpCredential'])->name('saveWpCredential');
 Route::post('/create_google_credential',[DriveCredentialController::class,'insertGoogleCredentials']);
+Route::post('/update_google_credential',[DriveCredentialController::class,'updateGoogleCredentials']);
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);
 Route::delete('/editor/{id}', [EditorController::class,'destroy'])->name('editor.destroy');
 Route::delete('/wp_crential/{id}',[WpCredentialController::class,'deleteWpCredential'])->name('credentialDelete');
@@ -78,6 +79,5 @@ Route::delete('/delete_token/{id}',[iaCredentialController::class,'deleteCredent
 Route::put('/update_user',[EditorController::class,'updateEditor']);
 Route::put('/update_credentials',[WpCredentialController::class,'updateWpCredential']);
 Route::put('/update_config',[PostContentController::class,'updateConfig']);
-Route::put('/update_google_credential',[DriveCredentialController::class,'updateGoogleCredentials']);
 
 
