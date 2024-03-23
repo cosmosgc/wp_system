@@ -555,32 +555,45 @@
                     console.error("Fetch error:", error);
                 }
             }
-            async function create_gdoc(theme, id, folderLink = ''){
-                if(folderLink == ''){
+            async function create_gdoc(theme, id, folderLink = '') {
+                if (folderLink == '') {
                     return;
                 }
-                const folderId=folderLink.split('/folders/');
-                const folder=folderId[1];
 
-                const realForlderId=folder.split('?usp=sharing');
-                console.log(realForlderId[0]);
-                let body = {
-                            title: theme,
-                            id:id,
-                            folder_id:realForlderId[0],
-                            _token: csrfToken
-                        }
-                const query = await fetch('/create_doc', {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: { "Content-Type": "application/json" }
-                });
+                try {
+                    const folderId = folderLink.split('/folders/');
+                    const folder = folderId[1];
 
-                const response=await query.json()
+                    const realFolderId = folder.split('?usp=sharing');
+                    console.log(realFolderId[0]);
+                    let body = {
+                        title: theme,
+                        id: id,
+                        folder_id: realFolderId[0],
+                        _token: csrfToken
+                    };
 
-                console.log(response);
-                return response;
+                    const query = await fetch('/create_doc', {
+                        method: 'POST',
+                        body: JSON.stringify(body),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    const response = await query.json();
+
+                    console.log(response);
+                    return response;
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Um erro aconteceu ao criar o documento.'
+                    });
+                }
             }
+
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
                 // console.log(parsedData);
