@@ -555,11 +555,9 @@
                     console.error("Fetch error:", error);
                 }
             }
-            async function create_gdoc(theme, id, folderLink = 'https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'){
-                //tira isso quando gdrive_url estiver no sql
-
+            async function create_gdoc(theme, id, folderLink = ''){
                 if(folderLink == ''){
-                    folderLink = 'https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm';
+                    return;
                 }
                 const folderId=folderLink.split('/folders/');
                 const folder=folderId[1];
