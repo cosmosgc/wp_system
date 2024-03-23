@@ -146,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 console.log('Success');
+                window.location.reload();
             } else {
                 console.error('Error', response);
             }
