@@ -39,6 +39,7 @@ class PostContentService{
             'schedule_date'=>$data->schedule,
             'domain'=>$data->domain,
             'gdrive_url'=>$data->gdrive_url,
+            'gdrive_document_url'=>$data->gdrive_document_url,
             'Editor_id'=>$user_id[0]->id
         ]);
 
