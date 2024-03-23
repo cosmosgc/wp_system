@@ -17,7 +17,13 @@ class DasboardController extends Controller
     }
 
     public function login(){
-        return view('login');
+        $editors = Editor::all();
+        if(!empty($editors[0]->name)){
+            return view('login');
+        }else{
+            return view('userBootstrap');
+        }
+        
     }
 
     public function show(Request $request)
@@ -163,5 +169,6 @@ class DasboardController extends Controller
     public function tokenDeleted(){
         return view('dashboard.deletedToken');
     }
+
 
 }

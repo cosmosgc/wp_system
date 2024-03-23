@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('editors', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string("name");
-            $table->string("surname");
+            $table->string("surname")->nullable();
             $table->string("cpf")->nullable();
             $table->string("cnpj")->nullable();
-            $table->string("email");
-            $table->string("nickname");
+            $table->string("email")->nullable();
+            $table->string("nickname")->nullable();
             $table->string("password");
             $table->boolean("is_admin")->default(1);
             $table->timestamps();
