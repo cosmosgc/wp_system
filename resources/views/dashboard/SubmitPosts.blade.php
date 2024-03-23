@@ -194,7 +194,7 @@
                     <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
                     <i class="fas fa-sync-alt"></i>
                     </button>
-                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_url}}')">
+                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_url}}', this)">
                     <i class="fab fa-google"></i>
                     </button>
 
@@ -555,11 +555,21 @@
                     console.error("Fetch error:", error);
                 }
             }
-            async function create_gdoc(theme, id, folderLink = '') {
+            function loading_element(element, remove = false){
+                var parentTr = element.closest('tr');
+                  if(remove){
+                    parentTr.classList.remove('loading');
+                  }else{
+                    parentTr.classList.add('loading');
+                  }
+            }
+            async function create_gdoc(theme, id, folderLink = '', loading_element = null) {
                 if (folderLink == '') {
                     return;
                 }
-
+                if(loading_element){
+                    loading_element(loading_element, false);
+                }
                 try {
                     const folderId = folderLink.split('/folders/');
                     const folder = folderId[1];
@@ -582,6 +592,7 @@
                     const response = await query.json();
 
                     console.log(response);
+                    loading_element(loading_element, true);
                     return response;
                 } catch (error) {
                     console.error('Error:', error);
@@ -592,6 +603,7 @@
                         text: 'Um erro aconteceu ao criar o documento.'
                     });
                 }
+                loading_element(loading_element, true);
             }
 
             function open_modal(i = 0, data = null) {
