@@ -557,12 +557,15 @@
             }
             async function create_gdoc(theme, id, folderLink = 'https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'){
                 //tira isso quando gdrive_url estiver no sql
-                if(folderLink = ''){
+
+                if(folderLink == ''){
                     folderLink = 'https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm';
                 }
                 const folderId=folderLink.split('/folders/');
                 const folder=folderId[1];
+
                 const realForlderId=folder.split('?usp=sharing');
+                console.log(realForlderId[0]);
                 let body = {
                             title: theme,
                             id:id,
