@@ -13,7 +13,6 @@ use Monolog\Handler\DeduplicationHandler;
 class PostContentService{
 
     public function insertPostContent($data,$doContent){
-
            $image= $this->processImage($data);
 
 
@@ -39,8 +38,8 @@ class PostContentService{
             'status'=>'Não publicado',
             'schedule_date'=>$data->schedule,
             'domain'=>$data->domain,
+            'gdrive_url'=>$data->gdrive_url,
             'Editor_id'=>$user_id[0]->id
-
         ]);
 
 
@@ -73,6 +72,7 @@ class PostContentService{
         $updated_content->status = isset($data->status) ? $data->status : 'Não postado';
         $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : '';
         $updated_content->domain = isset($data->domain) ? $data->domain : '';
+        $updated_content->gdrive_url = isset($data->gdrive_url) ? $data->gdrive_url : '';
 
 
         $updated_content->save();
@@ -106,7 +106,7 @@ class PostContentService{
                         $imagePath = 'images/' . $imageName;
                     } elseif ($data->filled('gdrive_url')) {
                         // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
-                        $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
+                        $imagePath = null; //$this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
                     } elseif ($data->filled('image_url')) {
                         // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
                         $imagePath = $this->downloadImageFromUrl($data->image_url);

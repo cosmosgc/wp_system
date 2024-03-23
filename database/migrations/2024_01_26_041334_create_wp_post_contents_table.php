@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string("status")->nullable();
             $table->string("schedule_date")->nullable();
             $table->string("domain")->nullable();
+            $table->string('gdrive_url')->nullable();
             $table->timestamps();
 
             $table->foreign('Editor_id')

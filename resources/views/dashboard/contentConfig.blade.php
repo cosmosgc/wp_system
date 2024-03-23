@@ -72,7 +72,7 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="url_image" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>GoogleDrive URL</td>
+            <td>Pasta GoogleDrive URL</td>
             <td class="gdrive_url" contenteditable="true"></td>
         </tr>
         <tr>
@@ -203,6 +203,8 @@ $user=explode('+',base64_decode($valorCodificado));
 
                         folderId=str.split('/folders/')[1]
                     }
+                    folderId=document.querySelector('.gdrive_url').innerText;
+
                     console.log(folderId);
 
 
@@ -228,7 +230,6 @@ $user=explode('+',base64_decode($valorCodificado));
                         domain: document.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
-
 
 
                     const loading=document.createElement('span');
@@ -490,7 +491,7 @@ $user=explode('+',base64_decode($valorCodificado));
             if(str.length){
                 folderId=str[1]
             }
-
+            folderId=inputElements.querySelector('.gdrive_url').innerText;
 
             var postData = {
                         theme: inputElements.querySelector('.theme').innerText,
@@ -511,7 +512,6 @@ $user=explode('+',base64_decode($valorCodificado));
                         domain: inputElements.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
-
                     const loading=document.createElement('span');
                     loading.classList.add('loading')
                     loading.innerText='loading....'

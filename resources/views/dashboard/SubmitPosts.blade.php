@@ -3,32 +3,27 @@
 
 @php
   use App\Models\Editor;
-  use App\Models\Wp_post_content;
-use Illuminate\Http\Request;
 
 
   $valorCodificado = request()->cookie('editor');
   $user=explode('+',base64_decode($valorCodificado));
   //dd($user);
-  $post_configs= Editor::where('name',$user[0])->get();
-  //dd($post_configs);
+  $post_configs = Editor::where('name',$user[0])->get();
   $searchParam = request()->input('query');
-  $results=Wp_post_content::where ('theme','like','%'.request()->input('query').'%')->orWhere('domain','like','%'.request()->input('query').'%')->get();
-    //dd($results);
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
-    if(!empty($results))
-        $post_contents->postContents=$results;
+    if(!empty($search)){
+        $post_contents->postContents=$search;
+    }
+
     else{
         $searchParam = '';
     }
     $post_contents->postContents->each(function ($config) {
         if (!empty($config->post_content) && isset($config->post_content)) {
-          // $config->post_content is not empty, null, or undefined
           $config->post_content = true;
         }
     });
-
   }
 
 @endphp
@@ -199,7 +194,7 @@ use Illuminate\Http\Request;
                     <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
                     <i class="fas fa-sync-alt"></i>
                     </button>
-                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`)">
+                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_url}}')">
                     <i class="fab fa-google"></i>
                     </button>
 
@@ -560,9 +555,11 @@ use Illuminate\Http\Request;
                     console.error("Fetch error:", error);
                 }
             }
-            async function create_gdoc(theme, id){
-                //folderlink está hardcoded
-                let folderLink='https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'
+            async function create_gdoc(theme, id, folderLink = 'https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'){
+                //tira isso quando gdrive_url estiver no sql
+                if(folderLink = ''){
+                    folderLink = 'https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm';
+                }
                 const folderId=folderLink.split('/folders/');
                 const folder=folderId[1];
                 const realForlderId=folder.split('?usp=sharing');

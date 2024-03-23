@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card card-medium">
-                <div class="card-header">{{ __('Insert your OpenAI token') }}</div>
+                <div class="card-header">{{ __('Insira seu Token OpenAI') }}</div>
 
                 <div class="card-body">
 
