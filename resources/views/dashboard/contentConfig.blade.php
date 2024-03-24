@@ -269,7 +269,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         }else{
                             Swal.fire({
                             title: 'Configuração salva com sucesso',
-                            text: 'DVoce quer continuar?',
+                            text: 'Voce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
                         }).then((result) => {
@@ -549,7 +549,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         }else{
                             Swal.fire({
                             title: 'Configuração salva com sucesso',
-                            text: 'DVoce quer continuar?',
+                            text: 'Voce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
                         })

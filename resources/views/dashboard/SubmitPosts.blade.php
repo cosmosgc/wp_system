@@ -197,6 +197,9 @@
                     <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_document_url}}', this)">
                     <i class="fab fa-google"></i>
                     </button>
+                    <button class="btn btn-primary gdrive_doc_input" data-toggle="popover" data-placement="top" title="Consumir doc" data-content="Clique para carregar em documento google drive" onclick="get_gdoc(`{{$config->theme}}`,`{{$config->id}}`,'', this)">
+                        <i class="fab fa-google-alt"></i>
+                    </button>
 
                   </td>
                 </tr>
@@ -605,6 +608,76 @@
                 }
                 loading_element(loading_element, true);
             }
+            async function get_gdoc(title, id, google_docs = '', loading_element = null){
+                if (google_docs === '') {
+                    const { value: googleDocsValue } = await swal.fire({
+                        title: 'Insira o documento do google drive',
+                        input: 'text',
+                        inputLabel: 'Google Docs URL',
+                        inputPlaceholder: 'Insira a URL Google Docs',
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return 'Você precisa inserir um documento do google docs!!';
+                            }
+                        }
+                    });
+
+                    if (googleDocsValue) {
+                        google_docs = googleDocsValue;
+                    } else {
+                        // If user cancels or provides no input, return without proceeding
+                        return;
+                    }
+                }
+
+                if (loading_element){
+                    loading_element(loading_element, false);
+                }
+
+                try {
+                    const folderId = google_docs.split('/folders/');
+                    const folder = folderId[1];
+
+                    const folder2 = folder.split('?usp=sharing');
+                    const folderId = folder2.split('/edit');
+                    const realFolderId  = folderId[0];
+
+                    console.log(realFolderId[0]);
+
+                    let body = {
+                        title: title,
+                        id: id,
+                        google_docs: google_docs,
+                        _token: csrfToken
+                    };
+
+                    const query = await fetch('/process_doc', {
+                        method: 'POST',
+                        body: JSON.stringify(body),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    const response = await query.json();
+
+                    console.log(response);
+                    if (loading_element) {
+                        loading_element(loading_element, true);
+                    }
+                    return response;
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'An error occurred while processing the document.'
+                    });
+                }
+                if (loading_element) {
+                    loading_element(loading_element, true);
+                }
+            }
+
 
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
