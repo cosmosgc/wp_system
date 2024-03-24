@@ -198,7 +198,7 @@
                     <i class="fab fa-google"></i>
                     </button>
                     <button class="btn btn-primary gdrive_doc_input" data-toggle="popover" data-placement="top" title="Consumir doc" data-content="Clique para carregar em documento google drive" onclick="get_gdoc(`{{$config->theme}}`,`{{$config->id}}`,'', this)">
-                        <i class="fab fa-google-alt"></i>
+                        <i class="fa fa-folder"></i>
                     </button>
 
                   </td>
