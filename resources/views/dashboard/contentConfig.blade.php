@@ -70,7 +70,7 @@ $user=explode('+',base64_decode($valorCodificado));
         <tr>
             <td>Imagem URL</td>
             <td class="url_image" contenteditable="true"></td>
-        </tr>gdrive_document_url
+        </tr>
         <tr>
             <td>Pasta GoogleDrive URL</td>
             <td class="gdrive_document_url" contenteditable="true"></td>
@@ -234,8 +234,6 @@ $user=explode('+',base64_decode($valorCodificado));
                         domain: document.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
-
-
                     const loading=document.createElement('span');
                     loading.classList.add('loading')
                     loading.innerText='loading....'
