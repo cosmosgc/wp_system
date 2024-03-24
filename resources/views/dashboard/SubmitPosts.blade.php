@@ -638,9 +638,9 @@
                     const folderId = google_docs.split('/folders/');
                     const folder = folderId[1];
 
-                    const folder2 = folder.split('?usp=sharing');
-                    const folderId = folder2.split('/edit');
-                    const realFolderId  = folderId[0];
+                    const folder_temp = folder.split('?usp=sharing');
+                    const folder_2 = folder_temp.split('/edit');
+                    const realFolderId  = folder_2[0];
 
                     console.log(realFolderId[0]);
 
