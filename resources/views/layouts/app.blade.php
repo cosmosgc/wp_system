@@ -424,7 +424,7 @@
             // Check if the response status is 200 (OK)
             if (response.ok) {
                 // Reload the page
-                location.reload();
+                window.location.href = '/';
             } else {
                 // Handle non-OK responses if needed
                 console.error('Logoff failed with status:', response.status);
