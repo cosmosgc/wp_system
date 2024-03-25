@@ -552,21 +552,21 @@
                     console.error("Fetch error:", error);
                 }
             }
-            function loading_element(element, remove = false){
+            async function loading_element(element, remove = false){
                 var parentTr = element.closest('tr');
-                  if(remove){
+                if(remove){
                     parentTr.classList.remove('loading');
-                  }else{
+                }else{
                     parentTr.classList.add('loading');
-                  }
+                }
             }
-            async function create_gdoc(theme, id, folderLink = '', loading_element = null) {
+            async function create_gdoc(theme, id, folderLink = '', loading_elements = null) {
                 if (folderLink == '') {
                     return;
                 }
-                // if(loading_element){
-                //     loading_element(loading_element, false);
-                // }
+                if(loading_elements){
+                    loading_element(loading_elements, false);
+                }
                 try {
                     const folderId = folderLink.split('/folders/');
                     const folder = folderId[1];
@@ -589,7 +589,7 @@
                     const response = await query.json();
 
                     console.log(response);
-                    // loading_element(loading_element, true);
+                    loading_element(loading_elements, true);
                     swal.fire({
                         icon: 'success',
                         title: 'Documento criado com sucesso',
@@ -605,9 +605,9 @@
                         text: 'Um erro aconteceu ao criar o documento.'
                     });
                 }
-                // loading_element(loading_element, true);
+                loading_element(loading_elements, true);
             }
-            async function get_gdoc(title, id, google_docs = '', loading_element = null){
+            async function get_gdoc(title, id, google_docs = '', loading_elements = null){
                 if (google_docs === '') {
                     const { value: googleDocsValue } = await swal.fire({
                         title: 'Insira o documento do google drive',
@@ -629,9 +629,9 @@
                     }
                 }
 
-                // if (loading_element){
-                //     loading_element(loading_element, false);
-                // }
+                if (loading_elements){
+                    loading_element(loading_elements, false);
+                }
 
                 try {
                     const folderId = google_docs.split('/d/');
@@ -660,9 +660,9 @@
                     const response = await query.json();
 
                     console.log(response);
-                    // if (loading_element) {
-                    //     loading_element(loading_element, true);
-                    // }
+                    if (loading_elements) {
+                        loading_element(loading_elements, true);
+                    }
                     swal.fire({
                         icon: 'success',
                         title: 'Texto importado com sucesso!',
@@ -678,9 +678,9 @@
                         text: 'Um erro aconteceu durante o processamento: ' +error+ '.'
                     });
                 }
-                // if (loading_element) {
-                //     loading_element(loading_element, true);
-                // }
+                if (loading_elements) {
+                    loading_element(loading_elements, true);
+                }
             }
 
 
