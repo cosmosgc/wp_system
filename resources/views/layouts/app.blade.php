@@ -324,7 +324,6 @@
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-upload"></i>Publicar em sites</a></ol>
                 <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-pen"></i>Criar Artigo</a></ol>
-                <ol><a href="{{ route('createDoc', ['page' => 'google_doc_creation']) }}"><i class="fas fa-file"></i>Criar no Google Docs</a></ol>
             </div>
 
             <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>Configurações <span class="arrow">></span></li>
