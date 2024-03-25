@@ -57,7 +57,7 @@ $user=explode('+',base64_decode($valorCodificado));
         </tr>
         <tr>
             <td>Agendar</td>
-            <td class="schedule_date" contenteditable="true"><input class="schedule" type="date"></td>
+            <td class="schedule_date" contenteditable="true"><input class="schedule" type="datetime-local"></td>
         </tr>
         <tr>
             <td>Imagem de destaque</td>
