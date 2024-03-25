@@ -487,7 +487,11 @@
                     text: 'Do you want to continue',
                     icon: 'success',
                     confirmButtonText: 'continue'
-                })
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
                 }
 
                 } catch (error) {
@@ -496,7 +500,11 @@
                     text: 'Quer continuar?',
                     icon: 'error',
                     confirmButtonText: 'continue'
-                })
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
                 }
 
 
@@ -510,7 +518,11 @@
                     text: 'Do you want to continue',
                     icon: 'error',
                     confirmButtonText: 'continue'
-                })
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
                 // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
                 element_status.closest('tr').classList.remove('loading')
                 document.body.removeChild(loadingSVG);
@@ -921,15 +933,22 @@
                 text: 'Do you want to continue',
                 icon: 'success',
                 confirmButtonText: 'continue'
-            })
-            location.reload()
+            }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
         }else{
         Swal.fire({
                 title: 'Erro ao remover configuração',
                 text: 'Do you want to continue',
                 icon: 'error',
                 confirmButtonText: 'continue'
-            })
+            }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
 
             //location.reload();
         }
