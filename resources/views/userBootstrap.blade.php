@@ -28,9 +28,7 @@
                             <input id="password" type="password" class="form-control" name="password" required>
                         </div>
 
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" name="remember" id="remember">
-                        </div>
+                        <input type="hidden" name="isAdmin" value="true">
 
                         <button type="submit" class="submit btn btn-primary">Criar Usúario</button>
                    
