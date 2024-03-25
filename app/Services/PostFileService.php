@@ -34,6 +34,9 @@ class PostFileService{
             'internal_link'=>isset($data['internal_link'])?$data['internal_link']:null,
             'post_content'=>isset($data['post_content'])?$data['post_content']:null,
             'insert_image'=>isset($data['insert_image']) && ($data['insert_image'] === 'Sim') ? 1 : 0,
+            'domain'=>isset($data['domain'])?$data['domain']:null,
+            'gdrive_document_url'=>isset($data['gdrive_document_url'])?$data['gdrive_document_url']:null,
+            'status'=>'Não publicado',
             'Editor_id'=>$data['user_id']
         ]);
     }
@@ -72,7 +75,7 @@ class PostFileService{
                 }
             }
             return $post_content;
-            // Agora você pode usar o $content como o conteúdo do document
+
 
         } catch (\Exception $e) {
             // Lidar com qualquer erro que ocorra ao tentar obter o conteúdo do documento
@@ -129,7 +132,7 @@ class PostFileService{
 
             $service->documents->batchUpdate($documentId, $batchUpdateRequest);
 
-            return 'Documento criado e populado com sucesso! Link: ' . "https://docs.google.com/document/d/$documentId/edit";
+            return response()->json('Documento criado e populado com sucesso! Link: ' . "https://docs.google.com/document/d/$documentId/edit", 200);
         } catch (\Exception $e) {
             //return redirect()->back()->with('error', 'Falha ao criar o documento: ' . $e->getMessage());
             return "$e";

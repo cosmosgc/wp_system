@@ -169,7 +169,7 @@
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
                   <td class="category">{{$config->category}}</td>
-                  <td class="post-content">{{isset($config->post_content)?'Sim':'Não'}}</td>
+                  <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
                   <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
@@ -297,12 +297,6 @@
     </script>
 
 
-    {{-- <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-    });
-    </script> --}}
 
     <script>
 
@@ -511,7 +505,7 @@
             } catch (error) {
                 console.error('Ocorreu um erro:', error);
                 Swal.fire({
-                    title: 'Error on the process',
+                    title: 'Aconteceu um erro durante o processo',
                     text: 'Do you want to continue',
                     icon: 'error',
                     confirmButtonText: 'continue'
@@ -570,9 +564,9 @@
                 if (folderLink == '') {
                     return;
                 }
-                if(loading_element){
-                    loading_element(loading_element, false);
-                }
+                // if(loading_element){
+                //     loading_element(loading_element, false);
+                // }
                 try {
                     const folderId = folderLink.split('/folders/');
                     const folder = folderId[1];
@@ -595,7 +589,12 @@
                     const response = await query.json();
 
                     console.log(response);
-                    loading_element(loading_element, true);
+                    // loading_element(loading_element, true);
+                    swal.fire({
+                        icon: 'success',
+                        title: 'Documento criado com sucesso',
+                        text: 'O documento do drive fo criado com sucesso'
+                    });
                     return response;
                 } catch (error) {
                     console.error('Error:', error);
@@ -606,7 +605,7 @@
                         text: 'Um erro aconteceu ao criar o documento.'
                     });
                 }
-                loading_element(loading_element, true);
+                // loading_element(loading_element, true);
             }
             async function get_gdoc(title, id, google_docs = '', loading_element = null){
                 if (google_docs === '') {
@@ -630,16 +629,17 @@
                     }
                 }
 
-                if (loading_element){
-                    loading_element(loading_element, false);
-                }
+                // if (loading_element){
+                //     loading_element(loading_element, false);
+                // }
 
                 try {
-                    const folderId = google_docs.split('/folders/');
+                    const folderId = google_docs.split('/d/');
+                    console.log(folderId);
                     const folder = folderId[1];
 
-                    const folder_temp = folder.split('?usp=sharing');
-                    const folder_2 = folder_temp.split('/edit');
+                    //const folder_temp = folder.split('?usp=sharing');
+                    const folder_2 = folder.split('/edit');
                     const realFolderId  = folder_2[0];
 
                     console.log(realFolderId[0]);
@@ -647,7 +647,7 @@
                     let body = {
                         title: title,
                         id: id,
-                        google_docs: google_docs,
+                        google_docs: realFolderId,
                         _token: csrfToken
                     };
 
@@ -660,9 +660,14 @@
                     const response = await query.json();
 
                     console.log(response);
-                    if (loading_element) {
-                        loading_element(loading_element, true);
-                    }
+                    // if (loading_element) {
+                    //     loading_element(loading_element, true);
+                    // }
+                    swal.fire({
+                        icon: 'success',
+                        title: 'Texto importado com sucesso!',
+                        text: 'O texto foi armazenado na base com sucesso'
+                    });
                     return response;
                 } catch (error) {
                     console.error('Error:', error);
@@ -670,12 +675,12 @@
                     swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'An error occurred while processing the document.'
+                        text: 'Um erro aconteceu durante o processamento: ' +error+ '.'
                     });
                 }
-                if (loading_element) {
-                    loading_element(loading_element, true);
-                }
+                // if (loading_element) {
+                //     loading_element(loading_element, true);
+                // }
             }
 
 
@@ -887,11 +892,11 @@
     const deletebutton= document.querySelectorAll(".delete_config")
 
 
-
+    //const id=document.querySelectorAll(".config_id")
 
     deletebutton.forEach((e,i)=>{
     e.addEventListener('click',async ()=>{
-        data_id=document.querySelector(".container").getAttribute("data-id");
+        data_id=id[i].getAttribute("data-id");
         // console.log(data_id);
         const deletion_query= await fetch('/remove_config',{
         method:'DELETE',
@@ -918,7 +923,7 @@
                 confirmButtonText: 'continue'
             })
 
-            location.reload();
+            //location.reload();
         }
     })
     })

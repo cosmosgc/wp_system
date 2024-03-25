@@ -28,7 +28,7 @@ class GooGleDocsController extends Controller
         if($request->has('google_docs')){
             $doc_content=$this->googleDocsService->importGoogleDocs($request->google_docs);
             $content=Wp_post_content::where('theme',$request->title)->update(['post_content'=>$doc_content]);
-            return redirect()->route('dashboard.DocumentImported');
+            return $content;
         }
     }
 

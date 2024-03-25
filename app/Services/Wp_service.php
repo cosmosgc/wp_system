@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Wp_post_content;
 use GuzzleHttp\Client;
 
 
@@ -88,6 +89,7 @@ class Wp_service{
                         // Adicione mais parâmetros conforme necessário
                     ],
                 ]);
+                $change_status=Wp_post_content::where('theme',$title)->update(['status'=>'publicado']);
 
                 return $response->getBody();
 
