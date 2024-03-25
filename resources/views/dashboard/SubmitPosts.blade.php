@@ -186,7 +186,7 @@
                     <i class="fas fa-trash"></i>
                     </button>
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button onclick="generate_post([`{{$config->theme}}`])" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post([`{{$config->theme}}`], null, element_status=this)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 
@@ -442,7 +442,9 @@
             }
 
 
-            async function generate_post(topic_to_generate, id=null){
+            async function generate_post(topic_to_generate, id=null, element_status = null){
+                element_status.closest('tr').classList.add('loading')
+                //loading_element(element_status, true);
                 const loading=document.createElement('div');
                 const loadingSVG = `
                             <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -455,7 +457,6 @@
 
                 `
                 loading.innerHTML=loadingSVG;
-
                 const modalDialog = document.querySelector('.modal-dialog');
                 modalDialog.appendChild(loading);
                 let data=[]
@@ -511,8 +512,10 @@
                     confirmButtonText: 'continue'
                 })
                 // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
+                element_status.closest('tr').classList.remove('loading')
                 document.body.removeChild(loadingSVG);
             }
+            element_status.closest('tr').classList.remove('loading')
         }
 
             async function post_to_wp(configId){
@@ -816,6 +819,7 @@
             button.insertAdjacentElement("beforebegin", loading);
             const domain=document.querySelectorAll('.domain')[i];
             const keyword=document.querySelectorAll('.keyword')[i]
+            loading_element(domain, false);
             console.log("Postando em: "+domain.innerText);
             data = {
                             id: configId,
@@ -869,12 +873,16 @@
                             loading.remove(this);
                         }
                     } else {
+                        loading_element(domain, true);
                         console.error("Fetch failed with status:", query.status);
                     }
                 } catch (error) {
+                    loading_element(domain, true);
                     console.error("Fetch error:", error);
+
                 }
             })
+            loading_element(domain, true);
         })
     });
 
