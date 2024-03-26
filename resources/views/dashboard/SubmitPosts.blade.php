@@ -550,14 +550,19 @@
                     });
 
                     if (query.ok) {
-                        const data = await query.json();
-                        console.log(data);
+                        const data_response = await query.json();
+                        // console.log(data_response);
 
                         //update_yoaust precisa de um request especifico com domain, keyword e id
-
+                        data = {
+                            id: configId,
+                            user_id: user_id.value,
+                            post_id: data_response.id,
+                            _token: csrfToken
+                        };
                         const query_2 = await fetch('/update_yoaust', {
                             method: 'POST',
-                            body: JSON.stringify(body),
+                            body: JSON.stringify(data),
                             headers: { "Content-Type": "application/json" }
                         });
                     } else {
@@ -567,8 +572,8 @@
                     console.error("Fetch error:", error);
                 }
             }
-            async function loading_element(element, remove = false){
-                var parentTr = element.closest('tr');
+            async function loading_element(el, remove = false){
+                var parentTr = el.closest('tr');
                 if(remove){
                     parentTr.classList.remove('loading');
                 }else{
