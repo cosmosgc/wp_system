@@ -50,7 +50,7 @@ class GoogleAuthController extends Controller
             session(['google_refresh_token' => $token['refresh_token']]);
         } catch (\Exception $e) {
             // Lidar com qualquer erro durante o processo de obtenção do token de acesso
-            dd('chegou aqui');
+            dd($e->getMessage());
             return redirect()->route('google.redirect')->with('error', 'Failed to obtain access token: ' . $e->getMessage());
         }
 
