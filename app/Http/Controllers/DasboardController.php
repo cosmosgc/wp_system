@@ -99,7 +99,7 @@ class DasboardController extends Controller
         return view('dashboard.upload');
     }
     public function gDrivePort(){
-        return view('dashboard.gdriveport');
+        return view('dashboard.gdriveConfig');
     }
 
     public function gptTeste(){

@@ -29,6 +29,7 @@ if(empty($credential)){
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    /**/
 }
 
 .two-column-form .form-group {

@@ -30,7 +30,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/register', [DasboardController::class,'register'])->name('dashboard.register');
 Route::get('/upload_csv',[DasboardController::class,'importCsv'])->name('dashboard.uploadCsv');
-Route::get('/gdriveport',[DasboardController::class,'gDrivePort'])->name('dashboard.gDrivePort');
+Route::get('/gdriveport',[DasboardController::class,'gDrivePort'])->name('dashboard.gDriveConfig');
 Route::get('/', [DasboardController::class, 'login'])->name('login');
 Route::get('/index', [DasboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard', [DasboardController::class, 'show'])->name('dashboard.show');
