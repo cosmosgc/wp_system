@@ -29,7 +29,8 @@ class WpController extends Controller
             }
 
             public function updateYoast(Request $request){
-                $update_meta=$this->wpService->updateYoastRankMath($request->domain,intval($request->id),isset($request->keyword)?$request->keyword:'placeholder');
+                $image=Wp_post_content::find($request->id);
+                $update_meta=$this->wpService->updateYoastRankMath($image->domain,intval($request->id),isset($image->keyword)?$image->keyword:'placeholder');
                 return response(200);
             }
 

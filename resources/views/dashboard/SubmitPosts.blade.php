@@ -555,11 +555,11 @@
 
                         //update_yoaust precisa de um request especifico com domain, keyword e id
 
-                        // const query_2 = await fetch('/update_yoaust', {
-                        //     method: 'POST',
-                        //     body: JSON.stringify(body),
-                        //     headers: { "Content-Type": "application/json" }
-                        // });
+                        const query_2 = await fetch('/update_yoaust', {
+                            method: 'POST',
+                            body: JSON.stringify(body),
+                            headers: { "Content-Type": "application/json" }
+                        });
                     } else {
                         console.error("Fetch failed with status:", query.status);
                     }
