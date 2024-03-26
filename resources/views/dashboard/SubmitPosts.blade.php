@@ -121,20 +121,24 @@
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
             <div class="row">
-                <div class="col-md-6" style="
-    display: flex;
-    justify-content: flex-end;
-">
+                <div class="col-md-4" style="display: flex; justify-content: flex-end;">
                     <button class="btn btn-success btn-block" onclick="batch_generate()">
-                    <i class="fas fa-file"> Gerar conteúdo em lote</i>
+                        <i class="fas fa-file"></i> Gerar conteúdo em lote
                     </button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4" style="display: flex; justify-content: center;">
                     <button class="btn btn-primary btn-block" onclick="batch_post()">
-                    <i class="fas fa-upload"></i> Postar em lote
+                        <i class="fas fa-upload"></i> Postar em lote
+                    </button>
+                </div>
+                <div class="col-md-4" style="display: flex; justify-content: flex-start;">
+                    <button class="btn btn-danger btn-block" onclick="batch_delete()">
+                        <i class="fas fa-trash-alt"></i> Deletar em lote
                     </button>
                 </div>
             </div>
+
+
 
           <div class="container mt-5">
 
@@ -440,6 +444,49 @@
                 }
                 removed = getSelectedItems('loading', true);
             }
+            async function batch_delete() {
+                try {
+                    selected_items = getSelectedItems('loading');
+                    separatedData = separateThemesAndIDs(selected_items);
+
+                    for (const id of separatedData.ids) {
+                        await delete_post(id);
+                    }
+
+                    removed = getSelectedItems('loading', true);
+
+                    // Show success swal
+                    swal({
+                        title: "Successo!",
+                        text: "Os artigos foram deletados!.",
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                value: true,
+                                visible: true,
+                                className: "",
+                                closeModal: true
+                            }
+                        }
+                    }).then((value) => {
+                        if (value) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+                } catch (error) {
+                    removed = getSelectedItems('loading', true);
+                    // Handle errors here
+                    console.error("Error occurred:", error);
+                    swal({
+                        title: "Error!",
+                        text: "Um erro aconteceu ao deletar os artigos!.",
+                        icon: "error",
+                        button: "OK"
+                    });
+                }
+            }
+
 
 
             async function generate_post(topic_to_generate, id=null, element_status = null){
@@ -579,6 +626,16 @@
                 }else{
                     parentTr.classList.add('loading');
                 }
+            }
+            async function delete_post(data_id){
+                const deletion_query= await fetch('/remove_config',{
+                method:'DELETE',
+                body:JSON.stringify({
+                    id:data_id,
+                    _token:csrfToken
+                }),
+                headers:{"Content-Type":"application/json"}
+                })
             }
             async function create_gdoc(theme, id, folderLink = '', loading_elements = null) {
                 if (folderLink == '') {
