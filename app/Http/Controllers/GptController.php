@@ -209,4 +209,31 @@ class GptController extends Controller
 
         return $convertedString;
     }
+    // Pesquisar o primeiro link do youtube
+    public function searchYouTubeAndGetURL($query) {
+        $apiKey = 'YOUR_API_KEY';
+
+        $apiEndpoint = 'https://www.googleapis.com/youtube/v3/search';
+
+        $params = array(
+            'q' => $query,
+            'key' => $apiKey,
+            'part' => 'snippet',
+            'maxResults' => 1
+        );
+
+        $url = $apiEndpoint . '?' . http_build_query($params);
+
+        $response = file_get_contents($url);
+
+        $responseData = json_decode($response, true);
+
+        if (isset($responseData['items'][0]['id']['videoId'])) {
+            $videoId = $responseData['items'][0]['id']['videoId'];
+            $videoURL = 'https://www.youtube.com/watch?v=' . $videoId;
+            return $videoURL;
+        } else {
+            return null; // Nenhum video encontrado
+        }
+    }
 }
