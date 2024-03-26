@@ -197,4 +197,16 @@ class GptController extends Controller
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$newGptData]);
         return $insertPostContent;
     }
+    //Pode usar para converter um padrão no complete_post[] em youtube embeds
+    public function convertYouTubeLinksToEmbeds($string) {
+        // Padrão
+        $pattern = '/<a\s+(?:[^>]*?\s+)?href=(["\'])(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+)(?(1)\1|)(?:[^>]*?\s+)?rel=(["\'])([^"\']*)\3[^>]*?>(.*?)<\/a>/i';
+
+        // para substituir
+        $replacement = '<iframe width="560" height="315" src="$2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+        $convertedString = preg_replace($pattern, $replacement, $string);
+
+        return $convertedString;
+    }
 }
