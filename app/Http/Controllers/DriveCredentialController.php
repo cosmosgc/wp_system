@@ -18,10 +18,13 @@ class DriveCredentialController extends Controller
 
     public function insertGoogleCredentials(Request $request){
         $new_g_credential=$this->google_credentials->insertDriveCredentials($request);
+        return redirect()->route('configCreated');
     }
 
 
     public function updateGoogleCredentials(Request $request){
         $update_credential=$this->google_credentials->updateCredential($request);
+        // dd($update_credential);
+        return redirect()->route('configUpdated');
     }
 }

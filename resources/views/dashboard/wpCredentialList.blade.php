@@ -44,10 +44,14 @@
             top: 15px;
             right: 17px;
         }
-
+        .editor_list_flex{
+            display: flex;
+            flex-direction:row;
+        }
         </style>
 
-        <div>
+        <div class="dashboard-content">
+        <h1>Lista credenciais wordpress</h1>
 
             <table class="table">
                 <thead>
@@ -70,18 +74,18 @@
                             <td class="wp_login">{{$links->wp_login}}</td>
                             <td class="wp_password">{{$links->wp_password}}</td>
                             <td class="wp_domain">{{$links->wp_domain}}</td>
-                            <td>
+                            <td class="editor_list_flex">
                                 <form action="{{route('credentialDelete',$links->id)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit">Excluir</button>
+                                    <button class="btn btn-danger" type="submit"><i class="fas fa-trash">Excluir</i></button>
                                 </form>
 
-                                <button class="update">Alterar</button>
+                                <button class="update btn btn-success"><i class="fas fa-sync-alt">Alterar</i></button>
                             </td>
                         </tr>
 
-                        
+
                         @endforeach
 
                     @endforeach

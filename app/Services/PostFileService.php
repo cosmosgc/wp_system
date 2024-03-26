@@ -26,7 +26,7 @@ class PostFileService{
             'anchor_2'=>isset($data['anchor_2'])?$data['anchor_2']:null,
             'url_link_2'=>isset($data['url_link_2'])?$data['url_link_2']:null,
             'do_follow_link_1'=>isset($data['do_follow_link_1']) && $data['do_follow_link_1'] === true ? 1 : 0,
-            'anchor_2'=>isset($data['anchor_2'])?$data['anchor_2']:null,
+            //'anchor_2'=>isset($data['anchor_2'])?$data['anchor_2']:null,
             'do_follow_link_2'=>isset($data['do_follow_link_2']) && $data['do_follow_link_2'] === true ? 1 : 0,
             'anchor_3'=>isset($data['anchor_3'])?$data['anchor_3']:null,
             'url_link_3'=>isset($data['url_link_3'])?$data['url_link_3']:null,
@@ -34,8 +34,10 @@ class PostFileService{
             'internal_link'=>isset($data['internal_link'])?$data['internal_link']:null,
             'post_content'=>isset($data['post_content'])?$data['post_content']:null,
             'insert_image'=>isset($data['insert_image']) && ($data['insert_image'] === 'Sim') ? 1 : 0,
+            'domain'=>isset($data['domain'])?$data['domain']:null,
+            'gdrive_document_url'=>isset($data['gdrive_document_url'])?$data['gdrive_document_url']:null,
+            'status'=>'Não publicado',
             'Editor_id'=>$data['user_id']
-
         ]);
     }
 
@@ -47,14 +49,14 @@ class PostFileService{
         if (!$accessToken) {
             return redirect()->route('google.redirect');
         }
-    
+
         // Criar cliente Google
         $client = new Client();
         $client->setAccessToken($accessToken);
-    
+
         // Inicializar serviço de Documentos do Google
         $service = new Docs($client);
-    
+
         try {
             // Fazer a solicitação para obter o conteúdo do documento
             $response = $service->documents->get($id);
@@ -73,8 +75,8 @@ class PostFileService{
                 }
             }
             return $post_content;
-            // Agora você pode usar o $content como o conteúdo do document
-            
+
+
         } catch (\Exception $e) {
             // Lidar com qualquer erro que ocorra ao tentar obter o conteúdo do documento
             return redirect()->back()->with('error', 'Failed to fetch document content: ' . $e->getMessage());
@@ -130,13 +132,13 @@ class PostFileService{
 
             $service->documents->batchUpdate($documentId, $batchUpdateRequest);
 
-            return 'Documento criado e populado com sucesso! Link: ' . "https://docs.google.com/document/d/$documentId/edit";
+            return response()->json('Documento criado e populado com sucesso! Link: ' . "https://docs.google.com/document/d/$documentId/edit", 200);
         } catch (\Exception $e) {
             //return redirect()->back()->with('error', 'Falha ao criar o documento: ' . $e->getMessage());
             return "$e";
         }
     }
-    
-    
-    
+
+
+
 }

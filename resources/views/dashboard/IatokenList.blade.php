@@ -45,6 +45,10 @@
         top: 15px;
         right: 17px;
     }
+    .editor_list_flex{
+        display: flex;
+        flex-direction:row;
+    }
 
 </style>
 
@@ -57,7 +61,7 @@
                 <th>Nome do Editor</th>
                 <th>token</th>
                 <th>Ações</th>
-                
+
             </tr>
         </thead>
         <tbody>
@@ -66,14 +70,14 @@
                     <tr>
                         <td class="editor_name">{{ $edit->name }}</td>
                         <td class="token">{{isset($edit->iaCredentials->open_ai)?$edit->iaCredentials->open_ai:null}}</td>
-                        <td>
+                        <td class="editor_list_flex">
                             <form action="{{route('deleteToken',isset($edit->iaCredentials->id)?$edit->iaCredentials->id:0)}}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit">Excluir</button>
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash">Excluir</i></button>
                             </form>
 
-                            <button class="update">Alterar</button>
+                            <button class="update btn btn-success"><i class="fas fa-sync-alt">Alterar</i></button>
                         </td>
                     </tr>
                 @endif

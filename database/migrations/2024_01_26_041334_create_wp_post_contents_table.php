@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wp_post_contents', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string("theme")->nullable();
             $table->string("keyword")->nullable();
-            $table->unsignedBigInteger('Editor_id');
-            $table->unsignedBigInteger('Credential_id')->nullable();
+            $table->uuid('Editor_id');
+            $table->uuid('Credential_id')->nullable();
             $table->string("category")->nullable();
             $table->string("anchor_1")->nullable();
             $table->string("url_link_1")->nullable();
@@ -34,6 +34,8 @@ return new class extends Migration
             $table->string("status")->nullable();
             $table->string("schedule_date")->nullable();
             $table->string("domain")->nullable();
+            $table->string('gdrive_url')->nullable();
+            $table->string('gdrive_document_url')->nullable();
             $table->timestamps();
 
             $table->foreign('Editor_id')

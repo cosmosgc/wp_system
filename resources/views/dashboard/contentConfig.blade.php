@@ -15,10 +15,10 @@ $user=explode('+',base64_decode($valorCodificado));
 
 @section('content')
 <h3>Criar configuração para postagem</h3>
-<div class="flex-container-column">
+<!-- <div class="flex-container-column">
     <button id="adddocument" class="btn btn-primary">Adicionar documento</button>
     <button id="removedocument" class="btn btn-danger">Limpar documendos</button>
-</div>
+</div> -->
 @foreach($credentials as $credential)
     <input type="hidden" name="opt" class="domain_options" value="{{$credential->wp_domain}}">
 
@@ -42,6 +42,42 @@ $user=explode('+',base64_decode($valorCodificado));
         <tr>
             <td>Categoria</td>
             <td><select class="category" name="" id=""></select></td>
+        </tr>
+
+        <tr>
+            <td>Site</td>
+            <td>
+            <select class="domain">
+                @foreach($credentials as $credential)
+                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
+
+                @endforeach
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Agendar</td>
+            <td class="schedule_date" contenteditable="true"><input class="schedule" type="datetime-local"></td>
+        </tr>
+        <tr>
+            <td>Imagem de destaque</td>
+            <td class="insert_image"><input type="checkbox"></td>
+        </tr>
+        <tr>
+            <td>Imagem do post</td>
+            <td class="sys_image"><input type="file"></td>
+        </tr>
+        <tr>
+            <td>Imagem URL</td>
+            <td class="url_image" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Pasta GoogleDrive URL</td>
+            <td class="gdrive_document_url" contenteditable="true"></td>
+        </tr>
+        <tr>
+            <td>Imagem GoogleDrive URL</td>
+            <td class="gdrive_url" contenteditable="true"></td>
         </tr>
         <tr>
             <td>Ancora 1</td>
@@ -79,41 +115,13 @@ $user=explode('+',base64_decode($valorCodificado));
             <td>Follow Link 3</td>
             <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
         </tr>
-        <tr>
-            <td>Imagem URL</td>
-            <td class="url_image" contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td>GoogleDrive URL</td>
-            <td class="gdrive_url" contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td>ID da pasta do drive</td>
-            <td class="image_folder_id" contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td>Imagem de destaque</td>
-            <td class="insert_image"><input type="checkbox"></td>
-        </tr>
-        <tr>
-            <td>Imagem do post</td>
-            <td class="sys_image"><input type="file"></td>
-        </tr>
-        <tr>
-            <td>Agendar</td>
-            <td class="schedule_date" contenteditable="true"><input class="schedule" type="date"></td>
-        </tr>
-        <tr>
-            <td>Site</td>
-            <td>
-            <select class="domain">
-                @foreach($credentials as $credential)
-                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
 
-                @endforeach
-            </select>
-            </td>
-        </tr>
+
+
+
+
+
+
         </table>
         <input type="hidden" name="user" class="user" value="{{$user[0]}}">
         <button type="button" class="btn btn-outline-primary submitForm">Salvar config</button>
@@ -193,6 +201,16 @@ $user=explode('+',base64_decode($valorCodificado));
                     // Coleta dos dados do formulário dentro do "document" atual
                     var formData = new FormData();
                     var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
+                    const str=document.querySelector('.gdrive_document_url').innerText;
+                    let folderId=null;
+                    if(str){
+
+                        folderId=str.split('/folders/')[1]
+                    }
+                    folderId=document.querySelector('.gdrive_document_url').innerText;
+
+                    console.log(folderId);
+
 
                     if (imageFile) {
                         formData.append('sys_image', imageFile);
@@ -210,22 +228,17 @@ $user=explode('+',base64_decode($valorCodificado));
                         anchor_3: document.querySelector('.anchor_3').innerText,
                         url_link_3: document.querySelector('.url_link_3').innerText,
                         do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
-                        image_url: document.querySelector('.url_image').innerText,
-                        gdrive_url: document.querySelector('.gdrive_url').innerText,
-                        folder_id: document.querySelector('.image_folder_id').innerText,
+                        gdrive_document_url: folderId,
                         insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule: document.querySelector('.schedule').value,
                         domain: document.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
-
-
-
                     const loading=document.createElement('span');
                     loading.classList.add('loading')
                     loading.innerText='loading....'
                     const content=document.querySelector(".content");
-                    // Faz a requisição AJAX
+                    // // Faz a requisição AJAX
                     content.appendChild(loading);
                     fetch('/insert_post_content', {
                         method: 'POST',
@@ -254,10 +267,14 @@ $user=explode('+',base64_decode($valorCodificado));
                         }else{
                             Swal.fire({
                             title: 'Configuração salva com sucesso',
-                            text: 'DVoce quer continuar?',
+                            text: 'Voce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
-                        })
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
 
                         loading.innerText='';
 
@@ -471,6 +488,12 @@ $user=explode('+',base64_decode($valorCodificado));
         function getDataFromTable(element) {
             var inputElements = element;
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+            const str=inputElements.querySelector('.gdrive_document_url').innerText;
+            const folderId=null;
+            if(str.length){
+                folderId=str[1]
+            }
+            folderId=inputElements.querySelector('.gdrive_document_url').innerText;
 
             var postData = {
                         theme: inputElements.querySelector('.theme').innerText,
@@ -485,14 +508,12 @@ $user=explode('+',base64_decode($valorCodificado));
                         url_link_3: inputElements.querySelector('.url_link_3').innerText,
                         do_follow_link_3: inputElements.querySelector('.do_follow_link_3').checked ? 1 : 0,
                         image_url: inputElements.querySelector('.url_image').innerText,
-                        gdrive_url: inputElements.querySelector('.gdrive_url').innerText,
-                        folder_id: inputElements.querySelector('.image_folder_id').innerText,
+                        gdrive_document_url:folderId,
                         insert_image: inputElements.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule_date: inputElements.querySelector('.schedule_date input[type="date"]').value,
                         domain: inputElements.querySelector('.domain').value,
                         session_user: document.querySelector('.user').value
                     };
-
                     const loading=document.createElement('span');
                     loading.classList.add('loading')
                     loading.innerText='loading....'
@@ -526,7 +547,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         }else{
                             Swal.fire({
                             title: 'Configuração salva com sucesso',
-                            text: 'DVoce quer continuar?',
+                            text: 'Voce quer continuar?',
                             icon: 'success',
                             confirmButtonText: 'continue'
                         })

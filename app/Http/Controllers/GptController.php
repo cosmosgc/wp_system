@@ -17,7 +17,7 @@ class GptController extends Controller
     protected $wpService;
     protected $helper;
 
-    
+
     public function __construct(GptService $gptService, Wp_service $blogService)
     {
         $this->gptService=$gptService;
@@ -36,13 +36,17 @@ class GptController extends Controller
     }
 
     public function generatePost(Request $request){
-        foreach($request->topic as $topic){
-            $response=$this->gptThread($request,$topic);
+
+        foreach($request->title as $key=>$topic){
+            $id=isset($request->id[$key])?$request->id[$key]:null;
+            $response=$this->gptThread($id,$topic);
         }
     }
 
 
-    public function gptThread($post_data,$post_title){
+
+
+    public function gptThread($id,$post_title){
         $gptData='';
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
@@ -68,9 +72,9 @@ class GptController extends Controller
         $token=$token->open_ai;
         //return json_encode('chegou aqui');
 
-        
-            foreach(Wp_post_content::where('theme',$post_title)->get() as $post_config){
-            
+
+            foreach(Wp_post_content::where('theme', $post_title)->orWhere('id', $id)->get() as $post_config){
+
                 $key=$post_config->keyword;
                 $anchor_1=$post_config->anchor_1;
                 $anchor_2=$post_config->anchor_2;
@@ -84,7 +88,7 @@ class GptController extends Controller
                 $do_follow_link_3=$post_config->$do_follow_link_3;
             }
 
-        
+
 
 
 
@@ -108,7 +112,7 @@ class GptController extends Controller
 
 
         ));
- 
+
         $total_comands=[];
         $complete_post=[];
         $total_comands[]=$clean_command;
@@ -142,11 +146,10 @@ class GptController extends Controller
             $complete_post[]=$data;
             $gptData.=$data."\n\n";
             }
-
         $headings = explode("\n", $complete_post[1]);
         $filtered_array=array_values(array_filter($headings));
         //dd($filtered_array);
-     
+
         foreach($filtered_array as $key=>$heading){
 
             $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
@@ -156,7 +159,7 @@ class GptController extends Controller
 
         $new_value=str_replace($filtered_array[0],"",$gptData);
         $newGptData=str_replace($filtered_array[1],"",$gptData);
-          
+
 
 
 
@@ -172,7 +175,7 @@ class GptController extends Controller
         ));
 
 
-        
+
         $conclusion_command=$this->replace_variables( ['Write an outro for an article about "%%title%%", in %%language%%. Style: %%writing_style%%. Tone: %%writing_tone%%'],array(
             'language' => $language,
             'title' => $title,
@@ -190,8 +193,8 @@ class GptController extends Controller
         $complete_post[]=$conclusion_request['choices'][0]['message']['content'];
         $newGptData.=$conclusion_request['choices'][0]['message']['content']."\n\n";
 
-        
-        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$gptData]);
+
+        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$newGptData]);
         return $insertPostContent;
     }
 }

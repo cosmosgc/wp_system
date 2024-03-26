@@ -27,7 +27,7 @@ class EditorService{
     }
 
     public function updateEditor($data){
-        $editor=Editor::find(intval($data->id));
+        $editor=Editor::find($data->id);
 
         $editor->name=$data->name;
         $editor->surname=$data->surname;

@@ -4,15 +4,25 @@
 @php
   use App\Models\Editor;
 
+
   $valorCodificado = request()->cookie('editor');
   $user=explode('+',base64_decode($valorCodificado));
   //dd($user);
-  $post_configs= Editor::where('name',$user[0])->get();
-  //dd($post_configs);
+  $post_configs = Editor::where('name',$user[0])->get();
+  $searchParam = request()->input('query');
   if($post_configs->first() !=null){
     $post_contents=Editor::find($post_configs[0]->id);
+    if(!empty($search)){
+        $post_contents->postContents=$search;
+    }
+
+    else{
+        $searchParam = '';
+    }
     $post_contents->postContents->each(function ($config) {
-        unset($config->post_content);
+        if (!empty($config->post_content) && isset($config->post_content)) {
+          $config->post_content = true;
+        }
     });
   }
 
@@ -20,7 +30,7 @@
 
 @section('content')
 <style>
-        .editor_modal {
+        .editor_modal, .batch_modal {
             height: 80vh;
             width: 90vw;
             max-width: 600px;
@@ -67,17 +77,38 @@
             top: 15px;
             right: 17px;
         }
+        tr.loading {
+            background: #8d8d8d54;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% {
+                background-color: #8d8d8d54;
+            }
+            100% {
+                background-color: #8d8d8d;
+            }
+        }
+
+          /* Estilo para o efeito de blur */
+      .modal.show {
+        backdrop-filter: blur(4px);
+      }
 
     </style>
     <div class="dashboard-content">
+        @if(!empty($search))
+        <h1>Resultados da busca</h1>
+        @else
         <h1>Lista de posts e configurações</h1>
+        @endif
         <div class="row justify-content-center">
           <div class="card card-medium">
             <div class="card-body">
               <div class="search_bar">
-                <form action="/search" method="get">
+                <form action="/list_content" method="get">
                   <div class="input-group">
-                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Dominio">
+                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Nome do post ou Dominio" value="{{$searchParam}}">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit">Search</button>
                     </div>
@@ -86,9 +117,24 @@
               </div>
             </div>
           </div>
-          <!-- Formulário de Cadastro de Usuário -->
-          <input type="hidden" name="user_id" class="user_id" value={{isset($post_configs[0]->id)?$post_configs[0]->id:0}}>
 
+          <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
+
+            <div class="row">
+                <div class="col-md-6" style="
+    display: flex;
+    justify-content: flex-end;
+">
+                    <button class="btn btn-success btn-block" onclick="batch_generate()">
+                    <i class="fas fa-file"> Gerar conteúdo em lote</i>
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" onclick="batch_post()">
+                    <i class="fas fa-upload"></i> Postar em lote
+                    </button>
+                </div>
+            </div>
 
           <div class="container mt-5">
 
@@ -96,7 +142,7 @@
               <thead>
 
                 <tr>
-                    <th>id</th>
+                    <th><input type="checkbox" id="selectAllCheckbox" onclick="selectAllCheckbox()"></th>
                   <th>Tema</th>
                   <th>Palavra-chave</th>
                   <th>Categoria</th>
@@ -112,14 +158,18 @@
               <tbody>
                 <!-- Aqui você pode iterar sobre os dados do seu banco de dados para preencher as linhas da tabela -->
                 <!-- Exemplo de uma linha de dados -->
+
                 @foreach($post_contents->postContents as $config)
                 <tr>
-                    <td class="config_id">{{$config->id}}</td>
+                  <td>
+                      <input class="form-check-input config_id" type="checkbox"  data-id="{{$config->id}}" data-theme="{{$config->theme}}">
+                  </td>
+
 
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
                   <td class="category">{{$config->category}}</td>
-                  <td class="post-content">{{isset($config->post_content)?'Sim':'Não'}}</td>
+                  <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
                   <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
@@ -135,15 +185,20 @@
                     <button class="btn btn-danger delete_config" data-toggle="tooltip" data-placement="top" title="Deletar">
                     <i class="fas fa-trash"></i>
                     </button>
-
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post([`{{$config->theme}}`], null, element_status=this)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 
                     <!-- Atualizar conteúdo Button with Font Awesome icon, alt attribute, and popover -->
                     <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
                     <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_document_url}}', this)">
+                    <i class="fab fa-google"></i>
+                    </button>
+                    <button class="btn btn-primary gdrive_doc_input" data-toggle="popover" data-placement="top" title="Consumir doc" data-content="Clique para carregar em documento google drive" onclick="get_gdoc(`{{$config->theme}}`,`{{$config->id}}`,'', this)">
+                        <i class="fa fa-folder"></i>
                     </button>
 
                   </td>
@@ -194,18 +249,61 @@
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
+
     <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-    });
+        function selectAllCheckbox(){
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('.form-check-input');
+            // Get the value of the select all checkbox
+            const isChecked = selectAllCheckbox.checked;
+
+            // Loop through all checkboxes and set their checked state
+            checkboxes.forEach(function(checkbox) {
+            checkbox.checked = isChecked;
+            });
+        }
+        function getSelectedItems(condition ='loading', remove = false) {
+          var checkboxes = document.querySelectorAll('.form-check-input');
+          var selectedItems = [];
+
+          checkboxes.forEach(function(checkbox) {
+              if (checkbox.checked) {
+                  var id = checkbox.getAttribute('data-id');
+                  var theme = checkbox.getAttribute('data-theme');
+                  selectedItems.push({ id: id, theme: theme });
+                  var parentTr = checkbox.closest('tr');
+                  console.log(parentTr);
+                  if(remove){
+                    parentTr.classList.remove(condition);
+                  }else{
+                    parentTr.classList.add(condition);
+                  }
+              }
+          });
+
+          return selectedItems;
+      }
+        function separateThemesAndIDs(selectedItems) {
+            var themes = [];
+            var ids = [];
+
+            selectedItems.forEach(function(item) {
+                themes.push(item.theme);
+                ids.push(item.id);
+            });
+
+            return { themes: themes, ids: ids };
+        }
     </script>
+
+
 
     <script>
 
             const modal= document.querySelector(".editor_modal");
             const closeModalButton=document.querySelector(".close_modal_button");
             const upgradeButton=document.querySelector(".upgrade_button")
+
 
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
@@ -277,7 +375,7 @@
                     url_link_3: _url_link_3.value,
                     _token: csrfToken
                 };
-                console.log(data);
+                // console.log(data);
 
                 const updateQuery= await fetch('/update_config',{
                     method:'PUT',
@@ -314,7 +412,7 @@
 
                 if(updateQuery.ok){
                     alert('atualização feita com sucesso');
-                    console.log(updateQuery);
+                    // console.log(updateQuery);
                 }else{
                     alert('atualização falhou');
                 }
@@ -323,10 +421,287 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
+              async function batch_generate(){
+                selected_items = getSelectedItems('loading');
+                separatedData = separateThemesAndIDs(selected_items);
+                // console.log(separatedData.themes, separatedData.ids);
+                //return;
+                await generate_post(separatedData.themes, separatedData.ids);
+                removed = getSelectedItems('loading', true);
+            }
+            async function batch_post(){
+                selected_items = getSelectedItems('loading');
+                separatedData = separateThemesAndIDs(selected_items);
+                // console.log(separatedData.themes, separatedData.ids);
+                // return;
+                // Utilizando um loop for assíncrono com async/await para postar em lotes
+                for (const id of separatedData.ids) {
+                    await post_to_wp(id);
+                }
+                removed = getSelectedItems('loading', true);
+            }
+
+
+            async function generate_post(topic_to_generate, id=null, element_status = null){
+                element_status.closest('tr').classList.add('loading')
+                //loading_element(element_status, true);
+                const loading=document.createElement('div');
+                const loadingSVG = `
+                            <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" fill="none" r="10" stroke="#000" stroke-width="2">
+                    <animate attributeName="r" from="8" to="20" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+                    <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite"/>
+                    </circle>
+                <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
+                </svg>
+
+                `
+                loading.innerHTML=loadingSVG;
+                const modalDialog = document.querySelector('.modal-dialog');
+                modalDialog.appendChild(loading);
+                let data=[]
+                let theme=topic_to_generate
+                //theme.push(topic_to_generate);
+                    let body = {
+                        title: theme,
+                        _token: csrfToken
+                    };
+                    if (id !== undefined) {
+                        body.id = id;
+                    }
+                    // console.log(body);
+                    try {
+                        const query = await fetch('/gpt_query', {
+                            method: 'POST',
+                            body: JSON.stringify(body),
+                            headers: { "Content-Type": "application/json" }
+                        });
+
+
+
+                // Remove o SVG de loading após a conclusão da query
+                try {
+                if(query.ok){
+                Swal.fire({
+                    title: 'Post publicado com sucesso',
+                    text: 'Do you want to continue',
+                    icon: 'success',
+                    confirmButtonText: 'continue'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+                }
+
+                } catch (error) {
+                Swal.fire({
+                    title: error,
+                    text: 'Quer continuar?',
+                    icon: 'error',
+                    confirmButtonText: 'continue'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+                }
+
+
+                modalDialog.removeChild(loading);
+
+                // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
+            } catch (error) {
+                console.error('Ocorreu um erro:', error);
+                Swal.fire({
+                    title: 'Aconteceu um erro durante o processo',
+                    text: 'Do you want to continue',
+                    icon: 'error',
+                    confirmButtonText: 'continue'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+                // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
+                element_status.closest('tr').classList.remove('loading')
+                document.body.removeChild(loadingSVG);
+            }
+            element_status.closest('tr').classList.remove('loading')
+        }
+
+            async function post_to_wp(configId){
+                //Essa função não está tentando ajustar o rank do yoast ou arrumar o problema do rank
+                const user_id= document.querySelector('.user_id')
+                data = {
+                        id: configId,
+                        user_id: user_id.value,
+                        //domain: domain.innerText,
+                        _token: csrfToken
+                    };
+
+                // console.log(data);
+                // return;
+                try {
+                    const query = await fetch('/post_content', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    if (query.ok) {
+                        const data = await query.json();
+                        console.log(data);
+
+                        //update_yoaust precisa de um request especifico com domain, keyword e id
+
+                        // const query_2 = await fetch('/update_yoaust', {
+                        //     method: 'POST',
+                        //     body: JSON.stringify(body),
+                        //     headers: { "Content-Type": "application/json" }
+                        // });
+                    } else {
+                        console.error("Fetch failed with status:", query.status);
+                    }
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                }
+            }
+            async function loading_element(element, remove = false){
+                var parentTr = element.closest('tr');
+                if(remove){
+                    parentTr.classList.remove('loading');
+                }else{
+                    parentTr.classList.add('loading');
+                }
+            }
+            async function create_gdoc(theme, id, folderLink = '', loading_elements = null) {
+                if (folderLink == '') {
+                    return;
+                }
+                if(loading_elements){
+                    loading_element(loading_elements, false);
+                }
+                try {
+                    const folderId = folderLink.split('/folders/');
+                    const folder = folderId[1];
+
+                    const realFolderId = folder.split('?usp=sharing');
+                    console.log(realFolderId[0]);
+                    let body = {
+                        title: theme,
+                        id: id,
+                        folder_id: realFolderId[0],
+                        _token: csrfToken
+                    };
+
+                    const query = await fetch('/create_doc', {
+                        method: 'POST',
+                        body: JSON.stringify(body),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    const response = await query.json();
+
+                    console.log(response);
+                    loading_element(loading_elements, true);
+                    swal.fire({
+                        icon: 'success',
+                        title: 'Documento criado com sucesso',
+                        text: 'O documento do drive fo criado com sucesso'
+                    });
+                    return response;
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Um erro aconteceu ao criar o documento.'
+                    });
+                }
+                loading_element(loading_elements, true);
+            }
+            async function get_gdoc(title, id, google_docs = '', loading_elements = null){
+                if (google_docs === '') {
+                    const { value: googleDocsValue } = await swal.fire({
+                        title: 'Insira o documento do google drive',
+                        input: 'text',
+                        inputLabel: 'Google Docs URL',
+                        inputPlaceholder: 'Insira a URL Google Docs',
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return 'Você precisa inserir um documento do google docs!!';
+                            }
+                        }
+                    });
+
+                    if (googleDocsValue) {
+                        google_docs = googleDocsValue;
+                    } else {
+                        // If user cancels or provides no input, return without proceeding
+                        return;
+                    }
+                }
+
+                if (loading_elements){
+                    loading_element(loading_elements, false);
+                }
+
+                try {
+                    const folderId = google_docs.split('/d/');
+                    console.log(folderId);
+                    const folder = folderId[1];
+
+                    //const folder_temp = folder.split('?usp=sharing');
+                    const folder_2 = folder.split('/edit');
+                    const realFolderId  = folder_2[0];
+
+                    console.log(realFolderId[0]);
+
+                    let body = {
+                        title: title,
+                        id: id,
+                        google_docs: realFolderId,
+                        _token: csrfToken
+                    };
+
+                    const query = await fetch('/process_doc', {
+                        method: 'POST',
+                        body: JSON.stringify(body),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    const response = await query.json();
+
+                    console.log(response);
+                    if (loading_elements) {
+                        loading_element(loading_elements, true);
+                    }
+                    swal.fire({
+                        icon: 'success',
+                        title: 'Texto importado com sucesso!',
+                        text: 'O texto foi armazenado na base com sucesso'
+                    });
+                    return response;
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Um erro aconteceu durante o processamento: ' +error+ '.'
+                    });
+                }
+                if (loading_elements) {
+                    loading_element(loading_elements, true);
+                }
+            }
+
 
             function open_modal(i = 0, data = null) {
                 let parsedData = JSON.parse(data);
-                console.log(parsedData);
+                // console.log(parsedData);
 
                 modal.classList.add('open_editor_modal');
 
@@ -424,8 +799,6 @@
     </div>
 
     <script>
-
-      //const deleteButton= document.querySelector(".delete_config");
       const createDocButton= document.querySelector(".create_doc");
       const postContent=document.querySelector('.post-content')
       const languages=document.getElementById("languages");
@@ -433,7 +806,6 @@
       const writing_tone=document.getElementById('writing_tone');
       const sections=document.getElementById('sections');
       const paragraphs= document.getElementById('paragraphs');
-      //const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
       const user_id= document.querySelector('.user_id')
 
 
@@ -443,249 +815,147 @@
       document.addEventListener('DOMContentLoaded', function () {
       const generateContentButtons = document.querySelectorAll('.create_content');
       const postButton= document.querySelectorAll(".post_wp");
-      const generateButton=document.querySelector('.generateContentBtn');
       let data_id;
       let Theme;
-      console.log(generateButton);
 
+    const container = document.querySelectorAll('.container');
 
-      generateContentButtons.forEach((button,i) => {
+    postButton.forEach((button,i)=>{
+        // Encontra o contêiner mais próximo ao botão clicado
+        const configId = id[i].getAttribute('data-id');
+            // console.log('Config ID:', configId);
+        const loading= document.createElement('span');
 
-        button.addEventListener('click', function () {
-          const modal = document.querySelector('.modal');
-          modal.classList.add('show');
-          modal.style.display = 'block';
-          document.body.classList.add('modal-open');
+            loading.innerHTML='loading....'
+            button.addEventListener('click',async()=>{
+            button.insertAdjacentElement("beforebegin", loading);
+            const domain=document.querySelectorAll('.domain')[i];
+            const keyword=document.querySelectorAll('.keyword')[i]
+            loading_element(domain, false);
+            console.log("Postando em: "+domain.innerText);
+            data = {
+                            id: configId,
+                            user_id: user_id.value,
+                            domain: domain.innerText,
+                            _token: csrfToken
+                        };
 
-            data_id = button.closest('.container').getAttribute('data-id');
-            Theme = button.closest('.container').querySelector('.theme').innerText;
-          });
+                // console.log(data);
+                try {
+                    const query = await fetch('/post_content', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: { "Content-Type": "application/json" }
+                    });
 
-        });
+                    if (query.ok) {
+                        const data = await query.json();
+                        // console.log(data);
+                        try {
+                            body = {id: data.id,
+                                    domain: domain.innerText,
+                                    keyword: keyword.innerText,
+                                    _token: csrfToken}
+                            const query_2 = await fetch('/update_yoaust', {
+                                method: 'POST',
+                                body: JSON.stringify(body),
+                                headers: { "Content-Type": "application/json" }
+                            });
 
-
-        generateButton.addEventListener('click',async ()=>{
-          const loading=document.createElement('div');
-          const loadingSVG = `
-                    <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" fill="none" r="10" stroke="#000" stroke-width="2">
-              <animate attributeName="r" from="8" to="20" dur="1.5s" begin="0s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="indefinite"/>
-            </circle>
-          <!--   <circle cx="20" cy="20" fill="#383a36" r="10"/> -->
-          </svg>
-
-          `
-          loading.innerHTML=loadingSVG;
-
-          const modalDialog = document.querySelector('.modal-dialog');
-          modalDialog.appendChild(loading);
-
-            let body = {
-                topic: Theme,
-                languages: languages.value,
-                style: writing_style.value,
-                writing_tone: writing_tone.value,
-                sections: sections.value,
-                paragraphs: paragraphs.value,
-                _token: csrfToken
-            }
-            console.log(body);
-          try {
-            const query = await fetch('/gpt_query', {
-                method: 'POST',
-                body: JSON.stringify(body),
-                headers: { "Content-Type": "application/json" }
-            });
-
-        // Remove o SVG de loading após a conclusão da query
-        try {
-          if(query.ok){
-          Swal.fire({
-            title: 'Post publicado com sucesso?',
-            text: 'Do you want to continue',
-            icon: 'success',
-            confirmButtonText: 'continue'
-          })
-        }
-
-        } catch (error) {
-          Swal.fire({
-            title: error,
-            text: 'Quer continuar?',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
-        }
-
-
-        modalDialog.removeChild(loading);
-
-        // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
-    } catch (error) {
-        console.error('Ocorreu um erro:', error);
-        Swal.fire({
-            title: 'Error on the process',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
-        // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
-        document.body.removeChild(loadingSVG);
-    }
-})
-
-
-
-postButton.forEach((button,i)=>{
-      const container = button.closest('.container'); // Encontra o contêiner mais próximo ao botão clicado
-      const data_id = container.getAttribute('data-id'); // Obtém o data-id do contêiner
-      const loading= document.createElement('span');
-
-
-        loading.innerHTML='loading....'
-        button.addEventListener('click',async()=>{
-          button.insertAdjacentElement("beforebegin", loading);
-          const domain=document.querySelectorAll('.domain')[i];
-          const keyword=document.querySelectorAll('.keyword')[i]
-          console.log("Postando em: "+domain.innerText);
-            try {
-                const query = await fetch('/post_content', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        id: data_id,
-                        user_id: user_id.value,
-                        domain: domain.innerText,
-                        _token: csrfToken
-                    }),
-                    headers: { "Content-Type": "application/json" }
-                });
-
-                if (query.ok) {
-                    const data = await query.json();
-                    console.log(data);
-                    try {
-                        body = {id: data.id,
-                                domain: domain.innerText,
-                                keyword: keyword.innerText,
-                                _token: csrfToken}
-                                console.log(body);
-                        const query_2 = await fetch('/update_yoaust', {
-                            method: 'POST',
-                            body: JSON.stringify(body),
-                            headers: { "Content-Type": "application/json" }
-                        });
-
-                        if (query_2.ok) {
-                            const data_2 = await query_2.json();
-                            console.log(data_2);
-                            //fazer o query mais uma vez não resolveu o bug
-
-                            // const query_3 = await fetch('/update_yoaust', {
-                            //     method: 'POST',
-                            //     body: JSON.stringify(body),
-                            //     headers: { "Content-Type": "application/json" }
-                            // });
+                            if (query_2.ok) {
+                                const data_2 = await query_2.json();
+                                Swal.fire({
+                                    title: 'Post criado com sucesso no wordpress',
+                                    text: 'Continuar?',
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                })
+                                loading.remove(this);
+                            } else {
+                                console.error("Second fetch failed with status:", query_2.status);
+                            }
+                        } catch (error_2) {
+                            console.error("Second fetch error:", error_2);
                             Swal.fire({
-                                title: 'Post criado com sucesso no wordpress',
+                                title: query.statusText,
                                 text: 'Continuar?',
-                                icon: 'success',
+                                icon: 'error',
                                 confirmButtonText: 'continue'
                             })
                             loading.remove(this);
-                        } else {
-                            console.error("Second fetch failed with status:", query_2.status);
                         }
-                    } catch (error_2) {
-                        console.error("Second fetch error:", error_2);
-                        Swal.fire({
-                            title: query.statusText,
-                            text: 'Continuar?',
-                            icon: 'error',
-                            confirmButtonText: 'continue'
-                        })
-                        loading.remove(this);
+                    } else {
+                        loading_element(domain, true);
+                        console.error("Fetch failed with status:", query.status);
                     }
+                } catch (error) {
+                    loading_element(domain, true);
+                    console.error("Fetch error:", error);
 
-
-
-                } else {
-                    console.error("Fetch failed with status:", query.status);
                 }
-            } catch (error) {
-                console.error("Fetch error:", error);
-            }
-
-
-
-
-
-
+            })
+            loading_element(domain, true);
         })
-      })
-
-});
-
-
-
-// Fechar o modal ao clicar no botão Fechar
-document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
-        btn.addEventListener('click', () => {
-        const modal = document.querySelector('.modal.show');
-        modal.classList.remove('show');
-        modal.style.display = 'none';
-        document.body.classList.remove('modal-open');
     });
-});
+
+    // Fechar o modal ao clicar no botão Fechar
+    document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+            const modal = document.querySelector('.modal.show');
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        });
+    });
 
 
-const deletebutton= document.querySelectorAll(".delete_config")
+    const deletebutton= document.querySelectorAll(".delete_config")
 
 
+    //const id=document.querySelectorAll(".config_id")
 
+    deletebutton.forEach((e,i)=>{
+    e.addEventListener('click',async ()=>{
+        data_id=id[i].getAttribute("data-id");
+        // console.log(data_id);
+        const deletion_query= await fetch('/remove_config',{
+        method:'DELETE',
+        body:JSON.stringify({
+            id:data_id,
+            _token:csrfToken
+        }),
+        headers:{"Content-Type":"application/json"}
+        })
 
-deletebutton.forEach((e,i)=>{
-  e.addEventListener('click',async ()=>{
-    data_id=document.querySelector(".container").getAttribute("data-id");
-    console.log(data_id);
-    const deletion_query= await fetch('/remove_config',{
-      method:'DELETE',
-      body:JSON.stringify({
-         id:data_id,
-        _token:csrfToken
-      }),
-      headers:{"Content-Type":"application/json"}
+        if(deletion_query.ok){
+        Swal.fire({
+                title: 'Configuração removida com sucesso',
+                text: 'Do you want to continue',
+                icon: 'success',
+                confirmButtonText: 'continue'
+            }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+        }else{
+        Swal.fire({
+                title: 'Erro ao remover configuração',
+                text: 'Do you want to continue',
+                icon: 'error',
+                confirmButtonText: 'continue'
+            }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+
+            //location.reload();
+        }
     })
-
-    if(deletion_query.ok){
-      Swal.fire({
-            title: 'Configuração removida com sucesso',
-            text: 'Do you want to continue',
-            icon: 'success',
-            confirmButtonText: 'continue'
-          })
-          location.reload()
-    }else{
-      Swal.fire({
-            title: 'Erro ao remover configuração',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'continue'
-          })
-
-          location.reload();
-    }
-  })
-})
+    })
 
 </script>
 
 
-
-<style>
-  /* Estilo para o efeito de blur */
-  .modal.show {
-    backdrop-filter: blur(4px);
-  }
-</style>
 @endsection

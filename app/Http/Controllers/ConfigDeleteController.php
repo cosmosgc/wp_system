@@ -9,8 +9,8 @@ class ConfigDeleteController extends Controller
 {
     //
     public function deleteConfig(Request $request){
-        $delete_request =Wp_post_content::find(intval($request->id));
+        $delete_request =Wp_post_content::find($request->id);
         $deletion=$delete_request->delete();
-        return $deletion;
+        return response()->json($deletion, 200);
     }
 }

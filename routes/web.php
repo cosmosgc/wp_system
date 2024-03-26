@@ -11,7 +11,6 @@ use App\Http\Controllers\GptController;
 use App\Http\Controllers\iaCredentialController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
-use App\Http\Controllers\searchController;
 use App\Http\Controllers\WpController;
 use App\Http\Controllers\WpCredentialController;
 use App\Services\PostFileService;
@@ -31,7 +30,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/register', [DasboardController::class,'register'])->name('dashboard.register');
 Route::get('/upload_csv',[DasboardController::class,'importCsv'])->name('dashboard.uploadCsv');
-Route::get('/gdriveport',[DasboardController::class,'gDrivePort'])->name('dashboard.gDrivePort');
+Route::get('/gdriveport',[DasboardController::class,'gDrivePort'])->name('dashboard.gDriveConfig');
 Route::get('/', [DasboardController::class, 'login'])->name('login');
 Route::get('/index', [DasboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard', [DasboardController::class, 'show'])->name('dashboard.show');
@@ -51,11 +50,11 @@ Route::get('/list_content',[DasboardController::class,'listPostConfig'])->name('
 Route::get('/insert_gpt_token',[DasboardController::class,'insertGptToken'])->name('dashboard.configia');
 Route::get('/submit_wp',[DasboardController::class,'insertWpCredential'])->name('dashboard.wp');
 Route::get('/site_credential_created',[DasboardController::class,'siteCredentialCreated'])->name('credentialCreated');
-Route::get('/search',[searchController::class,'searchByQuery']);
 Route::get('/list_credential',[DasboardController::class,'listWpCredential'])->name('listCredential');
 Route::get('/list_ia_credential',[DasboardController::class,'listIaCredentials'])->name('listIaCredentials');
 Route::get('/deleted_token',[DasboardController::class,'tokenDeleted'])->name('deletedToken');
 Route::get('/list_editor',[DasboardController::class,'ListEditor'])->name('listEditor');
+Route::get('/config_updated',[DasboardController::class,'configUpdated'])->name('configUpdated');
 Route::get('/teste',[DasboardController::class,'gptTeste']);
 
 
@@ -72,6 +71,7 @@ Route::get('/quit',[loginController::class,'logoff'])->name('logoff');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
 Route::post('/submit_wp_credential',[WpCredentialController::class,'saveWpCredential'])->name('saveWpCredential');
 Route::post('/create_google_credential',[DriveCredentialController::class,'insertGoogleCredentials']);
+Route::post('/update_google_credential',[DriveCredentialController::class,'updateGoogleCredentials']);
 Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);
 Route::delete('/editor/{id}', [EditorController::class,'destroy'])->name('editor.destroy');
 Route::delete('/wp_crential/{id}',[WpCredentialController::class,'deleteWpCredential'])->name('credentialDelete');
@@ -79,6 +79,5 @@ Route::delete('/delete_token/{id}',[iaCredentialController::class,'deleteCredent
 Route::put('/update_user',[EditorController::class,'updateEditor']);
 Route::put('/update_credentials',[WpCredentialController::class,'updateWpCredential']);
 Route::put('/update_config',[PostContentController::class,'updateConfig']);
-Route::put('/update_google_credential',[DriveCredentialController::class,'updateGoogleCredentials']);
 
 

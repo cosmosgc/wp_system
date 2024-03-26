@@ -33,6 +33,7 @@ class ScheduleService
                         $newPost->postBlogContent(
                             $posts->keyword,
                             $posts->theme,
+                            $posts->category,
                             $posts->post_content,
                             $posts->insert_image,
                             $posts->post_image,

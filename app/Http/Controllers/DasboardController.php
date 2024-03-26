@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Editor;
 use App\Models\Ia_credential;
 use Illuminate\Http\Request;
+use App\Models\Wp_post_content;
 
 class DasboardController extends Controller
 {
@@ -16,7 +17,13 @@ class DasboardController extends Controller
     }
 
     public function login(){
-        return view('login');
+        $editors = Editor::all();
+        if(!empty($editors[0]->name)){
+            return view('login');
+        }else{
+            return view('userBootstrap');
+        }
+        
     }
 
     public function show(Request $request)
@@ -47,6 +54,10 @@ class DasboardController extends Controller
         return view('dashboard.configCreated');
     }
 
+    public function configUpdated(){
+        return view('dashboard.configUpdate');
+    }
+
     public function contentCreation(){
         return view('dashboard.contentConfig');
     }
@@ -63,8 +74,13 @@ class DasboardController extends Controller
         return view('dashboard.GoogleDocCreation');
     }
 
-    public function listPostConfig(){
-        return view('dashboard.SubmitPosts');
+    public function listPostConfig(Request $request){
+        $results=null;
+        if(!empty($request->input('query'))){
+            $results=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->get();
+        }
+        
+        return view('dashboard.SubmitPosts',['search'=>$results]);
     }
 
     public function docCreated(){
@@ -83,7 +99,7 @@ class DasboardController extends Controller
         return view('dashboard.upload');
     }
     public function gDrivePort(){
-        return view('dashboard.gdriveport');
+        return view('dashboard.gdriveConfig');
     }
 
     public function gptTeste(){
@@ -153,5 +169,6 @@ class DasboardController extends Controller
     public function tokenDeleted(){
         return view('dashboard.deletedToken');
     }
+
 
 }

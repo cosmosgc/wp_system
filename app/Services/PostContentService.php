@@ -8,11 +8,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Google_Client;
 use Google_Service_Drive;
+use Monolog\Handler\DeduplicationHandler;
 
 class PostContentService{
 
     public function insertPostContent($data,$doContent){
-
            $image= $this->processImage($data);
 
 
@@ -35,11 +35,12 @@ class PostContentService{
             'internal_link'=>$data->internal_link,
             'post_content'=>isset($doContent)?$doContent:null,
             'insert_image'=>$data->has('insert_image')?1:0,
-            'status'=>'unpublished',
+            'status'=>'Não publicado',
             'schedule_date'=>$data->schedule,
             'domain'=>$data->domain,
+            'gdrive_url'=>$data->gdrive_url,
+            'gdrive_document_url'=>$data->gdrive_document_url,
             'Editor_id'=>$user_id[0]->id
-
         ]);
 
 
@@ -69,9 +70,10 @@ class PostContentService{
         $updated_content->internal_link = isset($data->internal_link) ? $data->internal_link : '';
         $updated_content->post_content = isset($data->post_content) ? $data->post_content : '';
         $updated_content->insert_image = isset($data->insert_image) ? $data->insert_image : '';
-        $updated_content->status = isset($data->status) ? $data->status : '';
+        $updated_content->status = isset($data->status) ? $data->status : 'Não postado';
         $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : '';
         $updated_content->domain = isset($data->domain) ? $data->domain : '';
+        $updated_content->gdrive_document_url = isset($data->gdrive_document_url) ? $data->gdrive_document_url : '';
 
 
         $updated_content->save();
@@ -138,15 +140,14 @@ class PostContentService{
         {
             // Cria uma instância do cliente Google Client
             $client = new Google_Client();
-            $credentials = Editor::where('name',$data->editor)->get();
+            $credentials = Editor::where('name',$data->session_user)->get();
             $client->setApplicationName('Google Drive API');
             $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
-
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
 
             // ID da pasta no Google Drive que contém as imagens
-            $folderId = $data->folder_id;
+            $folderId = $data->gdrive_url;
             // Lista os arquivos na pasta especificada
             $results = $service->files->listFiles([
                 'q' => "'$folderId' in parents",

@@ -9,7 +9,7 @@
 </head>
 <body>
  @foreach($contents as $content)
-    <p class="theme">{{$content->theme}}</p>
+    <p class="theme" data-id="{{$content->id}}">{{$content->theme}}</p>
  @endforeach
 
  <button class="enviar">enviar</button>
@@ -27,17 +27,20 @@ const  gptQuery=document.querySelectorAll('.theme')
 const send=document.querySelector(".enviar")
 const docButton= document.querySelector(".doc")
 let data=[]
+let theme=[]
 
 const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 gptQuery.forEach((e)=>{
- data.push(e.textContent);
+    const id =e.getAttribute("data-id");
+ data.push(id);
+ theme.push(e.textContent);
 
 })
 
 send.addEventListener('click',async ()=>{
 
     let body = {
-                topic: data,
+                title:theme,
                 _token: csrfToken
             }
             const query = await fetch('/gpt_query', {
@@ -50,12 +53,13 @@ send.addEventListener('click',async ()=>{
 
 
 docButton.addEventListener('click',async ()=>{
-    let folderLink='https://drive.google.com/drive/folders/1iGQA7TFu1f7mp3r0SY7MTNDqPF72Ucl8?usp=sharing'
+    let folderLink='https://drive.google.com/drive/folders/1NZcoqlUZ1ox27GAje7da6dmO2EBQ0dCm'
     const folderId=folderLink.split('/folders/');
     const folder=folderId[1];
     const realForlderId=folder.split('?usp=sharing');
     let body = {
                 title: 'teste',
+                id: '9b98d4ac-4ee1-40a1-93a6-7b537a95daca',
                 folder_id:realForlderId[0],
                 _token: csrfToken
             }
@@ -65,7 +69,7 @@ docButton.addEventListener('click',async ()=>{
                 headers: { "Content-Type": "application/json" }
             });
 
-    const response=await query.json()
+    const response=await query.json();
 
    // console.log(realForlderId[0]);
 

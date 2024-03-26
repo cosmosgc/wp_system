@@ -23,6 +23,7 @@ class GoogleAuthController extends Controller
         $client->setRedirectUri(route('google.callback'));
         $client->addScope('https://www.googleapis.com/auth/documents'); // Escopo para acesso ao Google Docs
         $client->addScope('https://www.googleapis.com/auth/drive');
+        $client->setApprovalPrompt('force');
         $client->setAccessType('offline'); // Garantir que o token de atualização seja retornado durante o processo de autorização inicial
 
         // Redirecionar para a URL de autorização do Google
@@ -50,10 +51,10 @@ class GoogleAuthController extends Controller
             session(['google_refresh_token' => $token['refresh_token']]);
         } catch (\Exception $e) {
             // Lidar com qualquer erro durante o processo de obtenção do token de acesso
-            return redirect()->route('google.redirect')->with('error', 'Failed to obtain access token: ' . $e->getMessage());
+            return response('Não foi possivel obter o refresh_token,favor recogar o reconhecimento em sua conta. Error:'.$e,200);
         }
 
         // Redirecionar para onde quer que você queira ir após o login bem-sucedido
-        return redirect()->route('dashboard.DocumentCreated');
+        return redirect()->route('dashboard.gDriveConfig');
     }
 }
