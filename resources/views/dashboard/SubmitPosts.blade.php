@@ -891,14 +891,14 @@
             loading.innerHTML='loading....'
             button.addEventListener('click',async()=>{
             button.insertAdjacentElement("beforebegin", loading);
-            const domain=document.querySelectorAll('.domain')[i];
+            const domain=document.querySelectorAll('.domain')[i].innerText;
             const keyword=document.querySelectorAll('.keyword')[i]
             loading_element(domain, false);
-            console.log("Postando em: "+domain.innerText);
+            console.log("Postando em: "+domain);
             data = {
                             id: configId,
                             user_id: user_id.value,
-                            domain: domain.innerText,
+                            domain: domain,
                             _token: csrfToken
                         };
 
@@ -915,7 +915,7 @@
                         // console.log(data);
                         try {
                             body = {id: configId,
-                                    domain: domain.innerText,
+                                    domain: domain,
                                     post_id:data.id,
                                     keyword: keyword.innerText,
                                     _token: csrfToken}
