@@ -48,7 +48,30 @@ class ScheduleService
             }
 
         }else{
-            return 'no-data';
+            foreach ($scheduledPosts as $posts) {
+                // Verifica se a data de agendamento é no futuro
+                //dd($posts);
+                   
+                    $editor=Editor::find($posts->Editor_id);
+                    // Posta o conteúdo do blog
+                    foreach ($editor->links as $credential) {
+                        $newPost = new Wp_service();
+                        $newPost->postBlogContent(
+                            $posts->keyword,
+                            $posts->theme,
+                            $posts->category,
+                            $posts->post_content,
+                            $posts->insert_image,
+                            $posts->post_image,
+                            $credential->wp_domain,
+                            $credential->wp_login,
+                            $credential->wp_password,
+                            
+                        );   
+                        
+                    }
+                
+            }
         }
 
 

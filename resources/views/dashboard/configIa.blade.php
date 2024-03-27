@@ -26,7 +26,7 @@ $retrieve_token=Ia_credential::where('Editor_id',$retrieve_user[0]->id)->get();
                             <div class="col-md-12">
                                 <label for="token" class="col-md-4 col-form-label text-md-right">{{ __('Token') }}</label>
 
-                                <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus value="{{isset($ia_token[0])?$ia_token[0]->open_ai:null}}">
+                                <input id="token" type="text" class="form-control @error('token') is-invalid @enderror" name="token" required autocomplete="token" autofocus value="{{isset($ia_token)?$ia_token->open_ai:null}}">
                                 <label for="language" class="col-md-4 col-form-label text-md-right">Linguagem</label>
                                 <div class="col-md-8">
                                     <select name="language" id="language" class="form-control">

@@ -891,8 +891,9 @@
                         const data = await query.json();
                         // console.log(data);
                         try {
-                            body = {id: data.id,
+                            body = {id: configId,
                                     domain: domain.innerText,
+                                    post_id:data.id,
                                     keyword: keyword.innerText,
                                     _token: csrfToken}
                             const query_2 = await fetch('/update_yoaust', {
@@ -910,8 +911,16 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
+                                //location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
+                                Swal.fire({
+                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da confuguração',
+                                    text: 'Continuar?',
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                })
+                                loading.remove(this);
                             }
                         } catch (error_2) {
                             console.error("Second fetch error:", error_2);
