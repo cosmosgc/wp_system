@@ -52,6 +52,7 @@ class GptController extends Controller
         $user=explode('+',base64_decode($valorCodificado));
         $editor=Editor::where('name',$user)->get();
         $token=Editor::find($editor[0]->id)->iaCredentials;
+        $Google_api_key=Editor::find($editor[0]->id)->GoogleCredentials->api_key;
         $title = $post_title;
         $language = $token->language;
         $writing_style = $token->wrinting_style;
@@ -183,6 +184,9 @@ class GptController extends Controller
             'writing_tone' => $writing_tone,
         ));
 
+        $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
+        $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
+        $newGptData.=$videoEmbedd."\n\n";
 
         $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
         $complete_post[]=$qa_request['choices'][0]['message']['content'];
@@ -203,15 +207,15 @@ class GptController extends Controller
         $pattern = '/<a\s+(?:[^>]*?\s+)?href=(["\'])(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+)(?(1)\1|)(?:[^>]*?\s+)?rel=(["\'])([^"\']*)\3[^>]*?>(.*?)<\/a>/i';
 
         // para substituir
-        $replacement = '<iframe width="560" height="315" src="$2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        $replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
 
-        $convertedString = preg_replace($pattern, $replacement, $string);
+        //$convertedString = preg_replace($pattern, $replacement, $string);
 
-        return $convertedString;
+        return $replacement;
     }
     // Pesquisar o primeiro link do youtube
-    public function searchYouTubeAndGetURL($query) {
-        $apiKey = 'YOUR_API_KEY';
+    public function searchYouTubeAndGetURL($api_key,$query) {
+        $apiKey = $api_key;
 
         $apiEndpoint = 'https://www.googleapis.com/youtube/v3/search';
 
@@ -230,7 +234,7 @@ class GptController extends Controller
 
         if (isset($responseData['items'][0]['id']['videoId'])) {
             $videoId = $responseData['items'][0]['id']['videoId'];
-            $videoURL = 'https://www.youtube.com/watch?v=' . $videoId;
+            $videoURL = 'https://www.youtube.com/embed/'.$videoId;
             return $videoURL;
         } else {
             return null; // Nenhum video encontrado
