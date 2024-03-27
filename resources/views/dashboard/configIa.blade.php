@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+use App\Models\Editor;
+use App\Models\Ia_credential;
+
+$retrieve_user=Editor::where('name',$editor)->get();
+
+$retrieve_token=Ia_credential::where('Editor_id',$retrieve_user[0]->id)->get();
+//dd($retrieve_token);
+@endphp
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
