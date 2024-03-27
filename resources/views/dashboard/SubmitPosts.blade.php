@@ -937,6 +937,13 @@
                                 location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
+                                Swal.fire({
+                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da confuguração',
+                                    text: 'Continuar?',
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                })
+                                loading.remove(this);
                             }
                         } catch (error_2) {
                             console.error("Second fetch error:", error_2);
