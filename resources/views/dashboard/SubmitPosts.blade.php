@@ -914,7 +914,7 @@
                         const data = await query.json();
                         // console.log(data);
                         try {
-                            body = {id: data.id,
+                            body = {id: configId,
                                     domain: domain.innerText,
                                     keyword: keyword.innerText,
                                     _token: csrfToken}
@@ -933,6 +933,7 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
+                                //location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
                             }
