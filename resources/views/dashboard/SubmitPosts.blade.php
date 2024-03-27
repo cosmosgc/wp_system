@@ -934,7 +934,7 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
-                                //location.reload();
+                                location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
                             }
