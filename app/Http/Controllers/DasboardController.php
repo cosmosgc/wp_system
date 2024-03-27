@@ -114,14 +114,15 @@ class DasboardController extends Controller
 
 
     public function insertGptToken(){
-        if(empty(Ia_credential::all())){
-            $token=null;
-        }else{
-            $token=Ia_credential::all();
-        }
-
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
+        if(empty(Editor::where('name',$user[0])->get())){
+            $token=null;
+        }else{
+            $token_query=Editor::where('name',$user[0])->get();
+            $token=Editor::find($token_query[0]->id)->iaCredentials;
+        }
+
 
         return view('dashboard.configIa',['ia_token'=>$token,'editor'=>$user[0]]);
     }
