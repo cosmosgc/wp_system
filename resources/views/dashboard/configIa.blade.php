@@ -8,7 +8,8 @@ use App\Models\Ia_credential;
 $retrieve_user=Editor::where('name',$editor)->get();
 
 $retrieve_token=Ia_credential::where('Editor_id',$retrieve_user[0]->id)->get();
-//dd($retrieve_token);
+$token_exists = !$retrieve_token->isEmpty();
+//dd($token_exists);
 @endphp
 
 <div class="container">
@@ -85,9 +86,10 @@ $retrieve_token=Ia_credential::where('Editor_id',$retrieve_user[0]->id)->get();
                                 <input type="hidden" name="editor" value="{{$editor}}">
                                     @csrf
                                     @method('POST')
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Insert Token/Update Token') }}
-                                </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ $token_exists ? __('Atualizar Token') : __('Inserir Token') }}
+                                    </button>
+
                             </form>
                                 <form action="{{ route('deleteToken', isset($ia_token[0])?$ia_token[0]->id:'') }}" method="POST">
                                     @csrf
