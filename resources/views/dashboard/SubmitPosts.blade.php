@@ -519,7 +519,7 @@
                 try {
                 if(query.ok){
                 Swal.fire({
-                    title: 'Post publicado com sucesso',
+                    title: 'Conteúdo criado com sucesso',
                     text: 'Do you want to continue',
                     icon: 'success',
                     confirmButtonText: 'continue'
