@@ -35,7 +35,7 @@ class ScheduleService
                             $posts->post_content,
                             $posts->insert_image,
                             $posts->post_image,
-                            $credential->wp_domain,
+                            $posts->domain,
                             $credential->wp_login,
                             $credential->wp_password,
                             
@@ -64,7 +64,7 @@ class ScheduleService
                             $posts->post_content,
                             $posts->insert_image,
                             $posts->post_image,
-                            $credential->wp_domain,
+                            $posts->domain,
                             $credential->wp_login,
                             $credential->wp_password,
                             
