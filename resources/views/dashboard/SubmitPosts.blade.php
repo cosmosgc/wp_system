@@ -599,7 +599,7 @@
                 }
             }
             function loading_element(el, remove = false){
-                if (el) { // Check if el is not null or undefined
+                if (el instanceof Element) { // Check if el is not null or undefined
                     var parentTr = el.closest('tr');
                     if (remove) {
                         parentTr.classList.remove('loading');
@@ -877,7 +877,7 @@
             button.insertAdjacentElement("beforebegin", loading);
             const domain=document.querySelectorAll('.domain')[i].innerText;
             const keyword=document.querySelectorAll('.keyword')[i]
-            loading_element(domain, false);
+            loading_element(button, false);
             console.log("Postando em: "+domain);
             data = {
                             id: configId,
