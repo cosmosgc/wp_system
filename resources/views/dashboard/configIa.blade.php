@@ -10,7 +10,8 @@ $retrieve_user=Editor::where('name',$editor)->get();
 $retrieve_token=Ia_credential::where('Editor_id',$retrieve_user[0]->id)->get();
 $token_exists = !$retrieve_token->isEmpty();
 $ia_cred = $retrieve_token->first();
-//dd($ia_cred->writing_style);
+$ia_cred = $ia_cred ?? new Ia_credential();
+//dd($ia_cred);
 @endphp
 
 <div class="container">
