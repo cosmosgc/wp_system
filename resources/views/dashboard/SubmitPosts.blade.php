@@ -420,6 +420,12 @@
                     await post_to_wp(id);
                 }
                 removed = getSelectedItems('loading', true);
+                Swal.fire({
+                        title: 'Postado em lote com sucesso!',
+                        text: 'Continuar?',
+                        icon: 'success',
+                        confirmButtonText: 'continue'
+                    })
             }
             async function batch_delete() {
                 try {
@@ -599,7 +605,7 @@
                 }
             }
             function loading_element(el, remove = false){
-                if (el) { // Check if el is not null or undefined
+                if (el instanceof Element) { // Check if el is not null or undefined
                     var parentTr = el.closest('tr');
                     if (remove) {
                         parentTr.classList.remove('loading');
@@ -877,7 +883,7 @@
             button.insertAdjacentElement("beforebegin", loading);
             const domain=document.querySelectorAll('.domain')[i].innerText;
             const keyword=document.querySelectorAll('.keyword')[i]
-            loading_element(domain, false);
+            loading_element(button, false);
             console.log("Postando em: "+domain);
             data = {
                             id: configId,
@@ -944,12 +950,12 @@
                         console.error("Fetch failed with status:", query.status);
                     }
                 } catch (error) {
-                    loading_element(domain, true);
+                    loading_element(button, true);
                     console.error("Fetch error:", error);
 
                 }
             })
-            loading_element(domain, true);
+            loading_element(button, true);
         })
     });
 
