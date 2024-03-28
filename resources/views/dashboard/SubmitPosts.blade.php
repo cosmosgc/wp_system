@@ -467,8 +467,8 @@
 
 
             async function generate_post(topic_to_generate, id=null, element_status = null){
-                element_status.closest('tr').classList.add('loading')
-                //loading_element(element_status, true);
+                //element_status.closest('tr').classList.add('loading')
+                loading_element(element_status, true);
                 const loading=document.createElement('div');
                 const loadingSVG = `
                             <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -548,10 +548,12 @@
                         }
                     });
                 // Se ocorrer um erro, é importante remover o SVG de loading para evitar confusão
-                element_status.closest('tr').classList.remove('loading')
+                //element_status.closest('tr').classList.remove('loading')
+                loading_element(element_status, true);
                 document.body.removeChild(loadingSVG);
             }
-            element_status.closest('tr').classList.remove('loading')
+            //element_status.closest('tr').classList.remove('loading')
+            loading_element(element_status, true);
         }
 
             async function post_to_wp(configId){
@@ -596,14 +598,19 @@
                     console.error("Fetch error:", error);
                 }
             }
-            async function loading_element(el, remove = false){
-                var parentTr = el.closest('tr');
-                if(remove){
-                    parentTr.classList.remove('loading');
-                }else{
-                    parentTr.classList.add('loading');
+            function loading_element(el, remove = false){
+                if (el) { // Check if el is not null or undefined
+                    var parentTr = el.closest('tr');
+                    if (remove) {
+                        parentTr.classList.remove('loading');
+                    } else {
+                        parentTr.classList.add('loading');
+                    }
+                } else {
+                    //console.error("Element is null or undefined");
                 }
             }
+
             async function delete_post(data_id){
                 const deletion_query= await fetch('/remove_config',{
                 method:'DELETE',
