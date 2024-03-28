@@ -421,7 +421,7 @@
                 }
                 removed = getSelectedItems('loading', true);
                 Swal.fire({
-                        title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da confuguração',
+                        title: 'Postado em lote com sucesso!',
                         text: 'Continuar?',
                         icon: 'success',
                         confirmButtonText: 'continue'
