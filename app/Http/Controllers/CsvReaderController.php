@@ -6,6 +6,7 @@ use App\Services\CsvReaderService;
 use App\Services\PostContentService;
 use App\Services\PostFileService;
 use Illuminate\Http\Request;
+use DateTime;
 
 class CsvReaderController extends Controller
 {
@@ -28,6 +29,9 @@ class CsvReaderController extends Controller
             }
             $data=$data_csv;
             foreach($data as $dt){
+                $dataAtual = new DateTime();
+                $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
+                $dataAtual->format('Y-m-d H:i:s');
                 $content=array(
                     'theme'=>$dt['Tema'],
                     'keyword'=>$dt['Keyword'],
@@ -44,7 +48,9 @@ class CsvReaderController extends Controller
                     'internal_link'=>isset($dt['Link Interno']) && $dt['Link Interno']==='Sim'?true:null,
                     'domain'=>$dt['Dominio'],
                     'gdrive_document_url'=>$dt['Gdrive'],
-                    'user_id'=>$request->user_id
+                    'schedule_date'=>$dataAtual,
+                    'user_id'=>$request->user_id,
+                    
                 );
 
 

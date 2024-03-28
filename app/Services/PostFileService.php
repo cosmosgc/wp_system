@@ -36,6 +36,7 @@ class PostFileService{
             'insert_image'=>isset($data['insert_image']) && ($data['insert_image'] === 'Sim') ? 1 : 0,
             'domain'=>isset($data['domain'])?$data['domain']:null,
             'gdrive_document_url'=>isset($data['gdrive_document_url'])?$data['gdrive_document_url']:null,
+            'schedule_date'=>isset($data['schedule_date'])?$data['schedule_date']:null,
             'status'=>'Não publicado',
             'Editor_id'=>$data['user_id']
         ]);
