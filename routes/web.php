@@ -56,6 +56,7 @@ Route::get('/deleted_token',[DasboardController::class,'tokenDeleted'])->name('d
 Route::get('/list_editor',[DasboardController::class,'ListEditor'])->name('listEditor');
 Route::get('/config_updated',[DasboardController::class,'configUpdated'])->name('configUpdated');
 Route::get('/teste',[DasboardController::class,'gptTeste']);
+Route::get('/yoastforce',[DasboardController::class,'yoastforce'])->name('yoastforce');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

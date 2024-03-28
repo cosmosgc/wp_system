@@ -23,7 +23,7 @@ class DasboardController extends Controller
         }else{
             return view('userBootstrap');
         }
-        
+
     }
 
     public function show(Request $request)
@@ -79,7 +79,7 @@ class DasboardController extends Controller
         if(!empty($request->input('query'))){
             $results=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->get();
         }
-        
+
         return view('dashboard.SubmitPosts',['search'=>$results]);
     }
 
@@ -101,9 +101,12 @@ class DasboardController extends Controller
     public function gDrivePort(){
         return view('dashboard.gdriveConfig');
     }
+    public function yoastforce(){
+        return view('dashboard.yoastforce');
+    }
 
     public function gptTeste(){
-        
+
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
         $editor=Editor::where('name',$user)->get();
