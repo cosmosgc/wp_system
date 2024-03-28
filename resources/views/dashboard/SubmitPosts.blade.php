@@ -944,12 +944,12 @@
                         console.error("Fetch failed with status:", query.status);
                     }
                 } catch (error) {
-                    loading_element(domain, true);
+                    loading_element(button, true);
                     console.error("Fetch error:", error);
 
                 }
             })
-            loading_element(domain, true);
+            loading_element(button, true);
         })
     });
 
