@@ -16,18 +16,16 @@ class ScheduleService
     {
         // Recupera todas as postagens agendadas com base no campo 'schedule' preenchido
         $scheduledPosts = Wp_post_content::whereNotNull('schedule_date')->get();
-        
-
+        $nullschedule = Wp_post_content::whereNull('schedule_date')->get();
+        //dd($nullschedule);
         if(!empty($scheduledPosts)){
             foreach ($scheduledPosts as $posts) {
                 // Verifica se a data de agendamento é no futuro
-               //dd(Carbon::parse($posts->schedule_date)->isFuture());
-              
-                if (!Carbon::parse($posts->schedule_date)->isFuture()) {
+              //dd(Carbon::parse($posts->schedule_date)->isFuture());
+                $editor=Editor::find($posts->Editor_id);
+                if (!Carbon::parse($posts->schedule_date)->isFuture() && $posts->status="Não postado") {
                     // Recupera o editor da postage
-                   
-                    $editor=Editor::find($posts->Editor_id);
-                    // Posta o conteúdo do blog
+                   // Posta o conteúdo do blog
                     foreach ($editor->links as $credential) {
                         $newPost = new Wp_service();
                         $newPost->postBlogContent(
@@ -41,19 +39,22 @@ class ScheduleService
                             $credential->wp_login,
                             $credential->wp_password,
                             
-                        );   
+                        );
                         
                     }
                 }
             }
 
         }else{
-            foreach ($scheduledPosts as $posts) {
+            return 'no-data';
+
+        }
+
+        if(!empty($nullschedule)){
+            foreach ($nullschedule as $posts) {
                 // Verifica se a data de agendamento é no futuro
-                //dd($posts);
-                   
+                if($posts->status=="Não postado"){
                     $editor=Editor::find($posts->Editor_id);
-                    // Posta o conteúdo do blog
                     foreach ($editor->links as $credential) {
                         $newPost = new Wp_service();
                         $newPost->postBlogContent(
@@ -67,11 +68,19 @@ class ScheduleService
                             $credential->wp_login,
                             $credential->wp_password,
                             
-                        );   
+                        );
+                        
+                        dd($newPost);
                         
                     }
-                
+
+                }
+
             }
+            
+
+        }else{
+            return 'no-data';
         }
 
 
