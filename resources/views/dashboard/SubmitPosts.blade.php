@@ -420,6 +420,12 @@
                     await post_to_wp(id);
                 }
                 removed = getSelectedItems('loading', true);
+                Swal.fire({
+                        title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da confuguração',
+                        text: 'Continuar?',
+                        icon: 'success',
+                        confirmButtonText: 'continue'
+                    })
             }
             async function batch_delete() {
                 try {
