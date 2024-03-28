@@ -10,7 +10,7 @@ class IaCredentialService{
     public function insertToken($data){
         $retrieve_user=Editor::where('name',$data->editor)->get();
         $retrieve_token=Ia_credential::where('Editor_id',$retrieve_user[0]->id)->get();
-        if(empty($retrieve_token)){
+        if($retrieve_token->isEmpty()){
             $token=Ia_credential::create([
                 'open_ai'=>$data->token,
                 'language'=>$data->language,
@@ -25,7 +25,6 @@ class IaCredentialService{
             $new_token->open_ai=$data->token;
             $new_token->save();
         }
-
     }
 
     public function removeToken($id){

@@ -383,31 +383,7 @@
 
                 const updateQuery= await fetch('/update_config',{
                     method:'PUT',
-                    body: JSON.stringify({
-                        editor_id: _editor_id.value,
-                        anchor_1: _anchor_1.value,
-                        anchor_2: _anchor_2.value,
-                        anchor_3: _anchor_3.value,
-                        category: _category.value,
-                        created_at: _created_at.value,
-                        do_follow_link_1: _do_follow_link_1.value,
-                        do_follow_link_2: _do_follow_link_2.value,
-                        do_follow_link_3: _do_follow_link_3.value,
-                        domain: _domain.value,
-                        id: _id.value,
-                        insert_image: _insert_image.value,
-                        internal_link: _internal_link.value,
-                        keyword: _keyword.value,
-                        post_image: _post_image.value,
-                        schedule_date: _schedule_date.value,
-                        status: _status.value,
-                        theme: _theme.value,
-                        updated_at: _updated_at.value,
-                        url_link_1: _url_link_1.value,
-                        url_link_2: _url_link_2.value,
-                        url_link_3: _url_link_3.value,
-                        _token: csrfToken
-                    }),
+                    body: JSON.stringify(data),
 
 
                     headers:{"Content-Type":"application/json"}
@@ -419,6 +395,7 @@
                     // console.log(updateQuery);
                 }else{
                     alert('atualização falhou');
+                    console.error(updateQuery.error)
                 }
             })
 

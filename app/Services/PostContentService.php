@@ -49,8 +49,7 @@ class PostContentService{
 
 
     public function updateConfig($data){
-        //dd($data) ;
-        $updated_content=Wp_post_content::find(intval($data->id));
+        $updated_content=Wp_post_content::find(($data->id));
 
         $updated_image =$this->processImage($data);
 
