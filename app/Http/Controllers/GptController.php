@@ -184,9 +184,9 @@ class GptController extends Controller
             'writing_tone' => $writing_tone,
         ));
 
-        $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
-        $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
-        $newGptData.=$videoEmbedd."\n\n";
+        // $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
+        // $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
+        // $newGptData.=$videoEmbedd."\n\n";
 
         $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
         $complete_post[]=$qa_request['choices'][0]['message']['content'];
@@ -208,6 +208,7 @@ class GptController extends Controller
 
         // para substituir
         $replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+        filter_var($replacement, FILTER_SANITIZE_STRING);
 
         //$convertedString = preg_replace($pattern, $replacement, $string);
 
