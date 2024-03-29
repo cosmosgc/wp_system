@@ -41,7 +41,7 @@ $ia_cred = $ia_cred ?? new Ia_credential();
 
                                 <label for="style">Estilo de escrita</label>
                                 <div class="col-md-8">
-                                    <select name="writing_style" id="style" class="style form-control">
+                                    <select name="writing_style" id="writing_style" class="style form-control">
                                         <option value="narrative" {{ $ia_cred->writing_style == 'narrative' ? 'selected' : '' }}>Narrative</option>
                                         <option value="descriptive" {{ $ia_cred->writing_style == 'descriptive' ? 'selected' : '' }}>Descriptive</option>
                                         <option value="expository" {{ $ia_cred->writing_style == 'expository' ? 'selected' : '' }}>Expository</option>
