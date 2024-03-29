@@ -53,7 +53,8 @@ class ScheduleService
         if(!empty($nullschedule)){
             foreach ($nullschedule as $posts) {
                 // Verifica se a data de agendamento é no futuro
-                if($posts->status=="Não postado"){
+                //dd($posts);
+                if($posts->status=="Não publicado"){
                     $editor=Editor::find($posts->Editor_id);
                     foreach ($editor->links as $credential) {
                         $newPost = new Wp_service();
