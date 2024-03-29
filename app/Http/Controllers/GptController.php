@@ -184,9 +184,9 @@ class GptController extends Controller
             'writing_tone' => $writing_tone,
         ));
 
-        // $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
-        // $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
-        // $newGptData.=$videoEmbedd."\n\n";
+        $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
+        $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
+        $newGptData.=$videoEmbedd."\n\n";
 
         $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
         $complete_post[]=$qa_request['choices'][0]['message']['content'];
