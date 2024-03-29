@@ -54,9 +54,10 @@ class ScheduleService
             foreach ($nullschedule as $posts) {
                 // Verifica se a data de agendamento é no futuro
                 //dd($posts);
-                if($posts->status=="Não publicado"){
+                
                     $editor=Editor::find($posts->Editor_id);
                     foreach ($editor->links as $credential) {
+                        if($posts->status=="Não publicado"){
                         $newPost = new Wp_service();
                         $newPost->postBlogContent(
                             $posts->keyword,
@@ -70,11 +71,12 @@ class ScheduleService
                             $credential->wp_password,
                             
                         );
+                    }
                         
                         
                     }
 
-                }
+                
 
             }
             
