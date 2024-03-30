@@ -115,6 +115,10 @@ $user=explode('+',base64_decode($valorCodificado));
             <td>Follow Link 3</td>
             <td><input type="checkbox" class="do_follow_link_3" name="" id=""></td>
         </tr>
+        <tr>
+            <td>Inserir video</td>
+            <td><input type="checkbox" class="video" name="" id=""></td>
+        </tr>
 
 
 
@@ -232,6 +236,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule: document.querySelector('.schedule').value,
                         domain: document.querySelector('.domain').value,
+                        video: document.querySelector('.video').checked?1:0,
                         session_user: document.querySelector('.user').value
                     };
                     const loading=document.createElement('span');

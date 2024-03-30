@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string("domain")->nullable();
             $table->string('gdrive_url')->nullable();
             $table->string('gdrive_document_url')->nullable();
+            $table->boolean('video')->default(0);
             $table->timestamps();
 
             $table->foreign('Editor_id')
