@@ -52,7 +52,7 @@ class GptController extends Controller
         $user=explode('+',base64_decode($valorCodificado));
         $editor=Editor::where('name',$user)->get();
         $token=Editor::find($editor[0]->id)->iaCredentials;
-        $Google_api_key=Editor::all()->first()->GoogleCredentials->api_key;
+        $Google_api_key=isset(Editor::all()->first()->GoogleCredentials->api_key)?Editor::all()->first()->GoogleCredentials->api_key:null;
         $title = $post_title;
         $language = $token->language;
         $writing_style = $token->wrinting_style;
@@ -70,6 +70,7 @@ class GptController extends Controller
         $anchor_2=null;
         $anchor_3=null;
         $id_content=null;
+        $video=null;
         $token=$token->open_ai;
         //return json_encode('chegou aqui');
 
@@ -87,6 +88,7 @@ class GptController extends Controller
                 $do_follow_link_1=$post_config->do_follow_link_1;
                 $do_follow_link_2=$post_config->$do_follow_link_2;
                 $do_follow_link_3=$post_config->$do_follow_link_3;
+                $video=$post_config->video;
             }
 
 
@@ -184,9 +186,13 @@ class GptController extends Controller
             'writing_tone' => $writing_tone,
         ));
 
-        $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
-        $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
-        $newGptData.=$videoEmbedd."\n\n";
+        if($video==1){
+            $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
+            $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
+            $newGptData.=$videoEmbedd."\n\n";
+        }
+
+
 
         $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
         $complete_post[]=$qa_request['choices'][0]['message']['content'];
