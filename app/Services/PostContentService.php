@@ -74,6 +74,7 @@ class PostContentService{
         $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : '';
         $updated_content->domain = isset($data->domain) ? $data->domain : '';
         $updated_content->gdrive_document_url = isset($data->gdrive_document_url) ? $data->gdrive_document_url : '';
+        $updated_content->video = isset($data->video) ? $data->video : '0';
 
 
         $updated_content->save();
