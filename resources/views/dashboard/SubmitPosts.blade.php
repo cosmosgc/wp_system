@@ -196,7 +196,7 @@
 
                     <!-- Atualizar conteúdo Button with Font Awesome icon, alt attribute, and popover -->
                     <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
-                    <i class="fas fa-sync-alt"></i>
+                    <i class="fas fa-wrench"></i>
                     </button>
                     <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_document_url}}', this)">
                     <i class="fab fa-google"></i>
@@ -607,7 +607,14 @@
                             headers: { "Content-Type": "application/json" }
                         });
                     } else {
+                        Swal.fire({
+                            title: 'Aconteceu um erro durante o processo',
+                            text: 'Do you want to continue',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        });
                         console.error("Fetch failed with status:", query.status);
+
                     }
                 } catch (error) {
                     console.error("Fetch error:", error);
@@ -938,38 +945,53 @@
                                 //location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
-                                Swal.fire({
-                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da confuguração',
-                                    text: 'Continuar?',
-                                    icon: 'success',
-                                    confirmButtonText: 'continue'
-                                })
                                 loading.remove(this);
                                 loading_element(button, true);
+                                Swal.fire({
+                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
+                                    text: query_2.status,
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                });
                             }
                         } catch (error_2) {
                             console.error("Second fetch error:", error_2);
-                            Swal.fire({
-                                title: query.statusText,
-                                text: 'Continuar?',
-                                icon: 'error',
-                                confirmButtonText: 'continue'
-                            })
                             loading.remove(this);
                             loading_element(button, true);
+                            Swal.fire({
+                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
+                                    text: error_2,
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                });
                         }
                     } else {
-                        loading_element(domain, true);
+                        loading_element(button, true);
+
                         console.error("Fetch failed with status:", query.status);
+                        Swal.fire({
+                            title: 'Aconteceu um erro durante o processo',
+                            text: query.status,
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        });
                     }
                 } catch (error) {
                     loading_element(button, true);
                     console.error("Fetch error:", error);
+                    Swal.fire({
+                        title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
+                        text: error,
+                        icon: 'error',
+                        confirmButtonText: 'continue'
+                    });
 
                 }
+                loading_element(button, true);
             })
             loading_element(button, true);
         })
+        loading_element(button, true);
     });
 
     // Fechar o modal ao clicar no botão Fechar
