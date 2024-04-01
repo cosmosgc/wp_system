@@ -19,12 +19,22 @@
     else{
         $searchParam = '';
     }
-    $post_contents->postContents->each(function ($config) {
+
+
+    $post_content_objects = [];
+
+    $post_contents->postContents->each(function ($config) use (&$post_content_objects) {
         if (!empty($config->post_content) && isset($config->post_content)) {
-            $config->post_content_string = $config->post_content;
+            $post_content_objects[] = (object) [
+                'id' => $config->id,
+                'post_content' => $config->post_content
+            ];
             $config->post_content = true;
         }
     });
+
+    //dd($post_content_objects);
+
   }
 
 @endphp
@@ -261,11 +271,11 @@
 
         function loadPosts(){
             // Loop through each item in $post_contents->postContents
-            @foreach ($post_contents->postContents as $item)
+            @foreach ($post_content_objects as $item)
                 // Create a JavaScript object for each item
                 var postItem = {
                     id: "{{ $item->id }}",
-                    post_content: {!! json_encode($item->post_content_string) !!} // Make sure to encode HTML content properly
+                    post_content: {!! json_encode($item->post_content) !!} // Make sure to encode HTML content properly
                 };
 
                 // Push the object to the postContents array
