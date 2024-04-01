@@ -247,6 +247,7 @@
             <input type="text" name="url_link_1" id="url_link_1" class="form-control" placeholder="URL Link 1">
             <input type="text" name="url_link_2" id="url_link_2" class="form-control" placeholder="URL Link 2">
             <input type="text" name="url_link_3" id="url_link_3" class="form-control" placeholder="URL Link 3">
+            <input type="text" name="video" id="video" class="form-control" placeholder="video">
             <input type="text" name="editor_id" id="editor_id" class="form-control" placeholder="Editor ID" disabled>
 
         </div>
@@ -346,6 +347,7 @@
             let _url_link_1 = document.getElementById("url_link_1");
             let _url_link_2 = document.getElementById("url_link_2");
             let _url_link_3 = document.getElementById("url_link_3");
+            let _video = document.getElementById("video");
 
 
             let selected_id = 0;
@@ -377,6 +379,7 @@
                     url_link_1: _url_link_1.value,
                     url_link_2: _url_link_2.value,
                     url_link_3: _url_link_3.value,
+                    video: _video,
                     _token: csrfToken
                 };
                 // console.log(data);
@@ -786,6 +789,7 @@
                 _url_link_1.value = parsedData.url_link_1;
                 _url_link_2.value = parsedData.url_link_2;
                 _url_link_3.value = parsedData.url_link_3;
+                _video.value = parsedData.video;
             }
 
 
@@ -930,6 +934,7 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
+                                loading_element(button, true);
                                 //location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
@@ -940,6 +945,7 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
+                                loading_element(button, true);
                             }
                         } catch (error_2) {
                             console.error("Second fetch error:", error_2);
@@ -950,6 +956,7 @@
                                 confirmButtonText: 'continue'
                             })
                             loading.remove(this);
+                            loading_element(button, true);
                         }
                     } else {
                         loading_element(domain, true);

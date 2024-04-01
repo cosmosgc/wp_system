@@ -15,7 +15,7 @@ class Wp_service{
         $this->client=new Client();
     }
 
-    public function postBlogContent($keyword,$title,$category,$content,$featured,$image,$domain,$login,$password){
+    public function postBlogContent($keyword,$title,$category,$content,$featured,$image,$domain,$login,$password,$post_date = null){
         //$title = $title->input('title');
         //$content = $content->input('content');
 
@@ -80,18 +80,18 @@ class Wp_service{
 
                 $oldurl = $domain.'/wp-json/wp/v2/posts';
                 $url = $domain."/wp-json/wp_manage/v1/post_create/";
-
-                $response = $this->client->post($oldurl, [
+                $data = [
+                    'title' => $title,
+                    'content' => $content,
+                    'featured_media' => $imageID,
+                    'status' => 'publish',
+                    'categories'=>[$category_data[0]['id']],
+                    'post_date' => date('Y-m-d H:i:s', strtotime($post_date))
+                    // Adicione mais parâmetros conforme necessário
+                ];
+                $response = $this->client->post($url, [
                     'auth' => [$login, $password],
-                    'form_params' => [
-                        'title' => $title,
-                        'content' => $content,
-                        'featured_media' => $imageID,
-                        'status' => 'publish',
-                        'categories'=>[$category_data[0]['id']]
-
-                        // Adicione mais parâmetros conforme necessário
-                    ],
+                    'form_params' => $data,
                 ]);
                 $change_status=Wp_post_content::where('theme',$title)->update(['status'=>'publicado']);
 
