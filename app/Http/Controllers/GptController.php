@@ -192,10 +192,11 @@ class GptController extends Controller
             $newGptData.=$videoEmbedd."\n\n";
         }
 
-
+        $qa_title="<h2>Perguntas & respostas</h2>";
 
         $qa_request=$this->gptService->sendRequest($qa_command[0],$heading,$token);
         $complete_post[]=$qa_request['choices'][0]['message']['content'];
+        $newGptData.=$qa_title;
         $newGptData.=$qa_request['choices'][0]['message']['content']."\n\n";
 
 
