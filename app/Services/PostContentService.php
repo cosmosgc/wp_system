@@ -68,7 +68,7 @@ class PostContentService{
         $updated_content->do_follow_link_3 = isset($data->do_follow_link_3) ? $data->do_follow_link_3 : '';
         $updated_content->post_image = $updated_image;
         $updated_content->internal_link = isset($data->internal_link) ? $data->internal_link : '';
-        $updated_content->post_content = isset($data->post_content) ? $data->post_content : '';
+        //$updated_content->post_content = isset($data->post_content) ? $data->post_content : '';
         $updated_content->insert_image = isset($data->insert_image) ? $data->insert_image : '';
         $updated_content->status = isset($data->status) ? $data->status : 'Não publicado';
         $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : '';
