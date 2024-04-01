@@ -278,7 +278,7 @@ $user=explode('+',base64_decode($valorCodificado));
                             confirmButtonText: 'continue'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                //window.location.reload();
+                                window.location.reload();
                             }
                         });
 
