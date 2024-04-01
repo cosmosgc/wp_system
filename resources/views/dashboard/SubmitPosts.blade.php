@@ -934,6 +934,7 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
+                                loading_element(button, true);
                                 //location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
@@ -944,6 +945,7 @@
                                     confirmButtonText: 'continue'
                                 })
                                 loading.remove(this);
+                                loading_element(button, true);
                             }
                         } catch (error_2) {
                             console.error("Second fetch error:", error_2);
@@ -954,6 +956,7 @@
                                 confirmButtonText: 'continue'
                             })
                             loading.remove(this);
+                            loading_element(button, true);
                         }
                     } else {
                         loading_element(domain, true);
