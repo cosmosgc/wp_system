@@ -19,11 +19,22 @@
     else{
         $searchParam = '';
     }
-    $post_contents->postContents->each(function ($config) {
+
+
+    $post_content_objects = [];
+
+    $post_contents->postContents->each(function ($config) use (&$post_content_objects) {
         if (!empty($config->post_content) && isset($config->post_content)) {
-          $config->post_content = true;
+            $post_content_objects[] = (object) [
+                'id' => $config->id,
+                'post_content' => $config->post_content
+            ];
+            $config->post_content = true;
         }
     });
+
+    //dd($post_content_objects);
+
   }
 
 @endphp
@@ -173,7 +184,7 @@
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
                   <td class="category">{{$config->category}}</td>
-                  <td class="post-content">{{!empty($config->post_content)?'Sim':'Não'}}</td>
+                  <td class="post-content" onclick='openPost("{{$config->id}}");'><a href="#">{{!empty($config->post_content)?'Sim':'Não'}}</a></td>
                   <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
@@ -190,13 +201,13 @@
                     <i class="fas fa-trash"></i>
                     </button>
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button onclick="generate_post([`{{$config->theme}}`], null, element_status=this)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post([`{{$config->theme}}`], null, this)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 
                     <!-- Atualizar conteúdo Button with Font Awesome icon, alt attribute, and popover -->
                     <button class="btn btn-success update_content" data-toggle="popover" data-placement="top" title="Atualizar conteúdo" data-content="Clique para atualizar o conteúdo" onclick="open_modal(`{{$config->id}}`,`{{$config}}`)">
-                    <i class="fas fa-sync-alt"></i>
+                    <i class="fas fa-wrench"></i>
                     </button>
                     <button class="btn btn-primary gdrive_doc" data-toggle="popover" data-placement="top" title="Criar doc" data-content="Clique para salvar em documento google drive" onclick="create_gdoc(`{{$config->theme}}`,`{{$config->id}}`, '{{$config->gdrive_document_url}}', this)">
                     <i class="fab fa-google"></i>
@@ -256,6 +267,27 @@
     </div>
 
     <script>
+        var postContents = [];
+
+        function loadPosts(){
+            // Loop through each item in $post_contents->postContents
+            @foreach ($post_content_objects as $item)
+                // Create a JavaScript object for each item
+                var postItem = {
+                    id: "{{ $item->id }}",
+                    post_content: {!! json_encode($item->post_content) !!} // Make sure to encode HTML content properly
+                };
+
+                // Push the object to the postContents array
+                postContents.push(postItem);
+            @endforeach
+
+            // Now you have the postContents array holding all the id and post_content values
+            console.log(postContents);
+        }
+
+        loadPosts();
+
         function selectAllCheckbox(){
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
             const checkboxes = document.querySelectorAll('.form-check-input');
@@ -299,6 +331,29 @@
 
             return { themes: themes, ids: ids };
         }
+        function openPost(id){
+            // Find the post_content corresponding to the id
+            var postContent = postContents.find(function(item) {
+                return item.id === id;
+            });
+
+            // If postContent is found, display it using SweetAlert
+            if (postContent) {
+                Swal.fire({
+                    title: 'Conteúdo do post',
+                    html: postContent.post_content,
+                    confirmButtonText: 'Close'
+                });
+            } else {
+                // If postContent is not found, display an error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Post not found!'
+                });
+            }
+        }
+
     </script>
 
 
@@ -483,7 +538,7 @@
 
             async function generate_post(topic_to_generate, id=null, element_status = null){
                 //element_status.closest('tr').classList.add('loading')
-                loading_element(element_status, true);
+                loading_element(element_status, false);
                 const loading=document.createElement('div');
                 const loadingSVG = `
                             <svg width="40" height="40" viewbox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -548,6 +603,7 @@
 
 
                 modalDialog.removeChild(loading);
+                loading_element(element_status, true);
 
                 // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
             } catch (error) {
@@ -607,7 +663,14 @@
                             headers: { "Content-Type": "application/json" }
                         });
                     } else {
+                        Swal.fire({
+                            title: 'Aconteceu um erro durante o processo',
+                            text: 'Do you want to continue',
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        });
                         console.error("Fetch failed with status:", query.status);
+
                     }
                 } catch (error) {
                     console.error("Fetch error:", error);
@@ -938,37 +1001,50 @@
                                 //location.reload();
                             } else {
                                 console.error("Second fetch failed with status:", query_2.status);
-                                Swal.fire({
-                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da confuguração',
-                                    text: 'Continuar?',
-                                    icon: 'success',
-                                    confirmButtonText: 'continue'
-                                })
                                 loading.remove(this);
                                 loading_element(button, true);
+                                Swal.fire({
+                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
+                                    text: query_2.status,
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                });
                             }
                         } catch (error_2) {
                             console.error("Second fetch error:", error_2);
-                            Swal.fire({
-                                title: query.statusText,
-                                text: 'Continuar?',
-                                icon: 'error',
-                                confirmButtonText: 'continue'
-                            })
                             loading.remove(this);
                             loading_element(button, true);
+                            Swal.fire({
+                                    title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
+                                    text: error_2,
+                                    icon: 'success',
+                                    confirmButtonText: 'continue'
+                                });
                         }
                     } else {
-                        loading_element(domain, true);
+                        loading_element(button, true);
+
                         console.error("Fetch failed with status:", query.status);
+                        Swal.fire({
+                            title: 'Aconteceu um erro durante o processo',
+                            text: query.status,
+                            icon: 'error',
+                            confirmButtonText: 'continue'
+                        });
                     }
                 } catch (error) {
                     loading_element(button, true);
                     console.error("Fetch error:", error);
+                    Swal.fire({
+                        title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
+                        text: error,
+                        icon: 'error',
+                        confirmButtonText: 'continue'
+                    });
 
                 }
+                loading_element(button, true);
             })
-            loading_element(button, true);
         })
     });
 
