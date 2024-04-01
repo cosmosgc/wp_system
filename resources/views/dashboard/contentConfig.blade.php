@@ -232,6 +232,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         anchor_3: document.querySelector('.anchor_3').innerText,
                         url_link_3: document.querySelector('.url_link_3').innerText,
                         do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
+                        image_url: document.querySelector('.url_image').innerText,
                         gdrive_document_url: folderId,
                         insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule: document.querySelector('.schedule').value,
@@ -277,7 +278,7 @@ $user=explode('+',base64_decode($valorCodificado));
                             confirmButtonText: 'continue'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                //window.location.reload();
                             }
                         });
 
