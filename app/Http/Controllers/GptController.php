@@ -245,7 +245,7 @@ class GptController extends Controller
             $videoURL = 'https://www.youtube.com/embed/'.$videoId;
             return $videoURL;
         } else {
-            return null; // Nenhum video encontrado
+            return ''; // Nenhum video encontrado
         }
     }
 }

@@ -701,6 +701,11 @@
             }
             async function create_gdoc(theme, id, folderLink = '', loading_elements = null) {
                 if (folderLink == '') {
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Não tem uma pasta google doc vinculado a esse artigo.'
+                    });
                     return;
                 }
                 if(loading_elements){
