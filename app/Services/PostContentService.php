@@ -100,11 +100,11 @@ class PostContentService{
                         // Define the path of the image
                         $imagePath = 'images/' . $imageName;
 
-                    } elseif ($data->filled('gdrive_url') && $data->filled('gdrive_url') != null) {
+                    } elseif ($data->filled('gdrive_url') && $data->gdrive_url != '') {
 
                         // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
                         $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
-                    } elseif ($data->filled('image_url')) {
+                    } elseif ($data->filled('image_url') && $data->image_url != '') {
                         // Se uma URL de imagem padrão foi fornecida, faça o download da imagem
                         $imagePath = $this->downloadImageFromUrl($data->image_url);
                     } else {
