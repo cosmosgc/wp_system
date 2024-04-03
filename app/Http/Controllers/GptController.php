@@ -126,9 +126,9 @@ class GptController extends Controller
             $complete_text=$this->replace_variables($sections,array(
                 'current_section'=>$i,
                 'Ancora 1'=>$anchor_1,
-                'Anchor_link_1'=>$anchor_1_url,
-                'Anchor_link_2'=>$anchor_2_url,
-                'Anchor_link_3'=>$anchor_3_url,
+                // 'Anchor_link_1'=>$anchor_1_url,
+                // 'Anchor_link_2'=>$anchor_2_url,
+                // 'Anchor_link_3'=>$anchor_3_url,
                 'Ancora 2'=>$anchor_2,
                 'Ancora 3'=>$anchor_3,
                 'Follow_1'=>($do_follow_link_1==1)?'do':'no',
@@ -203,9 +203,13 @@ class GptController extends Controller
         $conclusion_request=$this->gptService->sendRequest($conclusion_command[0],$heading,$token);
         $complete_post[]=$conclusion_request['choices'][0]['message']['content'];
         $newGptData.=$conclusion_request['choices'][0]['message']['content']."\n\n";
+        $dataParsed=$this->replace_variables([$newGptData],array(
+                'Anchor_link_1'=>$anchor_1_url,
+                'Anchor_link_2'=>$anchor_2_url,
+                'Anchor_link_3'=>$anchor_3_url,
+        ));
 
-
-        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$newGptData]);
+        $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$dataParsed[0]]);
         return $insertPostContent;
     }
     //Pode usar para converter um padrão no complete_post[] em youtube embeds
