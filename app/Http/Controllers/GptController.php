@@ -208,9 +208,49 @@ class GptController extends Controller
                 'Anchor_link_2'=>$anchor_2_url,
                 'Anchor_link_3'=>$anchor_3_url,
         ));
+        $dataParsed[0] = $this->removeDuplicateHref($dataParsed[0]);
 
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$dataParsed[0]]);
         return $insertPostContent;
+    }
+    public function removeDuplicateHref($htmlString) {
+        // Create a DOMDocument object
+        $dom = new DOMDocument();
+
+        // Load the HTML string into the DOMDocument
+        $dom->loadHTML($htmlString);
+
+        // Create a DOMXPath object
+        $xpath = new DOMXPath($dom);
+
+        // Find all <a> tags
+        $anchors = $xpath->query('//a');
+
+        // Create an array to store unique href values
+        $uniqueHrefs = array();
+
+        // Iterate over each <a> tag
+        foreach ($anchors as $anchor) {
+            // Get the value of the href attribute
+            $href = $anchor->getAttribute('href');
+
+            // Check if this href value is already present in the array
+            if (!in_array($href, $uniqueHrefs)) {
+                // If not, add it to the array
+                $uniqueHrefs[] = $href;
+            } else {
+                // If it is, remove the <a> tag and leave the innerText in its place
+                $innerText = $anchor->textContent;
+                $newNode = $dom->createTextNode($innerText);
+                $anchor->parentNode->replaceChild($newNode, $anchor);
+            }
+        }
+
+        // Save the modified HTML back to a string
+        $modifiedHtml = $dom->saveHTML();
+
+        // Return the modified HTML string
+        return $modifiedHtml;
     }
     //Pode usar para converter um padrão no complete_post[] em youtube embeds
     public function convertYouTubeLinksToEmbeds($string) {
@@ -252,4 +292,5 @@ class GptController extends Controller
             return ''; // Nenhum video encontrado
         }
     }
+
 }
