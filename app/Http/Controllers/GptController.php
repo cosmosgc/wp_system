@@ -213,41 +213,29 @@ class GptController extends Controller
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$dataParsed[0]]);
         return $insertPostContent;
     }
-    public function removeDuplicateHref($htmlString) {
-        // Create a DOMDocument object
-        $dom = new DOMDocument();
+    function removeDuplicateHref($htmlString) {
+        // Regular expression to match <a> tags with href attribute
+        $pattern = '/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/i';
 
-        // Load the HTML string into the DOMDocument
-        $dom->loadHTML($htmlString);
-
-        // Create a DOMXPath object
-        $xpath = new DOMXPath($dom);
-
-        // Find all <a> tags
-        $anchors = $xpath->query('//a');
-
-        // Create an array to store unique href values
-        $uniqueHrefs = array();
-
-        // Iterate over each <a> tag
-        foreach ($anchors as $anchor) {
-            // Get the value of the href attribute
-            $href = $anchor->getAttribute('href');
+        // Callback function to process each match
+        $callback = function($matches) {
+            static $uniqueHrefs = array();
+            $href = $matches[1];
+            $innerText = $matches[2];
 
             // Check if this href value is already present in the array
             if (!in_array($href, $uniqueHrefs)) {
                 // If not, add it to the array
                 $uniqueHrefs[] = $href;
+                return $matches[0]; // Return the matched <a> tag unchanged
             } else {
-                // If it is, remove the <a> tag and leave the innerText in its place
-                $innerText = $anchor->textContent;
-                $newNode = $dom->createTextNode($innerText);
-                $anchor->parentNode->replaceChild($newNode, $anchor);
+                // If it is, return only the innerText
+                return $innerText;
             }
-        }
+        };
 
-        // Save the modified HTML back to a string
-        $modifiedHtml = $dom->saveHTML();
+        // Perform the regular expression replacement
+        $modifiedHtml = preg_replace_callback($pattern, $callback, $htmlString);
 
         // Return the modified HTML string
         return $modifiedHtml;
