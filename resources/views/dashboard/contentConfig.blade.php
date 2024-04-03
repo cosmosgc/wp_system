@@ -216,9 +216,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     console.log(folderId);
 
 
-                    if (imageFile) {
-                        formData.append('sys_image', imageFile);
-                    }
+
 
                     var formData = new FormData();
 
@@ -240,7 +238,9 @@ $user=explode('+',base64_decode($valorCodificado));
                     formData.append('domain', document.querySelector('.domain').value);
                     formData.append('video', document.querySelector('.video').checked ? 1 : 0);
                     formData.append('session_user', document.querySelector('.user').value);
-                    formData.append('sys_image', imageFile);
+                    if (imageFile) {
+                        formData.append('sys_image', imageFile);
+                    }
                     formData.append('gdrive_url',imageFolderId);
 
                     const loading = document.createElement('span');

@@ -86,7 +86,8 @@ class PostContentService{
 
     private function processImage($data){
                     // Verifica se uma imagem foi enviada
-                    if ($data->sys_image) {
+                    if (isset($data->sys_image)) {
+
                         // Obtain the temporary file path
                         $tempFilePath = $data->sys_image->path();
 
@@ -99,7 +100,8 @@ class PostContentService{
                         // Define the path of the image
                         $imagePath = 'images/' . $imageName;
 
-                    } elseif ($data->filled('gdrive_url')) {
+                    } elseif ($data->filled('gdrive_url') && $data->filled('gdrive_url') != null) {
+
                         // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
                         $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
                     } elseif ($data->filled('image_url')) {
@@ -136,7 +138,11 @@ class PostContentService{
             $client = new Google_Client();
             $credentials = Editor::where('name',$data->session_user)->get();
             $client->setApplicationName('Google Drive API');
+            if(!isset($credentials[0]->GoogleCredentials->api_key)){
+                return;
+            }
             $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
+
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
 
