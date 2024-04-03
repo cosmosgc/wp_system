@@ -13,7 +13,8 @@ use Monolog\Handler\DeduplicationHandler;
 class PostContentService{
 
     public function insertPostContent($data,$doContent){
-           $image= $this->processImage($data);
+
+        $image= $this->processImage($data);
 
 
 
@@ -86,26 +87,18 @@ class PostContentService{
     private function processImage($data){
                     // Verifica se uma imagem foi enviada
                     if ($data->sys_image) {
-                        // Obtém o arquivo da imagem
-                        $imageData = $data->sys_image;
+                        // Obtain the temporary file path
+                        $tempFilePath = $data->sys_image->path();
 
-
-                        // Salva a imagem no armazenamento (storage) do Laravel
-                                // Extrai o tipo de mídia e os dados da imagem
-                        list($type, $imageData) = explode(';', $imageData);
-                        list(, $imageData)      = explode(',', $imageData);
-
-                        // Decodifica os dados da imagem de base64 para bytes
-                        $imageData = base64_decode($imageData);
-
-                        // Gera um nome de arquivo único para a imagem
+                        // Generate a unique filename
                         $imageName = uniqid() . '.jpg';
 
-                        // Salva a imagem no armazenamento (storage) do Laravel
-                        file_put_contents(storage_path('app/public/images/') . $imageName, $imageData);
+                        // Move the uploaded file to the desired location
+                        move_uploaded_file($tempFilePath, storage_path('app/public/images/') . $imageName);
 
-                        // Define o caminho da imagem
+                        // Define the path of the image
                         $imagePath = 'images/' . $imageName;
+
                     } elseif ($data->filled('gdrive_url')) {
                         // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
                         $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);

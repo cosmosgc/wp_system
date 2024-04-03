@@ -220,39 +220,40 @@ $user=explode('+',base64_decode($valorCodificado));
                         formData.append('sys_image', imageFile);
                     }
 
-                    var postData = {
-                        theme: document.querySelector('.theme').innerText,
-                        keyword: document.querySelector('.keyword').innerText,
-                        category: document.querySelector('.category').value,
-                        anchor_1: document.querySelector('.anchor_1').innerText,
-                        url_link_2: document.querySelector('.url_link_2').innerText,
-                        do_follow_link_1: document.querySelector('.do_follow_link_1').checked ? 1 : 0,
-                        anchor_2: document.querySelector('.anchor_2').innerText,
-                        do_follow_link_2: document.querySelector('.do_follow_link_2').checked ? 1 : 0,
-                        anchor_3: document.querySelector('.anchor_3').innerText,
-                        url_link_3: document.querySelector('.url_link_3').innerText,
-                        do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
-                        image_url: document.querySelector('.url_image').innerText,
-                        gdrive_document_url: folderId,
-                        insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
-                        schedule: document.querySelector('.schedule').value,
-                        domain: document.querySelector('.domain').value,
-                        video: document.querySelector('.video').checked?1:0,
-                        session_user: document.querySelector('.user').value
-                    };
-                    const loading=document.createElement('span');
-                    loading.classList.add('loading')
-                    loading.innerText='loading....'
-                    const content=document.querySelector(".content");
-                    // // Faz a requisição AJAX
+                    var formData = new FormData();
+
+                    formData.append('theme', document.querySelector('.theme').innerText);
+                    formData.append('keyword', document.querySelector('.keyword').innerText);
+                    formData.append('category', document.querySelector('.category').value);
+                    formData.append('anchor_1', document.querySelector('.anchor_1').innerText);
+                    formData.append('url_link_2', document.querySelector('.url_link_2').innerText);
+                    formData.append('do_follow_link_1', document.querySelector('.do_follow_link_1').checked ? 1 : 0);
+                    formData.append('anchor_2', document.querySelector('.anchor_2').innerText);
+                    formData.append('do_follow_link_2', document.querySelector('.do_follow_link_2').checked ? 1 : 0);
+                    formData.append('anchor_3', document.querySelector('.anchor_3').innerText);
+                    formData.append('url_link_3', document.querySelector('.url_link_3').innerText);
+                    formData.append('do_follow_link_3', document.querySelector('.do_follow_link_3').checked ? 1 : 0);
+                    formData.append('image_url', document.querySelector('.url_image').innerText);
+                    formData.append('gdrive_document_url', folderId);
+                    formData.append('insert_image', document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0);
+                    formData.append('schedule', document.querySelector('.schedule').value);
+                    formData.append('domain', document.querySelector('.domain').value);
+                    formData.append('video', document.querySelector('.video').checked ? 1 : 0);
+                    formData.append('session_user', document.querySelector('.user').value);
+                    formData.append('sys_image', imageFile);
+
+                    const loading = document.createElement('span');
+                    loading.classList.add('loading');
+                    loading.innerText = 'loading....';
+                    const content = document.querySelector(".content");
                     content.appendChild(loading);
+
                     fetch('/insert_post_content', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken,
+                            'X-CSRF-TOKEN': csrfToken
                         },
-                        body: JSON.stringify(postData),
+                        body: formData
                     })
                     .then(response => {
                         if (!response.ok) {
@@ -278,7 +279,7 @@ $user=explode('+',base64_decode($valorCodificado));
                             confirmButtonText: 'continue'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                //window.location.reload();
                             }
                         });
 
