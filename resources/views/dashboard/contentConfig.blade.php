@@ -205,13 +205,13 @@ $user=explode('+',base64_decode($valorCodificado));
                     // Coleta dos dados do formulário dentro do "document" atual
                     var formData = new FormData();
                     var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
-                    const str=document.querySelector('.gdrive_document_url').innerText;
-                    let folderId=null;
+                    const str=document.querySelector('.gdrive_url').innerText;
+                    let imageFolderId=null
                     if(str){
 
-                        folderId=str.split('/folders/')[1]
+                        imageFolderId=str.split('/folders/')[1]
                     }
-                    folderId=document.querySelector('.gdrive_document_url').innerText;
+                    let folderId=document.querySelector('.gdrive_document_url').innerText;
 
                     console.log(folderId);
 
@@ -241,6 +241,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     formData.append('video', document.querySelector('.video').checked ? 1 : 0);
                     formData.append('session_user', document.querySelector('.user').value);
                     formData.append('sys_image', imageFile);
+                    formData.append('gdrive_url',imageFolderId);
 
                     const loading = document.createElement('span');
                     loading.classList.add('loading');
