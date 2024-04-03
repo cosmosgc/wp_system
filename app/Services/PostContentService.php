@@ -149,6 +149,7 @@ class PostContentService{
 
             // ID da pasta no Google Drive que contém as imagens
             $folderId = $data->gdrive_url;
+
             // Lista os arquivos na pasta especificada
             $results = $service->files->listFiles([
                 'q' => "'$folderId' in parents",
@@ -163,6 +164,7 @@ class PostContentService{
 
             // Salva o conteúdo do arquivo no armazenamento do Laravel
             $fileName = Str::random(20) . '_' . $randomFile->getName();
+            //dd($fileName);
             Storage::disk('public')->put('images/' . $fileName, $response->getBody()->getContents());
 
             // Retorna o caminho da imagem baixada

@@ -205,13 +205,13 @@ $user=explode('+',base64_decode($valorCodificado));
                     // Coleta dos dados do formulário dentro do "document" atual
                     var formData = new FormData();
                     var imageFile = document.querySelector('.sys_image input[type="file"]').files[0];
-                    const str=document.querySelector('.gdrive_document_url').innerText;
-                    let folderId=null;
+                    const str=document.querySelector('.gdrive_url').innerText;
+                    let imageFolderId=null
                     if(str){
 
-                        folderId=str.split('/folders/')[1]
+                        imageFolderId=str.split('/folders/')[1]
                     }
-                    folderId=document.querySelector('.gdrive_document_url').innerText;
+                    let folderId=document.querySelector('.gdrive_document_url').innerText;
 
                     console.log(folderId);
 
@@ -233,6 +233,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         url_link_3: document.querySelector('.url_link_3').innerText,
                         do_follow_link_3: document.querySelector('.do_follow_link_3').checked ? 1 : 0,
                         image_url: document.querySelector('.url_image').innerText,
+                        gdrive_url:imageFolderId,
                         gdrive_document_url: folderId,
                         insert_image: document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0,
                         schedule: document.querySelector('.schedule').value,
