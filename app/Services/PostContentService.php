@@ -88,7 +88,6 @@ class PostContentService{
     private function processImage($data){
                     // Verifica se uma imagem foi enviada
                     if (isset($data->sys_image)) {
-
                         // Obtain the temporary file path
                         $tempFilePath = $data->sys_image->path();
 
@@ -108,7 +107,7 @@ class PostContentService{
                         // Define the path of the image
                         $imagePath = 'images/' . $imageName;
 
-                    } elseif ($data->filled('gdrive_url') && $data->gdrive_url != '') {
+                    } elseif ($data->filled('gdrive_url') && $data->gdrive_url != '' && $data->gdrive_url != "null") {
 
                         // Se uma URL do Google Drive foi fornecida, faça o download da imagem do Google Drive
                         $imagePath = $this->downloadImageFromGoogleDrive($data->gdrive_url,$data);
