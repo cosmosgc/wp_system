@@ -91,8 +91,15 @@ class PostContentService{
                         // Obtain the temporary file path
                         $tempFilePath = $data->sys_image->path();
 
-                        // Generate a unique filename
-                        $imageName = uniqid() . '.jpg';
+                        $originalFileName = $data->sys_image->getClientOriginalName();
+                        $extension = pathinfo($originalFileName, PATHINFO_EXTENSION);
+
+                        // Remove the extension from the original filename
+                        $originalFileNameWithoutExtension = pathinfo($originalFileName, PATHINFO_FILENAME);
+
+                        // Generate a unique filename with the original extension
+                        $imageName = $originalFileNameWithoutExtension . '_' . uniqid() . '.' . $extension;
+
 
                         // Move the uploaded file to the desired location
                         move_uploaded_file($tempFilePath, storage_path('app/public/images/') . $imageName);
