@@ -464,7 +464,7 @@
                 selected_items = getSelectedItems('loading');
                 separatedData = separateThemesAndIDs(selected_items);
                 // console.log(separatedData.themes, separatedData.ids);
-                //return;
+                // return;
                 await generate_post(separatedData.themes, separatedData.ids);
                 removed = getSelectedItems('loading', true);
                 Swal.fire({

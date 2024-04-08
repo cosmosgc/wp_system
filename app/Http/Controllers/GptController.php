@@ -36,11 +36,13 @@ class GptController extends Controller
     }
 
     public function generatePost(Request $request){
-
+        $arr = [];
         foreach($request->title as $key=>$topic){
             $id=isset($request->id[$key])?$request->id[$key]:null;
             $response=$this->gptThread($id,$topic);
+            $arr[] = $response;
         }
+        return $arr;
     }
 
 

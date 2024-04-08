@@ -16,7 +16,7 @@ class GptService {
         // Texto para enviar ao GPT para geração
         $requestData = [
             'model' => 'gpt-3.5-turbo', // Atualizado para o modelo GPT-3.5
-            
+
         'messages' => array(
             array(
                 'role' => 'system',
@@ -26,7 +26,7 @@ class GptService {
                 'role' => 'user',
                 'content' => $topic
             ),
-        
+
         ), // Texto de entrada para o modelo GPT
             'max_tokens' => 2000, // Número máximo de tokens a serem gerados na resposta
             'temperature' => 0.7, // Opcional: ajusta a criatividade da resposta
@@ -37,7 +37,8 @@ class GptService {
             'headers' => [
                 'Authorization' => "Bearer $token",
                 'Content-Type' => 'application/json',
-            ]
+            ],
+            'timeout' => 0
         ]);
 
         // Envia a solicitação POST para a API do GPT
@@ -52,6 +53,6 @@ class GptService {
         $decodedResponse = json_decode($responseData, true);
 
         // Retorna a resposta decodificada
-        return $decodedResponse;    
+        return $decodedResponse;
     }
 }
