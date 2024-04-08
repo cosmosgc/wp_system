@@ -210,10 +210,39 @@ class GptController extends Controller
                 'Anchor_link_3'=>$anchor_3_url,
         ));
         $dataParsed[0] = $this->removeDuplicateHref($dataParsed[0]);
+        $dataParsed[0] = $this->removeDuplicateH2($dataParsed[0]);
 
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$dataParsed[0]]);
         return $insertPostContent;
     }
+    function removeDuplicateH2($htmlString) {
+        // Regular expression to match <h2> tags
+        $pattern = '/<h2[^>]*>(.*?)<\/h2>/i';
+
+        // Callback function to process each match
+        $callback = function($matches) {
+            static $uniqueTitles = array();
+            $title = $matches[0]; // Whole matched <h2> tag
+            $innerText = $matches[1]; // Inner text of the <h2> tag
+
+            // Check if this title is already present in the array
+            if (!in_array($innerText, $uniqueTitles)) {
+                // If not, add it to the array
+                $uniqueTitles[] = $innerText;
+                return $title; // Return the matched <h2> tag unchanged
+            } else {
+                // If it is, return an empty string
+                return '';
+            }
+        };
+
+        // Perform the regular expression replacement
+        $modifiedHtml = preg_replace_callback($pattern, $callback, $htmlString);
+
+        // Return the modified HTML string
+        return $modifiedHtml;
+    }
+
     function removeDuplicateHref($htmlString) {
         // Regular expression to match <a> tags with href attribute
         $pattern = '/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/i';
