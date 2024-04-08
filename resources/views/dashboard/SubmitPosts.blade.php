@@ -829,6 +829,7 @@
 
 
             function open_modal(i = 0, data = null) {
+                data = data.replace(/[\x00-\x1F\x7F]/g, '');
                 let parsedData = JSON.parse(data);
                 // console.log(parsedData);
 
