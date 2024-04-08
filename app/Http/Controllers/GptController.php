@@ -122,8 +122,8 @@ class GptController extends Controller
 
 
         for($i=0;$i<$sections_count;$i++){
-            // old $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% in the section, each paragraph must have paragraphs 400 words. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%%  add this element into the text: <a href="%%Anchor_link_1%%" rel="%%Follow_1%%follow">%%Ancora 1%%</a>, for %%Ancora 2%% add this element into the text: <a href="%%Anchor_link_2%%" rel="%%Follow_2%%follow">%%Ancora 2%%</a>,for %%Ancora 3%% add this element into the text: <a href="%%Anchor_link_3%%" rel="%%Follow_3%%follow">%%Ancora 3%%</a>'];
-            $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. add a <h2> title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% in the section, each paragraph must have paragraphs 400 words. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%%  add this element into the text: <a href="%%Anchor_link_1%%" rel="%%Follow_1%%follow">%%Ancora 1%%</a>, for %%Ancora 2%% add this element into the text: <a href="%%Anchor_link_2%%" rel="%%Follow_2%%follow">%%Ancora 2%%</a>,for %%Ancora 3%% add this element into the text: <a href="%%Anchor_link_3%%" rel="%%Follow_3%%follow">%%Ancora 3%%</a>'];
+            $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. Dont add the title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% in the section, each paragraph must have paragraphs 400 words. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%%  add this element into the text: <a href="%%Anchor_link_1%%" rel="%%Follow_1%%follow">%%Ancora 1%%</a>, for %%Ancora 2%% add this element into the text: <a href="%%Anchor_link_2%%" rel="%%Follow_2%%follow">%%Ancora 2%%</a>,for %%Ancora 3%% add this element into the text: <a href="%%Anchor_link_3%%" rel="%%Follow_3%%follow">%%Ancora 3%%</a>'];
+            // $sections=['Write the content of a post section for the heading "%%current_section%%" in %%language%%. The title of the post is: "%%title%%". This content must have keywords %%Ancora 1%%, %%Ancora 2%% and %%Ancora 3%%. add a <h2> title at the beginning of the created content. Be creative and unique. Dont repeat the heading in the created content. Dont add an intro or outro. Write %%paragraphs_per_section%% in the section, each paragraph must have paragraphs 400 words. Use HTML for formatting, include unnumbered lists and bold. Writing Style: %%writing_style%%. Tone: %%writing_tone%%. For %%Ancora 1%%  add this element into the text: <a href="%%Anchor_link_1%%" rel="%%Follow_1%%follow">%%Ancora 1%%</a>, for %%Ancora 2%% add this element into the text: <a href="%%Anchor_link_2%%" rel="%%Follow_2%%follow">%%Ancora 2%%</a>,for %%Ancora 3%% add this element into the text: <a href="%%Anchor_link_3%%" rel="%%Follow_3%%follow">%%Ancora 3%%</a>'];
             $complete_text=$this->replace_variables($sections,array(
                 'current_section'=>$i,
                 'Ancora 1'=>$anchor_1,
@@ -152,12 +152,13 @@ class GptController extends Controller
             }
         $headings = explode("\n", $complete_post[1]);
         $filtered_array=array_values(array_filter($headings));
-        //dd($filtered_array);
+        // dd($filtered_array);
 
         foreach($filtered_array as $key=>$heading){
-
+            // dd($heading);
             $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
-            $complete_post[]=$section_request['choices'][0]['message']['content'];
+            $complete_post[]="<h2>$heading</h2>\n\n".$section_request['choices'][0]['message']['content'];
+            $gptData.="<h2>$heading</h2>\n\n";
             $gptData.=$section_request['choices'][0]['message']['content']."\n\n";
         }
 
@@ -210,7 +211,7 @@ class GptController extends Controller
                 'Anchor_link_3'=>$anchor_3_url,
         ));
         $dataParsed[0] = $this->removeDuplicateHref($dataParsed[0]);
-        $dataParsed[0] = $this->removeDuplicateH2($dataParsed[0]);
+        // $dataParsed[0] = $this->removeDuplicateH2($dataParsed[0]);
 
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$dataParsed[0]]);
         return $insertPostContent;
