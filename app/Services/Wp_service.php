@@ -74,7 +74,7 @@ class Wp_service{
 
             $category_slug = $category; // Substitua 'nome_da_categoria' pelo slug (nome) da categoria desejada
 
-            $category_response = $this->client->get($domain.'/wp-json/wp/v2/categories?name=' . $category_slug);
+            $category_response = $this->client->get($domain.'/wp-json/wp/v2/categories?search=' . $category_slug);
             $category_data = json_decode($category_response->getBody(), true);
             if(!empty($category_data)){
 
