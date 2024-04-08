@@ -134,9 +134,9 @@ class GptController extends Controller
                 // 'Anchor_link_3'=>$anchor_3_url,
                 'Ancora 2'=>$anchor_2,
                 'Ancora 3'=>$anchor_3,
-                'Follow_1'=>($do_follow_link_1==1)?'do':'no',
-                'Follow_2'=>($do_follow_link_2==1)?'do':'no',
-                'Follow_3'=>($do_follow_link_3==1)?'do':'no',
+                // 'Follow_1'=>($do_follow_link_1==1)?'do':'no',
+                // 'Follow_2'=>($do_follow_link_2==1)?'do':'no',
+                // 'Follow_3'=>($do_follow_link_3==1)?'do':'no',
                 'language' => $language,
                 'title' => $title,
                 'writing_style' => $writing_style,
@@ -211,6 +211,9 @@ class GptController extends Controller
                 'Anchor_link_1'=>$anchor_1_url,
                 'Anchor_link_2'=>$anchor_2_url,
                 'Anchor_link_3'=>$anchor_3_url,
+                'Follow_1'=>($do_follow_link_1==1)?'do':'no',
+                'Follow_2'=>($do_follow_link_2==1)?'do':'no',
+                'Follow_3'=>($do_follow_link_3==1)?'do':'no',
         ));
         $dataParsed[0] = $this->removeDuplicateHref($dataParsed[0]);
         // $dataParsed[0] = $this->removeDuplicateH2($dataParsed[0]);

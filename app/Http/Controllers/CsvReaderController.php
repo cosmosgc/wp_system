@@ -29,6 +29,7 @@ class CsvReaderController extends Controller
             }
             $data=$data_csv;
             foreach($data as $dt){
+                // dd($dt);
                 $dataAtual = new DateTime();
                 $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
                 $dataAtual->format('Y-m-d H:i:s');
@@ -50,14 +51,14 @@ class CsvReaderController extends Controller
                     'gdrive_document_url'=>$dt['Gdrive'],
                     'schedule_date'=>$dataAtual,
                     'user_id'=>$request->user_id,
-                    
+
                 );
 
 
                 $new_csv_content=$this->postConfigService->insertCSV($content);
 
             }
-            
+
             //dd($processed_data);
         }
 
