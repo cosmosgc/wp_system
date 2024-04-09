@@ -88,8 +88,8 @@ class GptController extends Controller
                 $anchor_2_url=$post_config->url_link_2;
                 $anchor_3_url=$post_config->url_link_3;
                 $do_follow_link_1=$post_config->do_follow_link_1;
-                $do_follow_link_2=$post_config->$do_follow_link_2;
-                $do_follow_link_3=$post_config->$do_follow_link_3;
+                $do_follow_link_2=$post_config->do_follow_link_2;
+                $do_follow_link_3=$post_config->do_follow_link_3;
                 $video=$post_config->video;
             }
 

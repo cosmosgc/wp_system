@@ -175,6 +175,7 @@
                   <th>Domain</th>
                   <th>Agendado</th>
                   <th>Status</th>
+                  <th>Url do Post</th>
                   <th>Ações</th>
                 </tr>
               </thead>
@@ -198,6 +199,11 @@
                   <td class="domain">{{$config->domain}}</td>
                   <td class="schedule_date">{{$config->schedule_date}}</td>
                   <td class="status">{{$config->status}}</td>
+                  <td class="post_url">
+                    @if(!empty($config->post_url))
+                        <a href="{{$config->post_url}}">Acessar</a>
+                    @endif
+                  </td>
                   <td class="editor_list_flex">
                     <!-- Postar Button with Font Awesome icon and alt attribute -->
                     <button class="btn btn-primary post_wp" data-toggle="tooltip" data-placement="top" title="Postar">

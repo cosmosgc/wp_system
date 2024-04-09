@@ -29,10 +29,10 @@ class CsvReaderController extends Controller
             }
             $data=$data_csv;
             foreach($data as $dt){
-                // dd($dt);
                 $dataAtual = new DateTime();
                 $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
                 $dataAtual->format('Y-m-d H:i:s');
+                $video = trim($dt['Video']," \t\n\r\0\x0B");
                 $content=array(
                     'theme'=>$dt['Tema'],
                     'keyword'=>$dt['Keyword'],
@@ -49,6 +49,7 @@ class CsvReaderController extends Controller
                     'internal_link'=>isset($dt['Link Interno']) && $dt['Link Interno']==='Sim'?true:null,
                     'domain'=>$dt['Dominio'],
                     'gdrive_document_url'=>$dt['Gdrive'],
+                    'video'=>isset($video)&& $video=== 'Sim'? true:null,
                     'schedule_date'=>$dataAtual,
                     'user_id'=>$request->user_id,
 
