@@ -215,7 +215,7 @@
                     <i class="fas fa-trash"></i>
                     </button>
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button onclick="generate_post([`{{$config->theme}}`], null, this)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post([`{{$config->theme}}`], null, this, true)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 
@@ -580,7 +580,7 @@
 
 
 
-            async function generate_post(topic_to_generate, id=null, element_status = null){
+            async function generate_post(topic_to_generate, id=null, element_status = null, alert=false){
                 //element_status.closest('tr').classList.add('loading')
                 loading_element(element_status, false);
                 const loading=document.createElement('div');
@@ -619,18 +619,18 @@
 
                 // Remove o SVG de loading após a conclusão da query
                 try {
-                // if(query.ok){
-                // Swal.fire({
-                //     title: 'Conteúdo criado com sucesso',
-                //     text: 'Do you want to continue',
-                //     icon: 'success',
-                //     confirmButtonText: 'continue'
-                // }).then((result) => {
-                //     if (result.isConfirmed) {
-                //             //location.reload(); // Reload the page
-                //         }
-                //     });
-                // }
+                if(alert){
+                Swal.fire({
+                    title: 'Conteúdo criado com sucesso',
+                    text: 'Deseja continuar?',
+                    icon: 'success',
+                    confirmButtonText: 'continue'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+                }
 
                 } catch (error) {
                 Swal.fire({
