@@ -93,7 +93,10 @@ class Wp_service{
                     'auth' => [$login, $password],
                     'form_params' => $data,
                 ]);
+                $post_response=json_decode($response->getBody(), true);
+                $post_url=$post_response["post_url"];
                 $change_status=Wp_post_content::where('theme',$title)->update(['status'=>'publicado']);
+                $insert_url=Wp_post_content::where('theme',$title)->update(['post_url'=>$post_url]);
 
                 return $response->getBody();
 
