@@ -259,6 +259,12 @@ class GptController extends Controller
             $href = $matches[1];
             $innerText = $matches[2];
 
+
+            // Check if href is empty or matches a pattern of not containing a link
+            if (empty($href) || !preg_match('/^((http|https|ftp):\/\/[^\s$.?#].[^\s]*)?$/i', $href)) {
+                // If href is empty or invalid, return inner text
+                return $innerText;
+            }
             // Check if this href value is already present in the array
             if (!in_array($href, $uniqueHrefs)) {
                 // If not, add it to the array
