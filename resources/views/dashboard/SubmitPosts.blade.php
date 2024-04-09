@@ -488,6 +488,7 @@
                     let completedItems = 0;
                     const totalItems = Object.keys(separatedData.themes).length;
                     progressBar.style.display = 'block';
+                    updateProgressBar(0);
                     for (const theme in separatedData.themes) {
                         const id = separatedData.ids[theme];
                         console.log("criando", [theme], [id]);
@@ -499,6 +500,7 @@
                     }
                 }
                 removed = getSelectedItems('loading', true);
+                progressBar.style.display = 'none';
                 Swal.fire({
                         title: 'Geração em lote completada!',
                         text: 'Continuar?',
@@ -506,7 +508,7 @@
                         confirmButtonText: 'continue'
                     })
             }
-            function updateProgressBar(progress, label) {
+            function updateProgressBar(progress, label = '') {
                 const progressBar = document.querySelector('.progress-bar');
                 progressBar.style.width = progress + '%';
                 progressBar.setAttribute('aria-valuenow', progress);
