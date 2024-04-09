@@ -148,6 +148,14 @@
                     </button>
                 </div>
             </div>
+            <div class="row progress-bar-parent" style="display:none;">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        <span class="progress-label">0%</span>
+                    </div>
+                </div>
+            </div>
+
 
 
 
@@ -460,12 +468,30 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
-              async function batch_generate(){
+            async function batch_generate(all = false){
                 selected_items = getSelectedItems('loading');
                 separatedData = separateThemesAndIDs(selected_items);
+                const progressBar = document.querySelector('.progress-bar-parent');
                 // console.log(separatedData.themes, separatedData.ids);
                 // return;
-                await generate_post(separatedData.themes, separatedData.ids);
+                if(all)
+                {
+                    await generate_post(separatedData.themes, separatedData.ids);
+                }
+                else{
+                    let completedItems = 0;
+                    const totalItems = Object.keys(separatedData.themes).length;
+                    progressBar.style.display = 'block';
+                    for (const theme in separatedData.themes) {
+                        const id = separatedData.ids[theme];
+                        console.log("criando", [theme], [id]);
+                        await generate_post([theme], [id]);
+                        completedItems++;
+                        const progress = Math.round((completedItems / totalItems) * 100);
+                        let label = completedItems + "/" + totalItems;
+                        updateProgressBar(progress, label);
+                    }
+                }
                 removed = getSelectedItems('loading', true);
                 Swal.fire({
                         title: 'Geração em lote completada!',
@@ -474,6 +500,16 @@
                         confirmButtonText: 'continue'
                     })
             }
+            function updateProgressBar(progress, label) {
+                const progressBar = document.querySelector('.progress-bar');
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+
+                // Update progress label
+                const progressLabel = progressBar.querySelector('.progress-label');
+                progressLabel.textContent = `${label} ${progress}%`;
+            }
+
             async function batch_post(){
                 selected_items = getSelectedItems('loading');
                 separatedData = separateThemesAndIDs(selected_items);
@@ -575,18 +611,18 @@
 
                 // Remove o SVG de loading após a conclusão da query
                 try {
-                if(query.ok){
-                Swal.fire({
-                    title: 'Conteúdo criado com sucesso',
-                    text: 'Do you want to continue',
-                    icon: 'success',
-                    confirmButtonText: 'continue'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                            location.reload(); // Reload the page
-                        }
-                    });
-                }
+                // if(query.ok){
+                // Swal.fire({
+                //     title: 'Conteúdo criado com sucesso',
+                //     text: 'Do you want to continue',
+                //     icon: 'success',
+                //     confirmButtonText: 'continue'
+                // }).then((result) => {
+                //     if (result.isConfirmed) {
+                //             //location.reload(); // Reload the page
+                //         }
+                //     });
+                // }
 
                 } catch (error) {
                 Swal.fire({
