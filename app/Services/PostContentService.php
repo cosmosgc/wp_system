@@ -77,6 +77,7 @@ class PostContentService{
         $updated_content->domain = isset($data->domain) ? $data->domain : '';
         $updated_content->gdrive_document_url = isset($data->gdrive_document_url) ? $data->gdrive_document_url : '';
         $updated_content->video = isset($data->video) ? (bool) $data->video : false;
+        $updated_content->post_url=isset($data->post_url)?$data->post_url:null;
 
 
         $updated_content->save();
