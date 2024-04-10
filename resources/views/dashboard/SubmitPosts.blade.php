@@ -448,7 +448,7 @@
                     url_link_1: _url_link_1.value,
                     url_link_2: _url_link_2.value,
                     url_link_3: _url_link_3.value,
-                    video: _video,
+                    video: _video.value,
                     _token: csrfToken
                 };
                 // console.log(data);
