@@ -22,7 +22,7 @@ class WpController extends Controller
 
                 $image=Wp_post_content::find($request->id);
                 $login=Wp_credential::where('wp_domain',$image->domain)->get();
-                dd($login);
+                //dd($login);
                 $domain_with_ssl=preg_replace('/^(?!https?:\/\/)/', 'https://',$login[0]->wp_domain);
                 $newPost=$this->wpService->postBlogContent($image->keyword,$image->theme,$image->category,$image->post_content,$image->insert_image,$image->post_image,$domain_with_ssl,$login[0]->wp_login,$login[0]->wp_password, $image->schedule_date);
                 $update_meta=$this->wpService->updateYoastRankMath($domain_with_ssl,intval($request->id),isset($image->keyword)?$image->keyword:'placeholder');
