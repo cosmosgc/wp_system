@@ -78,7 +78,7 @@ class Wp_service{
             $category_data = json_decode($category_response->getBody(), true);
             if(!empty($category_data)){
 
-                $oldurl = $domain.'/wp-json/wp/v2/posts';
+                //$oldurl = $domain.'/wp-json/wp/v2/posts';
                 $url = $domain."/wp-json/wp_manage/v1/post_create/";
                 $data = [
                     'title' => $title,

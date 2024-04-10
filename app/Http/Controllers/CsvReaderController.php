@@ -28,9 +28,15 @@ class CsvReaderController extends Controller
                 }
             }
             $data=$data_csv;
+            $c=[];
             foreach($data as $dt){
                 $dataAtual = new DateTime();
-                $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
+                if(intval($dt['Programacao de Postagem'])<0){
+                   $dataAtual->modify('-' . intval($dt['Programacao de Postagem']) . ' days');
+                }else{
+                    $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
+                }
+                
                 $dataAtual->format('Y-m-d H:i:s');
                 $video = trim($dt['Video']," \t\n\r\0\x0B");
                 $content=array(
@@ -55,12 +61,11 @@ class CsvReaderController extends Controller
 
                 );
 
-
                 $new_csv_content=$this->postConfigService->insertCSV($content);
 
             }
 
-            //dd($processed_data);
+            //dd($processed_data)
         }
 
         return redirect()->route('configCreated');
