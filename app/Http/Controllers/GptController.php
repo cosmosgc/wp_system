@@ -61,7 +61,7 @@ class GptController extends Controller
         $writing_tone = $token->writing_tone;
         $sections_count = intval($token->sections);
         $paragraphs_per_section = intval($token->paragraphs);
-        $key=null;
+        $keyword=null;
         $anchor_1=null;
         $anchor_1_url=null;
         $anchor_2_url=null;
@@ -80,7 +80,6 @@ class GptController extends Controller
             foreach(Wp_post_content::where('theme', $post_title)->orWhere('id', $id)->get() as $post_config){
 
                 $keyword=$post_config->keyword;
-                $data[]=$key;
                 $anchor_1=$post_config->anchor_1;
                 $anchor_2=$post_config->anchor_2;
                 $anchor_3=$post_config->anchor_3;
