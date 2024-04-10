@@ -76,10 +76,11 @@ class GptController extends Controller
         $token=$token->open_ai;
         //return json_encode('chegou aqui');
 
-
+            $data=[];
             foreach(Wp_post_content::where('theme', $post_title)->orWhere('id', $id)->get() as $post_config){
 
-                $key=$post_config->keyword;
+                $keyword=$post_config->keyword;
+                $data[]=$key;
                 $anchor_1=$post_config->anchor_1;
                 $anchor_2=$post_config->anchor_2;
                 $anchor_3=$post_config->anchor_3;
@@ -93,7 +94,7 @@ class GptController extends Controller
                 $video=$post_config->video;
             }
 
-
+            //dd($data);
 
 
 
@@ -112,7 +113,7 @@ class GptController extends Controller
             'writing_tone' => $writing_tone,
             'sections_count' => $sections_count,
             'paragraphs_per_section' => $paragraphs_per_section,
-            'Keyword'=>$key,
+            'Keyword'=>$keyword,
 
 
 
@@ -191,9 +192,10 @@ class GptController extends Controller
         ));
 
         if($video==1){
-            $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$key);
+            $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$keyword);
             $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
             $newGptData.=$videoEmbedd."\n\n";
+            //dd($videoEmbedd);
         }
 
         $qa_title="<h2>Perguntas & respostas</h2>"."\n\n";
@@ -297,11 +299,10 @@ class GptController extends Controller
     }
     // Pesquisar o primeiro link do youtube
     public function searchYouTubeAndGetURL($api_key,$query) {
-        if($api_key = '' || empty($api_key)){
-            return '';
-        }
+         if($api_key == ''){
+              return '';
+          }
         $apiKey = $api_key;
-
         $apiEndpoint = 'https://www.googleapis.com/youtube/v3/search';
 
         $params = array(
@@ -310,9 +311,8 @@ class GptController extends Controller
             'part' => 'snippet',
             'maxResults' => 1
         );
-
+        //dd($query,$apiKey);
         $url = $apiEndpoint . '?' . http_build_query($params);
-
         $response = file_get_contents($url);
 
         $responseData = json_decode($response, true);

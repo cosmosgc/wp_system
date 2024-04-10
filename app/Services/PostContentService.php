@@ -73,10 +73,10 @@ class PostContentService{
         //$updated_content->post_content = isset($data->post_content) ? $data->post_content : '';
         $updated_content->insert_image = isset($data->insert_image) ? $data->insert_image : '';
         $updated_content->status = isset($data->status) ? $data->status : 'Não publicado';
-        $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : '';
+        $updated_content->schedule_date = isset($data->schedule_date) ? $data->schedule_date : null;
         $updated_content->domain = isset($data->domain) ? $data->domain : '';
         $updated_content->gdrive_document_url = isset($data->gdrive_document_url) ? $data->gdrive_document_url : '';
-        $updated_content->video = isset($data->video) ? (bool) $data->video : false;
+        $updated_content->video = isset($data->video) ?(bool)$data->video : false;
         $updated_content->post_url=isset($data->post_url)?$data->post_url:null;
 
 
