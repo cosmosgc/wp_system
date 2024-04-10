@@ -290,8 +290,8 @@ class GptController extends Controller
 
         // para substituir
         //$replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-        $replacement = '<a href="'.$string.'" rel="dofollow"></a>'
-        filter_var($replacement, FILTER_SANITIZE_STRING);
+        $replacement = '<a href="'.$string.'" rel="dofollow">youtube link</a>';
+        //filter_var($replacement, FILTER_SANITIZE_STRING);
 
         //$convertedString = preg_replace($pattern, $replacement, $string);
 
