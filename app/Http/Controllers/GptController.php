@@ -289,7 +289,8 @@ class GptController extends Controller
         $pattern = '/<a\s+(?:[^>]*?\s+)?href=(["\'])(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+)(?(1)\1|)(?:[^>]*?\s+)?rel=(["\'])([^"\']*)\3[^>]*?>(.*?)<\/a>/i';
 
         // para substituir
-        $replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+        //$replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+        $replacement = '<a href="'.$string.'" rel="dofollow"></a>'
         filter_var($replacement, FILTER_SANITIZE_STRING);
 
         //$convertedString = preg_replace($pattern, $replacement, $string);
