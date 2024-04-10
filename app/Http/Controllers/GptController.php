@@ -216,8 +216,9 @@ class GptController extends Controller
                 'Follow_2'=>($do_follow_link_2==1)?'do':'no',
                 'Follow_3'=>($do_follow_link_3==1)?'do':'no',
         ));
+        //dd($dataParsed[0]);
         $dataParsed[0] = $this->removeDuplicateHref($dataParsed[0]);
-        // $dataParsed[0] = $this->removeDuplicateH2($dataParsed[0]);
+        //dd($dataParsed[0]);
 
         $insertPostContent=Wp_post_content::where('id',$id_content)->update(['post_content'=>$dataParsed[0]]);
         return $insertPostContent;
@@ -290,11 +291,11 @@ class GptController extends Controller
 
         // para substituir
         //$replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-        $replacement = '<a href="'.$string.'" rel="dofollow"></a>'
+        $replacement = '<a href="'.$string.'"></a>';
         filter_var($replacement, FILTER_SANITIZE_STRING);
 
         //$convertedString = preg_replace($pattern, $replacement, $string);
-
+        //dd($replacement);
         return $replacement;
     }
     // Pesquisar o primeiro link do youtube
