@@ -148,7 +148,18 @@ class GptController extends Controller
         }
         foreach($total_comands[0] as $command){
             $gpt_request=$this->gptService->sendRequest($command,$post_title,$token);
-            $data=$gpt_request['choices'][0]['message']['content'];
+            if($gpt_request['choices'][0]['message']['content']==0){
+                $retry_request=$this->gptService->sendRequest($command,$post_title,$token);
+                if($retry_request['choices'][0]['message']['content']==0){
+                    $data=$retry_request=$this->gptService->sendRequest($command,$post_title,$token);
+                    //dd($retry_request['choices'][0]['message']['content']);
+                }else{
+                    $data=$retry_request['choices'][0]['message']['content'];
+                }
+            }else{
+                $data=$gpt_request['choices'][0]['message']['content'];
+            }
+            
             $complete_post[]=$data;
             $gptData.=$data."\n\n";
             }
@@ -158,14 +169,29 @@ class GptController extends Controller
 
         foreach($filtered_array as $key=>$heading){
             // dd($heading);
+            $content=null;
             $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
-            $complete_post[]="<h2>$heading</h2>\n\n".$section_request['choices'][0]['message']['content'];
-            $gptData.="<h2>$heading</h2>\n\n";
-            $gptData.=$section_request['choices'][0]['message']['content']."\n\n";
-        }
+            if($section_request['choices'][0]['message']['content']==0){
+                //dd('2-'.$section_request['choices'][0]['message']['content']);
+               $retry_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
+                if($retry_request['choices'][0]['message']['content']==0){
+                    $retry_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
+                    $content=$retry_request['choices'][0]['message']['content'];
+                    //dd($retry_request['choices'][0]['message']['content']);
+                }else{
+                    $content=$retry_request['choices'][0]['message']['content'];
+                }
 
+            }else{
+                $content=$section_request['choices'][0]['message']['content'];
+            }
+            $complete_post[]="<h2>$heading</h2>\n\n".$content;
+            $gptData.="<h2>$heading</h2>\n\n";
+            $gptData.=$content."\n\n";
+        }
         $new_value=str_replace($filtered_array[0],"",$gptData);
         $newGptData=str_replace($filtered_array[1],"",$gptData);
+        
 
 
 
@@ -291,7 +317,7 @@ class GptController extends Controller
 
         // para substituir
         //$replacement = '<iframe width="560" height="315" src="'.$string.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
-        $replacement = '<a href="'.$string.'"></a>';
+        $replacement = '<a href="'.$string.'" rel="dofollow">youtube link</a>';
         filter_var($replacement, FILTER_SANITIZE_STRING);
 
         //$convertedString = preg_replace($pattern, $replacement, $string);
