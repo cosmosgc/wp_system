@@ -506,7 +506,11 @@
                         text: 'Continuar?',
                         icon: 'success',
                         confirmButtonText: 'continue'
-                    })
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
             }
             function updateProgressBar(progress, label = '') {
                 const progressBar = document.querySelector('.progress-bar');
