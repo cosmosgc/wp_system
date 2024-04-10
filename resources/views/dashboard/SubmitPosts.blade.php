@@ -623,7 +623,7 @@
 
                 // Remove o SVG de loading após a conclusão da query
                 try {
-                if(alert){
+                if(alert && query.ok){
                 Swal.fire({
                     title: 'Conteúdo criado com sucesso',
                     text: 'Deseja continuar?',
