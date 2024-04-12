@@ -147,21 +147,25 @@ class GptController extends Controller
 
         }
         foreach($total_comands[0] as $command){
-            $gpt_request=$this->gptService->sendRequest($command,$post_title,$token);
-            if($gpt_request['choices'][0]['message']['content']==0){
-                $retry_request=$this->gptService->sendRequest($command,$post_title,$token);
-                if($retry_request['choices'][0]['message']['content']==0){
-                    $data=$retry_request=$this->gptService->sendRequest($command,$post_title,$token);
-                    //dd($retry_request['choices'][0]['message']['content']);
-                }else{
-                    $data=$retry_request['choices'][0]['message']['content'];
+                $max_retries = 10;
+                $data = null;
+
+                for ($i = 0; $i < $max_retries; $i++) {
+                    $gpt_request = $this->gptService->sendRequest($command, $post_title, $token);
+
+                    if ($gpt_request['choices'][0]['message']['content'] != 0) {
+                        $data = $gpt_request['choices'][0]['message']['content'];
+                        break;
+                    }
                 }
-            }else{
-                $data=$gpt_request['choices'][0]['message']['content'];
-            }
-            
-            $complete_post[]=$data;
-            $gptData.=$data."\n\n";
+
+                // se ainda não der certo
+                if ($data === null) {
+                    throw new Exception("Tentativas ultrapassaram os limites");
+                }
+
+                $complete_post[]=$data;
+                $gptData.=$data."\n\n";
             }
         $headings = explode("\n", $complete_post[1]);
         $filtered_array=array_values(array_filter($headings));
@@ -191,7 +195,7 @@ class GptController extends Controller
         }
         $new_value=str_replace($filtered_array[0],"",$gptData);
         $newGptData=str_replace($filtered_array[1],"",$gptData);
-        
+
 
 
 
