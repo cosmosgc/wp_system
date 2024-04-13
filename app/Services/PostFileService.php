@@ -38,6 +38,8 @@ class PostFileService{
             'gdrive_document_url'=>isset($data['gdrive_document_url'])?$data['gdrive_document_url']:null,
             'video'=>isset($data['video']) && $data['video']===true?1:0,
             'schedule_date'=>isset($data['schedule_date'])?$data['schedule_date']:null,
+            'insert_image'=>isset($data['insert_image']) && ($data['insert_image']===true)?1:0,
+            'post_image'=>isset($data['post_image'])?$data['post_image']:null,
             'status'=>'Não publicado',
             'Editor_id'=>$data['user_id']
         ]);

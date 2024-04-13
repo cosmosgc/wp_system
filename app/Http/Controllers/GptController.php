@@ -9,6 +9,7 @@ use App\Models\Wp_post_content;
 use App\Services\GptService;
 use App\Services\Wp_service;
 use Illuminate\Http\Request;
+use  Exception;
 
 class GptController extends Controller
 {

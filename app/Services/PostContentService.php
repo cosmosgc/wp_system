@@ -124,7 +124,7 @@ class PostContentService{
     }
 
 
-    private function downloadImageFromUrl($imageUrl)
+    public function downloadImageFromUrl($imageUrl)
     {
         // Gera um nome único para o arquivo usando o helper Str
         $fileName = Str::random(20) . '.png';
@@ -140,7 +140,7 @@ class PostContentService{
     }
 
 
-        private function downloadImageFromGoogleDrive($imageUrl, $data)
+        public function downloadImageFromGoogleDrive($imageUrl, $data)
         {
             // Cria uma instância do cliente Google Client
             $client = new Google_Client();
