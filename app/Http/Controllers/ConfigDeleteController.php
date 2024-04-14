@@ -11,7 +11,7 @@ class ConfigDeleteController extends Controller
     //
     public function deleteConfig(Request $request){
         $delete_request =Wp_post_content::find($request->id);
-        if (Storage::disk('public')->exists($delete_request->post_image)) {
+        if ($delete_request->post_image!=null  && Storage::disk('public')->exists($delete_request->post_image)) {
             // Deleta o arquivo
             Storage::disk('public')->delete($delete_request->post_image);
              // Retorna verdadeiro se a exclusão for bem-sucedida
