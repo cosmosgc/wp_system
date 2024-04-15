@@ -225,7 +225,7 @@ class GptController extends Controller
 
         if($video==1){
             $editor_id=Editor::where('name',$user[0])->get();
-            $youtube_api=Drive_credential::where('Editor_id',$editor_id[0]->id)->get();
+            $youtube_api=Drive_credential::all()->first();
             $videoLink = '';
             if(isset($youtube_api[0]->api_key)){
                 $videoLink=$this->searchYouTubeAndGetURL($youtube_api[0]->api_key,$keyword);
