@@ -326,6 +326,8 @@ class GptController extends Controller
     }
     //Pode usar para converter um padrão no complete_post[] em youtube embeds
     public function convertYouTubeLinksToEmbeds($string) {
+        if($string == '')
+            return '';
         // Padrão
         $pattern = '/<a\s+(?:[^>]*?\s+)?href=(["\'])(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+)(?(1)\1|)(?:[^>]*?\s+)?rel=(["\'])([^"\']*)\3[^>]*?>(.*?)<\/a>/i';
 
