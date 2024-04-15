@@ -342,12 +342,12 @@ class GptController extends Controller
             'q' => $query,
             'key' => $apiKey,
             'part' => 'snippet',
+            'type'=>'video',
             'maxResults' => 1
         );
         //dd($query,$apiKey);
         $url = $apiEndpoint . '?' . http_build_query($params);
         $response = file_get_contents($url);
-
         $responseData = json_decode($response, true);
 
         if (isset($responseData['items'][0]['id']['videoId'])) {
