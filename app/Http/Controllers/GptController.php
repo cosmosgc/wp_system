@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Sys_helper;
 use App\Models\Editor;
 use App\Models\Ia_credential;
+use App\Models\Drive_credential;
 use App\Models\Wp_post_content;
 use App\Services\GptService;
 use App\Services\Wp_service;
@@ -223,7 +224,9 @@ class GptController extends Controller
         ));
 
         if($video==1){
-            $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$keyword);
+            $editor_id=Editor::where('name',$user[0])->get();
+            $youtube_api=Drive_credential::where('Editor_id',$editor_id[0]->id)->get();
+            $videoLink=$this->searchYouTubeAndGetURL($youtube_api[0]->api_key,$keyword);
             if($videoLink != '' || $videoLink != 'https://www.youtube.com/embed/')
             {
                 $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
