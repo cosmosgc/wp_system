@@ -480,9 +480,14 @@
                 const progressBar = document.querySelector('.progress-bar-parent');
                 // console.log(separatedData.themes, separatedData.ids);
                 // return;
+                let errorItems = [];
                 if(all)
                 {
-                    await generate_post(separatedData.themes, separatedData.ids);
+                    try {
+                        await generate_post(separatedData.themes, separatedData.ids);
+                    }catch (error) {
+                        errorItems.push({ theme: separatedData.themes, id: separatedData.ids });
+                    }
                 }
                 else{
                     let completedItems = 0;
@@ -492,7 +497,11 @@
                     for (const theme in separatedData.themes) {
                         const id = separatedData.ids[theme];
                         console.log("criando", [theme], [id]);
-                        await generate_post([theme], [id]);
+                        try {
+                            await generate_post([theme], [id]);
+                        } catch (error) {
+                            errorItems.push({ theme, id });
+                        }
                         completedItems++;
                         const progress = Math.round((completedItems / totalItems) * 100);
                         let label = completedItems + "/" + totalItems;
@@ -501,16 +510,32 @@
                 }
                 removed = getSelectedItems('loading', true);
                 progressBar.style.display = 'none';
-                Swal.fire({
-                        title: 'Geração em lote completada!',
-                        text: 'Continuar?',
+                if (errorItems.length > 0) {
+                    // If there are errors, display the error messages
+                    let errorMessage = "Errors occurred while generating posts for:";
+                    errorItems.forEach(item => {
+                        errorMessage += `\nTheme: ${item.theme}, ID: ${item.id}`;
+                    });
+
+                    Swal.fire({
+                        title: 'Error occurred during batch generation!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // If no errors, display success message
+                    Swal.fire({
+                        title: 'Batch generation completed successfully!',
+                        text: 'Continue?',
                         icon: 'success',
-                        confirmButtonText: 'continue'
+                        confirmButtonText: 'Continue'
                     }).then((result) => {
-                    if (result.isConfirmed) {
+                        if (result.isConfirmed) {
                             location.reload(); // Reload the page
                         }
                     });
+                }
             }
             function updateProgressBar(progress, label = '') {
                 const progressBar = document.querySelector('.progress-bar');
