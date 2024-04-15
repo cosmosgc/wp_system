@@ -347,8 +347,12 @@ class GptController extends Controller
             'maxResults' => 1
         );
         //dd($query,$apiKey);
-        $url = $apiEndpoint . '?' . http_build_query($params);
-        $response = file_get_contents($url);
+        try {
+            $url = $apiEndpoint . '?' . http_build_query($params);
+            $response = file_get_contents($url);
+        } catch (Exception $e) {
+            dd($url, $e);
+        }
 
         $responseData = json_decode($response, true);
         $videoId='';
