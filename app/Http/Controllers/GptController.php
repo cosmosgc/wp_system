@@ -174,22 +174,23 @@ class GptController extends Controller
 
         foreach($filtered_array as $key=>$heading){
             // dd($heading);
-            $content=null;
-            $section_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
-            if($section_request['choices'][0]['message']['content']==0){
-                //dd('2-'.$section_request['choices'][0]['message']['content']);
-               $retry_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
-                if($retry_request['choices'][0]['message']['content']==0){
-                    $retry_request=$this->gptService->sendRequest($total_comands[$key+1][0],$heading,$token);
-                    $content=$retry_request['choices'][0]['message']['content'];
-                    //dd($retry_request['choices'][0]['message']['content']);
-                }else{
-                    $content=$retry_request['choices'][0]['message']['content'];
-                }
+            $max_retries = 10;
+            $content = null;
 
-            }else{
-                $content=$section_request['choices'][0]['message']['content'];
+            for ($i = 0; $i < $max_retries; $i++) {
+                $section_request = $this->gptService->sendRequest($total_comands[$key+1][0], $heading, $token);
+
+                if ($section_request['choices'][0]['message']['content'] != 0) {
+                    $content = $section_request['choices'][0]['message']['content'];
+                    break;
+                }
             }
+
+            // If after all retries, the content is still null, throw an error
+            if ($content === null) {
+                throw new Exception("Tentativas ultrapassaram os limites");
+            }
+
             $complete_post[]="<h2>$heading</h2>\n\n".$content;
             $gptData.="<h2>$heading</h2>\n\n";
             $gptData.=$content."\n\n";
