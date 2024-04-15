@@ -57,6 +57,7 @@ class GptController extends Controller
         $editor=Editor::where('name',$user)->get();
         $token=Editor::find($editor[0]->id)->iaCredentials;
         $Google_api_key=isset(Editor::all()->first()->GoogleCredentials->api_key)?Editor::all()->first()->GoogleCredentials->api_key:null;
+        dd($Google_api_key);
         $title = $post_title;
         $language = $token->language;
         $writing_style = $token->wrinting_style;
