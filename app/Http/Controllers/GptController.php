@@ -57,7 +57,7 @@ class GptController extends Controller
         $editor=Editor::where('name',$user)->get();
         $token=Editor::find($editor[0]->id)->iaCredentials;
         $Google_api_key=Drive_credential::all()->first()->api_key;
-        dd($Google_api_key);
+
         $title = $post_title;
         $language = $token->language;
         $writing_style = $token->wrinting_style;
@@ -227,10 +227,10 @@ class GptController extends Controller
         if($video==1){
             $editor_id=Editor::where('name',$user[0])->get();
             //$youtube_api=Drive_credential::all()->first();
-            $youtube_api=Drive_credential::where('Editor_id',$editor_id[0]->id)->get();
+            //$youtube_api=Drive_credential::where('Editor_id',$editor_id[0]->id)->get();
             $videoLink = '';
-            if(isset($youtube_api[0]->api_key)){
-                $videoLink=$this->searchYouTubeAndGetURL($youtube_api[0]->api_key,$keyword);
+            if(isset($Google_api_key)){
+                $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$keyword);
             }
             if($videoLink != '' || $videoLink != 'https://www.youtube.com/embed/')
             {
