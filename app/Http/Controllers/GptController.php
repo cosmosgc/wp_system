@@ -56,7 +56,7 @@ class GptController extends Controller
         $user=explode('+',base64_decode($valorCodificado));
         $editor=Editor::where('name',$user)->get();
         $token=Editor::find($editor[0]->id)->iaCredentials;
-        $Google_api_key=isset(Editor::all()->first()->GoogleCredentials->api_key)?Editor::all()->first()->GoogleCredentials->api_key:null;
+        $Google_api_key=isset(Drive_credential::all()->first()->GoogleCredentials->api_key)?Drive_credential::all()->first()->GoogleCredentials->api_key:null;
         dd($Google_api_key);
         $title = $post_title;
         $language = $token->language;
