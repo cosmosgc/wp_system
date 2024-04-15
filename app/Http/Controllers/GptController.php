@@ -223,7 +223,7 @@ class GptController extends Controller
         ));
 
         if($video==1){
-            dd(Editor::all()->first()->GoogleCredentials->api_key);
+            dd(Editor::all()->first()->GoogleCredentials);
             $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$keyword);
             if($videoLink != '' || $videoLink != 'https://www.youtube.com/embed/')
             {
