@@ -334,6 +334,7 @@ class GptController extends Controller
     }
     // Pesquisar o primeiro link do youtube
     public function searchYouTubeAndGetURL($api_key,$query) {
+        dd($api_key);
         //  if($api_key == ''){
         //       return '';
         //   }
@@ -351,7 +352,6 @@ class GptController extends Controller
         $url = $apiEndpoint . '?' . http_build_query($params);
         $response = file_get_contents($url);
         $responseData = json_decode($response, true);
-        dd($responseData);
         $videoId='';
         if (isset($responseData['items'][0]['id']['videoId'])) {
             $videoId = $responseData['items'][0]['id']['videoId'];
