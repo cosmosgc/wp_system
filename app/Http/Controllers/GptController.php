@@ -224,9 +224,11 @@ class GptController extends Controller
 
         if($video==1){
             $videoLink=$this->searchYouTubeAndGetURL($Google_api_key,$keyword);
-            $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
-            $newGptData.=$videoEmbedd."\n\n";
-            //dd($videoEmbedd);
+            if($videoLink != '' || $videoLink != 'https://www.youtube.com/embed/')
+            {
+                $videoEmbedd=$this->convertYouTubeLinksToEmbeds($videoLink);
+                $newGptData.=$videoEmbedd."\n\n";
+            }
         }
 
         $qa_title="<h2>Perguntas & respostas</h2>"."\n\n";
@@ -349,7 +351,7 @@ class GptController extends Controller
         $response = file_get_contents($url);
 
         $responseData = json_decode($response, true);
-
+        $videoId='';
         if (isset($responseData['items'][0]['id']['videoId'])) {
             $videoId = $responseData['items'][0]['id']['videoId'];
             $videoURL = 'https://www.youtube.com/embed/'.$videoId;
