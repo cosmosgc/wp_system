@@ -337,8 +337,8 @@ class GptController extends Controller
     }
     // Pesquisar o primeiro link do youtube
     public function searchYouTubeAndGetURL($api_key,$query) {
-         if($api_key == '' || $api_key == null){
-              return '';
+        if($api_key == '' || $api_key == null){
+            return '';
         }
         $apiKey = $api_key;
         $apiEndpoint = 'https://www.googleapis.com/youtube/v3/search';
