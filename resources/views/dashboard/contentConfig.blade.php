@@ -76,7 +76,7 @@ $user=explode('+',base64_decode($valorCodificado));
             <td class="gdrive_document_url" contenteditable="true"></td>
         </tr>
         <tr>
-            <td>Imagem GoogleDrive URL</td>
+            <td>Pasta de imagens do GoogleDrive URL</td>
             <td class="gdrive_url" contenteditable="true"></td>
         </tr>
         <tr>
