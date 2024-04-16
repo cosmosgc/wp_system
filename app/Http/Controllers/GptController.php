@@ -359,7 +359,7 @@ class GptController extends Controller
             'key' => $apiKey,
             'part' => 'snippet',
             'type'=>'video',
-            'maxResults' => 1
+            'maxResults' => 3
         );
         //dd($query,$apiKey);
         try {
@@ -370,6 +370,7 @@ class GptController extends Controller
         }
 
         $responseData = json_decode($response, true);
+        shuffle($responseData['items']);    
         $videoId='';
         if (isset($responseData['items'][0]['id']['videoId'])) {
             $videoId = $responseData['items'][0]['id']['videoId'];
