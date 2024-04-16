@@ -91,9 +91,9 @@ class GptController extends Controller
                 $anchor_1_url = !empty($post_config->url_link_1) ? $post_config->url_link_1 : null;
                 $anchor_2_url = !empty($post_config->url_link_2) ? $post_config->url_link_2 : null;
                 $anchor_3_url = !empty($post_config->url_link_3) ? $post_config->url_link_3 : null;
-                $do_follow_link_1 = !empty($post_config->do_follow_link_1) ? $post_config->do_follow_link_1 : null;
-                $do_follow_link_2 = !empty($post_config->do_follow_link_2) ? $post_config->do_follow_link_2 : null;
-                $do_follow_link_3 = !empty($post_config->do_follow_link_3) ? $post_config->do_follow_link_3 : null;
+                $do_follow_link_1 = !empty($post_config->do_follow_link_1) ? $post_config->do_follow_link_1 : false;
+                $do_follow_link_2 = !empty($post_config->do_follow_link_2) ? $post_config->do_follow_link_2 : false;
+                $do_follow_link_3 = !empty($post_config->do_follow_link_3) ? $post_config->do_follow_link_3 : false;
 
                 $video=$post_config->video;
             }
