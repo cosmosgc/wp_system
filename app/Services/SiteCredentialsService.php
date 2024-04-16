@@ -28,7 +28,7 @@ class SiteCredentialsService{
     }
 
     public function deleteCredential($data){
-        $credential=Wp_credential::find(intval($data));
+        $credential=Wp_credential::find($data);
         $credential->delete();
     }
 

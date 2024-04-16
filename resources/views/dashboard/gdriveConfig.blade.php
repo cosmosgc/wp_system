@@ -58,6 +58,7 @@ if(empty($credential)){
             <div class="card card-medium">
                 <div class="card-body">
                     <h3>Credenciais google</h3>
+                    @if($user_session[0]->is_admin==1)
                     <form id="google_credential_form" class="two-column-form" method="post">
                         @csrf
                         <div class="mb-3">
@@ -108,6 +109,7 @@ if(empty($credential)){
                     </button>
 
                     </form>
+                    @endif
 
                     <div class="col-md-12">
                         <a href="/auth/google" class="btn btn-primary btn-block"
