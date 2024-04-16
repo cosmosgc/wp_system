@@ -28,10 +28,17 @@
     }
 
     .open_editor_modal{
+        position: fixed;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+    }
+    @media(max-width:600px){
+        .open_editor_modal{
+            left: 500px;
+            max-width: 400px;
+        }
     }
 
     .upgrade_button {

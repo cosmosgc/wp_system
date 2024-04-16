@@ -26,12 +26,7 @@
             margin-bottom: 2%;
         }
 
-        .open_editor_modal{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
+
 
         .upgrade_button {
             border-radius: 20px; /* Ajuste o valor conforme desejado */
@@ -47,6 +42,19 @@
         .editor_list_flex{
             display: flex;
             flex-direction:row;
+        }
+        .open_editor_modal{
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        @media(max-width:600px){
+            .open_editor_modal{
+                left: 500px;
+                max-width: 400px;
+            }
         }
         </style>
 
