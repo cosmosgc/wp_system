@@ -18,7 +18,7 @@ class SiteCredentialsService{
     }
 
     public function updateSite($data){
-        $editor_site_credentials=Wp_credential::where('Editor_id',intval($data->id))->get();
+        $editor_site_credentials=Wp_credential::where('Editor_id',$data->id)->get();
         $updated_credentials=Wp_credential::find($editor_site_credentials[0]->id);
         $updated_credentials->wp_login=$data->login;
         $updated_credentials->wp_password=$data->password;
