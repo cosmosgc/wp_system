@@ -67,13 +67,13 @@
 
                     @foreach($editor as $edit)
                         @foreach($edit->links as $links)
-                        <input type="hidden" name="user_id" class="id" value="{{$edit->id}}">
+                        <input type="hidden" name="user_id" class="id" value="{{$links->id}}">
 
                         <tr>
                             <td class="editor_name">{{$edit->name}}</td>
                             <td class="wp_login">{{$links->wp_login}}</td>
                             <td class="wp_password">{{$links->wp_password}}</td>
-                            <td class="wp_domain">{{$links->wp_domain}}</td>
+                            <td  class="wp_domain">{{$links->wp_domain}}</td>
                             <td class="editor_list_flex">
                                 <form action="{{route('credentialDelete',$links->id)}}" method="POST">
                                     @csrf
