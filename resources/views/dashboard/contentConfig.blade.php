@@ -157,10 +157,10 @@ $user=explode('+',base64_decode($valorCodificado));
 
                     async function getSiteCategories(domain){
                         try {
-                            const regex = /^(http?:\/\/)/i;
+                            const regex = /^(https?:\/\/)/i;
                             let new_domain=domain.replace(regex,'');
                             console.log(new_domain);
-                            const domain_query= await fetch(`http://${new_domain}/wp-json/wp_manage/v1/list_category/`);
+                            const domain_query= await fetch(`https://${new_domain}/wp-json/wp_manage/v1/list_category/`);
                             const response =await domain_query.json();
                             return response;
 
