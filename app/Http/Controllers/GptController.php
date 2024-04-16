@@ -81,7 +81,7 @@ class GptController extends Controller
 
             $data=[];
             foreach(Wp_post_content::where('theme', $post_title)->orWhere('id', $id)->get() as $post_config){
-
+                dd($post_config);
                 $keyword=$post_config->keyword;
                 $title = $post_config->theme;
                 $id_content=$post_config->id;
