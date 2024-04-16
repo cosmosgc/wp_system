@@ -12,6 +12,7 @@ $valorCodificado = request()->cookie('editor');
 $user=explode('+',base64_decode($valorCodificado));
 $user_session=Editor::where('name',$user[0])->get();
 $user_id = $user_session[0]->id;
+$is_admin = (bool)$user_session[0]->is_admin;
 
 $credential=Drive_credential::all()->first();
 $create_new_gc = false;
@@ -58,6 +59,7 @@ if(empty($credential)){
             <div class="card card-medium">
                 <div class="card-body">
                     <h3>Credenciais google</h3>
+                    @if($is_admin)
                     <form id="google_credential_form" class="two-column-form" method="post">
                         @csrf
                         <div class="mb-3">
@@ -108,6 +110,7 @@ if(empty($credential)){
                     </button>
 
                     </form>
+                    @endif
 
                     <div class="col-md-12">
                         <a href="/auth/google" class="btn btn-primary btn-block"

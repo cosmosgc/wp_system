@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    use App\Models\Editor;
+    use Illuminate\Http\Request;
 
+
+    $valorCodificado = request()->cookie('editor');
+    $user=explode('+',base64_decode($valorCodificado));
+    $test=Editor::where('name',$user[0])->get();
+
+@endphp
 <style>
     .editor_modal {
         height: 80vh;
@@ -96,15 +105,17 @@
 
     <div class="editor_modal">
         <div class="editor_modal_content">
-          <input type="text" name="name" id="name" class="form-control" placeholder="Nome">
-          <input type="text" name="surname" id="surname" class="form-control" placeholder="Sobrenome">
-          <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF">
-          <input type="text" name="cnpj" id="cnpj" class="form-control" placeholder="CNPJ">
-          <input type="email" name="email" id="email" class="form-control" placeholder="Email">
-          <input type="password" name="password" id="pass" class="form-control" placeholder="Senha">
-          <input type="checkbox" name="admin" id="admin" class="form-check-input">
-          <label for="admin">is admin?</label>
-          <input type="hidden" name="id" id="id">
+            <input type="text" name="name" id="name" class="form-control" placeholder="Nome">
+            <input type="text" name="surname" id="surname" class="form-control" placeholder="Sobrenome">
+            <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF">
+            <input type="text" name="cnpj" id="cnpj" class="form-control" placeholder="CNPJ">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+            <input type="password" name="password" id="pass" class="form-control" placeholder="Senha">
+            @if($test[0]->is_admin==1)
+                <input type="checkbox" name="admin" id="admin" class="form-check-input">
+                <label for="admin">is admin?</label>
+            @endif
+            <input type="hidden" name="id" id="id">
         </div>
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
