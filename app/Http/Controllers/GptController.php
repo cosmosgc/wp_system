@@ -83,16 +83,18 @@ class GptController extends Controller
             foreach(Wp_post_content::where('theme', $post_title)->orWhere('id', $id)->get() as $post_config){
 
                 $keyword=$post_config->keyword;
-                $anchor_1=$post_config->anchor_1;
-                $anchor_2=$post_config->anchor_2;
-                $anchor_3=$post_config->anchor_3;
+
                 $id_content=$post_config->id;
-                $anchor_1_url=$post_config->url_link_1;
-                $anchor_2_url=$post_config->url_link_2;
-                $anchor_3_url=$post_config->url_link_3;
-                $do_follow_link_1=$post_config->do_follow_link_1;
-                $do_follow_link_2=$post_config->do_follow_link_2;
-                $do_follow_link_3=$post_config->do_follow_link_3;
+                $anchor_1 = !empty($post_config->anchor_1) ? $post_config->anchor_1 : null;
+                $anchor_2 = !empty($post_config->anchor_2) ? $post_config->anchor_2 : null;
+                $anchor_3 = !empty($post_config->anchor_3) ? $post_config->anchor_3 : null;
+                $anchor_1_url = !empty($post_config->url_link_1) ? $post_config->url_link_1 : null;
+                $anchor_2_url = !empty($post_config->url_link_2) ? $post_config->url_link_2 : null;
+                $anchor_3_url = !empty($post_config->url_link_3) ? $post_config->url_link_3 : null;
+                $do_follow_link_1 = !empty($post_config->do_follow_link_1) ? $post_config->do_follow_link_1 : null;
+                $do_follow_link_2 = !empty($post_config->do_follow_link_2) ? $post_config->do_follow_link_2 : null;
+                $do_follow_link_3 = !empty($post_config->do_follow_link_3) ? $post_config->do_follow_link_3 : null;
+
                 $video=$post_config->video;
             }
 
