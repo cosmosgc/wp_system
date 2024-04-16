@@ -160,7 +160,8 @@ $user=explode('+',base64_decode($valorCodificado));
                             const regex = /^(https?:\/\/)/i;
                             let new_domain=domain.replace(regex,'');
                             console.log(new_domain);
-                            const domain_query= await fetch(`https://${new_domain}/wp-json/wp_manage/v1/list_category/`);
+                            const domain_query= await fetch(`https://${new_domain}/wp-json/wp/v2/categories`);
+                            // const domain_query= await fetch(`https://${new_domain}/wp-json/wp_manage/v1/list_category/`);
                             const response =await domain_query.json();
                             return response;
 
