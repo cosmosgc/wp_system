@@ -73,10 +73,10 @@
             flex-direction: column;
             overflow: auto;
         }
-        @media(min-width:600px){
+        @media(min-width:700px){
             .open_editor_modal{
-                left: 500px;
-                max-width: 800px;
+                left: 530px;
+                max-width: 500px;
             }
         }
 

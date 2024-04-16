@@ -168,7 +168,7 @@
             display: block !important;
         }
 
-        @media(max-width:600px){
+        @media(max-width:700px){
             .content{
                 margin-left: 20px;
             }
