@@ -81,9 +81,10 @@ class GptController extends Controller
 
             $data=[];
             foreach(Wp_post_content::where('theme', $post_title)->orWhere('id', $id)->get() as $post_config){
-                dd($post_config);
+
                 $keyword=$post_config->keyword;
                 $title = $post_config->theme;
+                $post_title = $title;
                 $id_content=$post_config->id;
                 $anchor_1 = !empty($post_config->anchor_1) ? $post_config->anchor_1 : null;
                 $anchor_2 = !empty($post_config->anchor_2) ? $post_config->anchor_2 : null;
@@ -156,6 +157,7 @@ class GptController extends Controller
                 $data = null;
 
                 for ($i = 0; $i < $max_retries; $i++) {
+
                     $gpt_request = $this->gptService->sendRequest($command, $post_title, $token);
 
                     if ($gpt_request['choices'][0]['message']['content'] != 0) {
