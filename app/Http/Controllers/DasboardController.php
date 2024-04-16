@@ -7,6 +7,7 @@ use App\Models\Ia_credential;
 use Illuminate\Http\Request;
 use App\Models\Wp_post_content;
 
+
 class DasboardController extends Controller
 {
     //
@@ -38,7 +39,15 @@ class DasboardController extends Controller
     }
 
     public function ListEditor(){
-        $editors = Editor::all();
+        $valorCodificado = request()->cookie('editor');
+        $user=explode('+',base64_decode($valorCodificado));
+        $user_session=Editor::where('name',$user[0])->get();
+        $editors = null;
+        if($user_session[0]->is_admin!=1){
+            $editors = $user_session;
+        }else{
+            $editors = Editor::all();
+        }
         return view('dashboard.editorList',['editors'=>$editors]);
     }
 
@@ -135,7 +144,16 @@ class DasboardController extends Controller
     }
 
     public function listWpCredential(){
-        $user_credentials=Editor::all();
+        $valorCodificado = request()->cookie('editor');
+        $user=explode('+',base64_decode($valorCodificado));
+        $user_session=Editor::where('name',$user[0])->get();
+        $user_credentials = null;
+        if($user_session[0]->is_admin!=1){
+            $user_credentials = $user_session;
+        }else{
+            $user_credentials = Editor::all();
+        }
+        //$user_credentials=Editor::all();
         $editor_credentials=[];
         foreach($user_credentials as $credentials){
             if(!empty($credentials->links)){
@@ -143,7 +161,6 @@ class DasboardController extends Controller
                     $editor_credentials[] = $link;
                 }
             }
-
         }
         return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials]);
 
