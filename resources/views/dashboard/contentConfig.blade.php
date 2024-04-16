@@ -175,17 +175,21 @@ $user=explode('+',base64_decode($valorCodificado));
 
                      }
 
-                     try {
+                    try {
                         let categories= await getSiteCategories(domain);
+                        //Limpa as categorias
+                        while (category[index].firstChild) {
+                            category[index].removeChild(category[index].firstChild);
+                        }
                         categories.forEach((e)=>{
-                        const option=document.createElement('option');
-                        option.value=e.name;
-                        option.innerText=e.name;
-                        category[index].appendChild(option);
+                            const option=document.createElement('option');
+                            option.value=e.name;
+                            option.innerText=e.name;
+                            category[index].appendChild(option);
                         })
-                     } catch (error) {
+                    } catch (error) {
                         console.error(error);
-                     }
+                    }
                 }
 
 
