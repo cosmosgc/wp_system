@@ -34,12 +34,12 @@
         align-items: center;
         flex-direction: column;
     }
-    @media(max-width:600px){
-        .open_editor_modal{
-            left: 500px;
-            max-width: 400px;
+    @media(min-width:600px){
+            .open_editor_modal{
+                left: 500px;
+                max-width: 800px;
+            }
         }
-    }
 
     .upgrade_button {
         border-radius: 20px; /* Ajuste o valor conforme desejado */

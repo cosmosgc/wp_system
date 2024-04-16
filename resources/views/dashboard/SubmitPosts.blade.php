@@ -73,13 +73,13 @@
             flex-direction: column;
             overflow: auto;
         }
-
-        @media(max-width:600px){
+        @media(min-width:600px){
             .open_editor_modal{
                 left: 500px;
-                max-width: 400px;
+                max-width: 800px;
             }
         }
+
         .editor_list_flex{
             display: flex;
             flex-direction:row;

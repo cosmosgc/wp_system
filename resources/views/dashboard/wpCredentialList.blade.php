@@ -50,10 +50,10 @@
             align-items: center;
             flex-direction: column;
         }
-        @media(max-width:600px){
+        @media(min-width:600px){
             .open_editor_modal{
                 left: 500px;
-                max-width: 400px;
+                max-width: 800px;
             }
         }
         </style>
