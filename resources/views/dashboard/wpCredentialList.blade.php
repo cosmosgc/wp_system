@@ -164,4 +164,70 @@
 
 
         </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all elements with class 'wp_domain'
+        var domains = document.querySelectorAll('.wp_domain');
+
+        domains.forEach(function(domain) {
+            // Get the domain value
+            var domainValue = domain.textContent.trim();
+            if (!domainValue.startsWith('http://') && !domainValue.startsWith('https://')) {
+                // Prepend 'https://' if it doesn't already start with http:// or https://
+                domainValue = 'https://' + domainValue;
+            }
+            // Perform fetch request to ping the domain
+            fetch(domainValue+"/wp-json/wp/v2/posts", {
+                method: 'GET',
+                //mode: 'cors', // Ensure CORS mode
+                redirect: 'follow',
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    // Domain is reachable, add class 'ping_true'
+                    domain.classList.add('ping_true');
+                } else {
+                    // Domain is unreachable, add class 'ping_false'
+                    domain.classList.add('ping_false');
+                }
+            })
+            .catch(function(error) {
+                // Domain is unreachable, add class 'ping_false'
+                domain.classList.add('ping_false');
+            });
+        });
+    });
+</script>
+
+<!-- Add this CSS code to your <style> tag or external CSS file -->
+<style>
+    .ping_true {
+        color: green;
+    }
+
+    .ping_false {
+        color: red;
+    }
+    .ping_true::after {
+        content: ' ✓ Funciona'; /* Add a checkmark symbol after ping_true domains */
+        color: green;
+    }
+
+    .ping_false::after {
+        content: ' ✗ Erro'; /* Add a cross symbol after ping_false domains */
+        color: red;
+    }
+    .ping_true::after,
+    .ping_false::after {
+        display: inline-block;
+        padding: 3px 6px;
+        margin-left: 5px;
+        border: 1px solid;
+        border-radius: 3px;
+    }
+</style>
+
         @endsection
