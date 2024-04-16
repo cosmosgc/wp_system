@@ -74,7 +74,7 @@ class Wp_service{
 
             $category_slug = $category; // Substitua 'nome_da_categoria' pelo slug (nome) da categoria desejada
 
-            $category_response = $this->client->get($domain.'/wp-json/wp/v2/categories?search=' . $category_slug);
+            $category_response = $this->client->get($domain.'/wp-json/wp_manage/v1/list_category/?name=' . $category_slug);
             $category_data = json_decode($category_response->getBody(), true);
             if(!empty($category_data)){
 
@@ -85,7 +85,7 @@ class Wp_service{
                     'content' => $content,
                     'featured_media' => $imageID,
                     'status' => 'publish',
-                    'categories'=>[$category_data[0]['id']],
+                    'categories'=>[$category_data['cat_ID']],
                     'post_date' => date('Y-m-d H:i:s', strtotime($post_date))
                     // Adicione mais parâmetros conforme necessário
                 ];
