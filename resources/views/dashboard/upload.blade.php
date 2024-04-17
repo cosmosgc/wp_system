@@ -14,7 +14,7 @@
     <h3 class="mt-5 mb-4 text-center">Faça o upload de CSV de configurações prontas</h3>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form action="/submit_file" method="post" enctype="multipart/form-data">
+            <!-- <form action="/submit_file" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="csv_file" class="download-label d-flex align-items-center justify-content-center border rounded p-3">
@@ -31,29 +31,115 @@
                 </div>
                 <input type="hidden" name="user_id" value="{{$post_configs[0]->id}}">
                 <button type="submit" class="btn btn-primary btn-block">Importar</button>
-            </form>
+            </form> -->
+
+            <div class="form-group">
+                <label for="csv_file" class="download-label d-flex align-items-center justify-content-center border rounded p-3">
+                    <svg class="download-icon mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    <span>upload do arquivo</span>
+                </label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="csv_file" name="csv_file">
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
+<button id="submit_csv_button" class="btn btn-primary btn-block mt-3 d-none" onclick="process_upload();">Enviar CSV</button>
+<div id="csv_table_container" class="mt-3" style="
+    overflow: auto;
+    width: 100%;
+"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
 
 <script>
+//     const fileInput = document.getElementById('csv_file');
+
+//     const fileNameContainer = document.querySelector('.download-label');
+
+// fileInput.addEventListener('change', function() {
+//     const file = this.files[0];
+//     if (file) {
+//         // Aqui você pode exibir o nome do arquivo em algum lugar no documento
+//         const file_name= document.createElement('div');
+//         file_name.innerHTML=file.name;
+//         fileNameContainer.insertAdjacentElement("beforebegin", file_name);
+//     }
+// });
+</script>
+<script>
     const fileInput = document.getElementById('csv_file');
+    const submitButton = document.getElementById('submit_csv_button');
 
-    const fileNameContainer = document.querySelector('.download-label');
+    fileInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const data = event.target.result;
+                const workbook = XLSX.read(data, { type: 'binary' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                const csvData = XLSX.utils.sheet_to_csv(sheet);
+                const rows = csvData.split('\n');
+                let tableHTML = '<table class="table">';
+                for (let i = 0; i < rows.length; i++) {
+                    const cells = rows[i].split(',');
+                    tableHTML += '<tr>';
+                    for (let j = 0; j < cells.length; j++) {
+                        tableHTML += `<td>${cells[j]}</td>`;
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</table>';
+                document.getElementById('csv_table_container').innerHTML = tableHTML;
+                submitButton.classList.remove('d-none');
+            };
+            reader.readAsBinaryString(file);
+        }
+    });
 
-fileInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-        // Aqui você pode exibir o nome do arquivo em algum lugar no documento
-        const file_name= document.createElement('div');
-        file_name.innerHTML=file.name;
-        fileNameContainer.insertAdjacentElement("beforebegin", file_name);
+    function process_upload(){
+        const tableRows = document.querySelectorAll('#csv_table_container table tr');
+        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+        tableRows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const data = [];
+            cells.forEach(cell => {
+                data.push(cell.textContent.trim());
+            });
+            console.log(data);
+            fetch('/submit_file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ data }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    row.remove();
+                } else {
+                    row.classList.add('csv_error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     }
-});
 </script>
-</script>
-
+<style>
+    th, td {
+    font-size: xx-small !important;
+    }
+</style>
 @endsection
 
