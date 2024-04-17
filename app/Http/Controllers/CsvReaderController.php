@@ -46,21 +46,24 @@ class CsvReaderController extends Controller
                 }
                 
                 $addImage=null;
+                $folders_part=null;
                 $dataAtual->format('Y-m-d H:i:s');
                 $video = trim($dt['Video']," \t\n\r\0\x0B");
 
                  $url = $dt['Imagem'];
                  $path = parse_url($url, PHP_URL_PATH);
+                 if(!empty($url)){
+                    $folders_part = explode('/folders/', $path)[1];
 
-                 $folders_part = explode('/folders/', $path)[1];
-                 if(!$folders_part){
+                 }
+                 if($folders_part!=null){
                     $addImage=$this->imageService->downloadImageFromUrl($url);
                  }
-                 $folders_part_without_query = strstr($folders_part, '?', true);
+                 //$folders_part_without_query = strstr($folders_part, '?', true);
                  $dataUser=array('session_user'=>$user[0],'gdrive_url'=>$folders_part);
                  $teste=json_encode($dataUser);
                  $userData=json_decode($teste);
-                 if(isset($dt['Imagem'])){
+                 if(!empty($dt['Imagem'])){
                      $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
                  }
 
