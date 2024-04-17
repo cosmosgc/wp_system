@@ -26,7 +26,7 @@ class CsvReaderController extends Controller
     public function ImportCsv(Request $request){
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
-        if($request->hasFile('csv_file')){
+        if($request->hasFile('csv_file') || $request->csv_file){
             $data_csv=$this->reader->CsvToJson($request);
             foreach ($data_csv as $key => $row) {
                 foreach ($row as $subKey => $value) {
