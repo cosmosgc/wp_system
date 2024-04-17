@@ -584,7 +584,7 @@
                     removed = getSelectedItems('loading', true);
 
                     // Show success swal
-                    swal({
+                    swal.fire({
                         title: "Successo!",
                         text: "Os artigos foram deletados!.",
                         icon: "success",
@@ -606,7 +606,7 @@
                     removed = getSelectedItems('loading', true);
                     // Handle errors here
                     console.error("Error occurred:", error);
-                    swal({
+                    swal.fire({
                         title: "Error!",
                         text: "Um erro aconteceu ao deletar os artigos!.",
                         icon: "error",
