@@ -24,18 +24,34 @@ class CsvReaderController extends Controller
 
 
     public function ImportCsv(Request $request){
+        // dd($request->csvData);
+        // dd($request->user_id);
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
-        if($request->hasFile('csv_file') || $request->csv_file){
-            $data_csv=$this->reader->CsvToJson($request);
-            foreach ($data_csv as $key => $row) {
-                foreach ($row as $subKey => $value) {
-                    $data_csv[$key][$subKey] = is_string($value) ? utf8_encode($value) : $value;
-                }
+        if($request->hasFile('csv_file') || isset($request->csvData)){
+            if($request->hasFile('csv_file')) {
+                $data_csv=$this->reader->CsvToJson($request);
             }
 
+            if (isset($request->csvData) && is_array($request->csvData)) {
+                // Merge additional data with the existing CSV data
+                $data_csv = [];
+                $data_csv[] = $request->csvData;
+            }
+
+            foreach ($data_csv as $key => $row) {
+                foreach ($row as $subKey => $value) {
+                    $data_csv[$key][$subKey] = is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'auto')  : $value;
+                }
+            }
+            // dd($data_csv);
             $data=$data_csv;
-            $newData=array_pop($data);
+            if (!isset($request->csvData)){
+                $newData=array_pop($data);
+            }else{
+                $newData=($data);
+            }
+
             $c=[];
             foreach($data as $dt){
                 $dataAtual = new DateTime();
@@ -44,7 +60,7 @@ class CsvReaderController extends Controller
                 }else{
                     $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
                 }
-                
+
                 $addImage=null;
                 $folders_part=null;
                 $dataAtual->format('Y-m-d H:i:s');
@@ -90,7 +106,6 @@ class CsvReaderController extends Controller
                     'user_id'=>$request->user_id,
 
                 );
-
                 $new_csv_content=$this->postConfigService->insertCSV($content);
 
             }
@@ -98,6 +113,6 @@ class CsvReaderController extends Controller
             //dd($processed_data)
         }
 
-        return redirect()->route('configCreated');
+        return 200; //redirect()->route('configCreated');
     }
 }

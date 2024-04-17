@@ -51,6 +51,7 @@
     </div>
 </div>
 <button id="submit_csv_button" class="btn btn-primary btn-block mt-3 d-none" onclick="process_upload();">Enviar CSV</button>
+<input type="hidden" name="user_id" id="user_id" value="{{$post_configs[0]->id}}">
 <div id="csv_table_container" class="mt-3" style="
     overflow: auto;
     width: 100%;
@@ -74,6 +75,7 @@
 </script>
 <script>
     const fileInput = document.getElementById('csv_file');
+    const user_id = document.getElementById('user_id').value;
     const submitButton = document.getElementById('submit_csv_button');
 
     fileInput.addEventListener('change', function() {
@@ -105,23 +107,52 @@
     });
 
     function process_upload(){
+        const headers = [
+            'Tema',
+            'Keyword',
+            'Site',
+            'Categoria',
+            'Ancora 1',
+            'URL do Link 1',
+            'Dofollow_link_1',
+            'Ancora 2',
+            'URL do Link 2',
+            'Dofollow_link_2',
+            'Ancora 3',
+            'URL do Link 3',
+            'Dofollow_link_3',
+            'Imagem',
+            'Insere Imagem no Post',
+            'Link Interno',
+            'Programacao de Postagem',
+            'URL da Publicacao',
+            'Nota de SEO',
+            'Dominio',
+            'Gdrive',
+            'Video'
+        ];
+
         const tableRows = document.querySelectorAll('#csv_table_container table tr');
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+        const csvData = [];
 
         tableRows.forEach(row => {
             const cells = row.querySelectorAll('td');
-            const data = [];
-            cells.forEach(cell => {
-                data.push(cell.textContent.trim());
+            const rowData = {};
+            cells.forEach((cell, index) => {
+                // Assuming the headers are in the same order as the table columns
+                const header = headers[index]; // Assuming 'headers' is an array of header names
+                rowData[header] = cell.textContent.trim();
             });
-            console.log(data);
+            //csvData.push(rowData);
+            console.log(rowData);
             fetch('/submit_file', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify({ data }),
+                body: JSON.stringify({ user_id: user_id, csvData: rowData}),
             })
             .then(response => {
                 if (response.ok) {
@@ -138,7 +169,10 @@
 </script>
 <style>
     th, td {
-    font-size: xx-small !important;
+        font-size: xx-small !important;
+    }
+    tr.csv_error {
+        background: #d1464657;
     }
 </style>
 @endsection
