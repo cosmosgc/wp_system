@@ -371,7 +371,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Post not found!'
+                    text: 'Post não encontrado!'
                 });
             }
         }
@@ -526,7 +526,7 @@
                     });
 
                     Swal.fire({
-                        title: 'Error occurred during batch generation!',
+                        title: 'Um erro ao gerar em lote!',
                         text: errorMessage,
                         icon: 'error',
                         confirmButtonText: 'OK'
@@ -534,7 +534,7 @@
                 } else {
                     // If no errors, display success message
                     Swal.fire({
-                        title: 'Batch generation completed successfully!',
+                        title: 'Geração em lote concluído!',
                         text: 'Continue?',
                         icon: 'success',
                         confirmButtonText: 'Continue'
@@ -609,6 +609,7 @@
                     swal.fire({
                         title: "Error!",
                         text: "Um erro aconteceu ao deletar os artigos!.",
+                        html: error,
                         icon: "error",
                         button: "OK"
                     });
@@ -691,7 +692,7 @@
                 console.error('Ocorreu um erro:', error);
                 Swal.fire({
                     title: 'Aconteceu um erro durante o processo',
-                    text: 'Do you want to continue',
+                    text: error,
                     icon: 'error',
                     confirmButtonText: 'continue'
                 }).then((result) => {
@@ -746,7 +747,7 @@
                     } else {
                         Swal.fire({
                             title: 'Aconteceu um erro durante o processo',
-                            text: 'Do you want to continue',
+                            text: error,
                             icon: 'error',
                             confirmButtonText: 'continue'
                         });
@@ -1167,7 +1168,7 @@
         if(deletion_query.ok){
         Swal.fire({
                 title: 'Configuração removida com sucesso',
-                text: 'Do you want to continue',
+                text: 'Continuar?',
                 icon: 'success',
                 confirmButtonText: 'continue'
             }).then((result) => {
@@ -1178,7 +1179,7 @@
         }else{
         Swal.fire({
                 title: 'Erro ao remover configuração',
-                text: 'Do you want to continue',
+                text: 'Continuar?',
                 icon: 'error',
                 confirmButtonText: 'continue'
             }).then((result) => {

@@ -168,7 +168,7 @@ $user=explode('+',base64_decode($valorCodificado));
                         } catch (error) {
                             Swal.fire({
                             title: error,
-                            text: 'Do you want to continue',
+                            text: 'Deseja continuar?',
                             icon: 'error',
                             confirmButtonText: 'continue'
                         })
@@ -341,7 +341,7 @@ $user=explode('+',base64_decode($valorCodificado));
                 } catch (error) {
                     Swal.fire({
                     title: error,
-                    text: 'Do you want to continue',
+                    text: 'Deseja continuar?',
                     icon: 'error',
                     confirmButtonText: 'continue'
                 })

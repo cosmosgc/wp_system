@@ -91,13 +91,13 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Sucesso',
-                    text: 'Your text was sucessfully created'
+                    text: 'Seu texto foi criado com sucesso!'
                 });
         } else {
             // Exibe um alerta de falha usando SweetAlert2
             Swal.fire({
-                title: 'Error on the process',
-                text: 'Do you want to continue',
+                title: 'Erro no processo',
+                text: 'Deseja continuar?',
                 icon: 'error',
                 confirmButtonText: 'continue'
           })

@@ -34,7 +34,7 @@
                         </div>
 
                         <button type="submit" class="submit btn btn-primary">Login</button>
-                   
+
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
         $token=localStorage.getItem('Editor')
         if ($token){
         // Se não estiver presente, redireciona para a página de dashboard
-        
+
          window.location.href = location.href+'dashboard';
     }else{
         return
@@ -74,14 +74,14 @@
 
         if (validate_query.status === 200) {
         // O status da resposta é 200 (OK), então você pode prosseguir com o código
-        
+
         location.href=location.href+'dashboard';
     } else {
         // O status da resposta não é 200 (OK), então houve algum erro
         console.error('Erro ao validar credenciais:', validate_query.status);
         Swal.fire({
                             title: 'Senha ou usuario invalidos',
-                            text: 'Do you want to continue',
+                            text: 'Deseja continuar?',
                             icon: 'error',
                             confirmButtonText: 'continue'
                         })
