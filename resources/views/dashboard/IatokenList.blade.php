@@ -28,11 +28,18 @@
     }
 
     .open_editor_modal{
+        position: fixed;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
     }
+    @media(min-width:700px){
+            .open_editor_modal{
+                left: 530px;
+                max-width: 500px;
+            }
+        }
 
     .upgrade_button {
         border-radius: 20px; /* Ajuste o valor conforme desejado */

@@ -66,12 +66,20 @@
         }
 
         .open_editor_modal{
+            position: fixed;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             flex-direction: column;
             overflow: auto;
         }
+        @media(min-width:700px){
+            .open_editor_modal{
+                left: 530px;
+                max-width: 500px;
+            }
+        }
+
         .editor_list_flex{
             display: flex;
             flex-direction:row;
