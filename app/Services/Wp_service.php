@@ -16,6 +16,7 @@ class Wp_service{
     }
 
     public function postBlogContent($keyword,$title,$category,$content,$featured,$image,$domain,$login,$password,$post_date = null, $id = null){
+        // dd($id);
         //$title = $title->input('title');
         //$content = $content->input('content');
 
@@ -95,9 +96,10 @@ class Wp_service{
                 ]);
                 $post_response=json_decode($response->getBody(), true);
                 $post_url=$post_response["post_url"];
-                $change_status = Wp_post_content::where('id', $id)->update(['status' => 'publicado']);
-                $insert_url = Wp_post_content::where('id', $id)->update(['post_url' => $post_url]);
-
+                $post_content = Wp_post_content::find($id);
+                if ($post_content) {
+                    $post_content->update(['status' => 'publicado', 'post_url' => $post_url]);
+                }
                 // $change_status=Wp_post_content::where('theme',$title)->update(['status'=>'publicado']);
                 // $insert_url=Wp_post_content::where('theme',$title)->update(['post_url'=>$post_url]);
 
