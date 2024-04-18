@@ -21,7 +21,7 @@ class ScheduleService
         if(!empty($scheduledPosts)){
             foreach ($scheduledPosts as $posts) {
                 $links=Wp_credential::all();
-                
+
                     // Recupera o editor da postage
                    // Posta o conteúdo do blog
                     foreach ($links as $credential) {
@@ -39,13 +39,13 @@ class ScheduleService
                                     $posts->domain,
                                     $credential->wp_login,
                                     $credential->wp_password,
-                                    
+
                                 );
                         }
                     }
-                        
+
                     }
-                
+
             }
 
         }else{
@@ -70,13 +70,14 @@ class ScheduleService
                             $posts->post_image,
                             $posts->domain,
                             $credential->wp_login,
-                            $credential->wp_password
+                            $credential->wp_password,
+                            $posts->id
                         );
                     }
                 }
             }
-            
-            
+
+
 
         }else{
             return 'no-data';
@@ -84,6 +85,6 @@ class ScheduleService
 
 
 
-    
+
     }
 }
