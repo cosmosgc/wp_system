@@ -690,9 +690,11 @@
                 // Aqui você pode adicionar código para lidar com a resposta da query, se necessário
             } catch (error) {
                 console.error('Ocorreu um erro:', error);
+
                 Swal.fire({
                     title: 'Aconteceu um erro durante o processo',
                     text: error,
+                    html: query.error,
                     icon: 'error',
                     confirmButtonText: 'continue'
                 }).then((result) => {
@@ -709,7 +711,7 @@
             loading_element(element_status, true);
         }
 
-            async function post_to_wp(configId){
+            async function post_to_wp(configId, showAlert = true){
                 //Essa função não está tentando ajustar o rank do yoast ou arrumar o problema do rank
                 const user_id= document.querySelector('.user_id')
                 data = {
@@ -745,9 +747,16 @@
                             headers: { "Content-Type": "application/json" }
                         });
                     } else {
+
+                        errorText = await query_2.text();
+                        // console.error(errorText);
+                        const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
+                        const errorTitle = titleMatch ? titleMatch[1] : "Error";
+
                         Swal.fire({
                             title: 'Aconteceu um erro durante o processo',
-                            text: error,
+                            text: query_2.status,
+                            html: '<p>'+query_2.status+'</p><pre>' + errorTitle + '</pre>',
                             icon: 'error',
                             confirmButtonText: 'continue'
                         });
@@ -1113,9 +1122,17 @@
                         loading_element(button, true);
 
                         console.error("Fetch failed with status:", query.status);
+                        console.error(query);
+                        //console.error("Error response text:", await query.text());
+                        errorText = await query.text();
+                        // console.error(errorText);
+                        const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
+                        const errorTitle = titleMatch ? titleMatch[1] : "Error";
+
                         Swal.fire({
                             title: 'Aconteceu um erro durante o processo',
                             text: query.status,
+                            html: '<p>'+query.status+'</p><pre>' + errorTitle + '</pre>',
                             icon: 'error',
                             confirmButtonText: 'continue'
                         });
