@@ -70,7 +70,6 @@ class CsvReaderController extends Controller
                  $path = parse_url($url, PHP_URL_PATH);
                  if(!empty($url)){
                     $folders_part = explode('/folders/', $path)[1];
-
                  }
                  if($folders_part!=null){
                     $addImage=$this->imageService->downloadImageFromUrl($url);

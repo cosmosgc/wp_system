@@ -52,6 +52,11 @@
 </div>
 <button id="submit_csv_button" class="btn btn-primary btn-block mt-3 d-none" onclick="process_upload();">Enviar CSV</button>
 <input type="hidden" name="user_id" id="user_id" value="{{$post_configs[0]->id}}">
+<div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <span class="progress-label">0%</span>
+    </div>
+</div>
 <div id="csv_table_container" class="mt-3" style="
     overflow: auto;
     width: 100%;
@@ -135,17 +140,27 @@
         const tableRows = document.querySelectorAll('#csv_table_container table tr');
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
         const csvData = [];
+        const progressBar = document.querySelector('.progress-bar');
+        const progresslabel = document.querySelector('.progress-label');
+        const totalRows = tableRows.length-1;
+        let processedRows = 0;
 
         tableRows.forEach(row => {
             const cells = row.querySelectorAll('td');
             const rowData = {};
+            const firstCell = cells[0].textContent.trim();
+            const firstHeader = headers[0];
+            if (firstCell === firstHeader) {
+                // If true, skip this row and continue with the next one
+                return;
+            }
             cells.forEach((cell, index) => {
                 // Assuming the headers are in the same order as the table columns
                 const header = headers[index]; // Assuming 'headers' is an array of header names
-                rowData[header] = cell.textContent.trim();
+                const cellData = cell.textContent.trim();
+                rowData[header] = cellData;
             });
-            //csvData.push(rowData);
-            console.log(rowData);
+            // console.log(rowData);
             fetch('/submit_file', {
                 method: 'POST',
                 headers: {
@@ -163,6 +178,14 @@
             })
             .catch(error => {
                 console.error('Error:', error);
+            })
+            .finally(() => {
+                processedRows++;
+                const progressPercentage = (processedRows / totalRows) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.setAttribute('aria-valuenow', progressPercentage);
+                roundedPercent = Math.round(progressPercentage);
+                progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
             });
         });
     }
