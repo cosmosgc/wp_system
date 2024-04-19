@@ -14,70 +14,64 @@
 @endphp
 
 @section('content')
-    @foreach($credentials as $credential)
-        <h3>{{$credential->wp_domain}}</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Data</th>
-                    <th>Yoast Keyword</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $response = Http::get("{$credential->wp_domain}/wp-json/wp/v2/posts?per_page=10");
-                    $posts = $response->json();
+    <select id="domain-select">
+        @foreach($credentials as $credential)
+            <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
+        @endforeach
+    </select>
 
-                @endphp
-                @foreach ($posts as $post)
-                    @php
-                        // Fetch Yoast Keyword using custom WordPress REST API endpoint
-                        $keywordResponse = Http::get("{$credential->wp_domain}/wp-json/wp_manage/v1/get_keyword/?post_id={$post['id']}");
-                        $keywordData = $keywordResponse->json();
-                        $keyword = isset($keywordData['primary_focus_keyword']) ? $keywordData['primary_focus_keyword'] : 'N/A';
-                    @endphp
-                    <tr>
-                        <td>{{$post['title']['rendered']}}</td>
-                        <td>{{$post['date']}}</td>
-                        <td>{{$keyword}}</td>
-                        <td><button class="btn btn-secondary" onclick="update_yoast('{{$credential->wp_domain}}', '{{$post['id']}}', '{{$keyword}}')">Atualizar Yoast Rank</button></td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endforeach
+    <div id="posts-table">
+        <h3>Select a domain to load posts.</h3>
+    </div>
+
     <script>
-        function update_yoast(domain, id, keyword){
+        document.getElementById('domain-select').addEventListener('change', function() {
+            var selectedDomain = this.value;
+            var url = selectedDomain + "/wp-json/wp/v2/posts?per_page=10";
 
-            //use /update_yoaust
-            url = "/update_yoaust"
-            data = {
-                    domain: domain,
-                    post_id: id,
-                    keyword: keyword
-                };
-                console.log(data);
+            fetch(url)
+            .then(response => response.json())
+            .then(posts => {
+                var tableHtml = "<table><thead><tr><th>Title</th><th>Date</th><th>Yoast Keyword</th><th>Action</th></tr></thead><tbody>";
+
+                posts.forEach(post => {
+                    //não sei pegar o keyword no momento
+                    tableHtml += "<tr><td>" + post.title.rendered + "</td><td>" + post.date + "</td><td>N/A</td><td><button class='btn btn-secondary' onclick='updateYoast(\"" + selectedDomain + "\", \"" + post.id + "\")'>Update Yoast Rank</button></td></tr>";
+                });
+
+                tableHtml += "</tbody></table>";
+                document.getElementById('posts-table').innerHTML = tableHtml;
+            })
+            .catch(error => {
+                console.error('Error fetching posts:', error);
+            });
+        });
+
+        function updateYoast(domain, postId) {
+            var url = "/update_yoaust";
+            var data = {
+                domain: domain,
+                post_id: postId,
+                //keyword: 'N/A'
+            };
+
             fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify(data)
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('sucesso', response.json());
+                    console.log('Success');
                 } else {
-                    // Handle error response
-                    console.log('error')
+                    console.error('Error updating Yoast rank');
                 }
             })
             .catch(error => {
-                // Handle fetch error
-                console.log('error')
+                console.error('Fetch error:', error);
             });
         }
     </script>
