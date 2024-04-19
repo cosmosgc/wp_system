@@ -21,7 +21,7 @@
     </select>
 
     <div id="posts-table">
-        <h3>Select a domain to load posts.</h3>
+        <h3>Escolha um dominio para carregas os posts recentes.</h3>
     </div>
 
     <script>
