@@ -240,7 +240,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     formData.append('image_url', document.querySelector('.url_image').innerText);
                     formData.append('gdrive_document_url', folderId);
                     formData.append('insert_image', document.querySelector('.insert_image input[type="checkbox"]').checked ? 1 : 0);
-                    formData.append('schedule', document.querySelector('.schedule').value);
+                    formData.append('schedule', document.querySelector('.schedule_date input[type="datetime-local"]').value);
                     formData.append('domain', document.querySelector('.domain').value);
                     formData.append('video', document.querySelector('.video').checked ? 1 : 0);
                     formData.append('session_user', document.querySelector('.user').value);
@@ -254,7 +254,6 @@ $user=explode('+',base64_decode($valorCodificado));
                     loading.innerText = 'loading....';
                     const content = document.querySelector(".content");
                     content.appendChild(loading);
-
                     fetch('/insert_post_content', {
                         method: 'POST',
                         headers: {
