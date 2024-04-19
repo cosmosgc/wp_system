@@ -36,7 +36,7 @@
 
                 posts.forEach(post => {
                     //não sei pegar o keyword no momento
-                    tableHtml += "<tr><td>" + post.title.rendered + "</td><td>" + post.date + "</td><td>N/A</td><td><button class='btn btn-secondary' onclick='updateYoast(\"" + selectedDomain + "\", \"" + post.id + "\")'>Update Yoast Rank</button></td></tr>";
+                    tableHtml += "<tr><td>" + post.title.rendered + "</td><td>" + post.date + "</td><td id='yoastKey'>N/A</td><td><button class='btn btn-secondary' onclick='updateYoast(\"" + selectedDomain + "\", \"" + post.id + "\", this)'>Update Yoast Rank</button></td></tr>";
                 });
 
                 tableHtml += "</tbody></table>";
@@ -47,7 +47,7 @@
             });
         });
 
-        function updateYoast(domain, postId) {
+        function updateYoast(domain, postId, element) {
             var url = "/update_yoaust";
             var data = {
                 domain: domain,
@@ -65,14 +65,82 @@
             })
             .then(response => {
                 if (response.ok) {
-                    console.log('Success');
+                    return response.json(); // Parse response JSON
                 } else {
-                    console.error('Error updating Yoast rank');
+                    throw new Error('Arro ao atualizar o rank Yoast');
                 }
             })
+            .then(data => {
+                console.log('Success');
+                // Remove failure class if present
+                element.classList.remove('yoast-failure');
+                // Add success class to the element
+                element.classList.add('yoast-success');
+                // Find the closest td element with id 'yoastKey'
+                var yoastKeyElement = element.closest('tr').querySelector('td#yoastKey');
+                // Update its content with the primary_focus_keyword from the response
+                yoastKeyElement.textContent = data.primary_focus_keyword || 'N/A'; // Use primary_focus_keyword if available, otherwise 'N/A'
+                if(!data.primary_focus_keyword){
+                    element.classList.remove('yoast-success');
+                    // Add failure class to the element
+                    element.classList.add('yoast-failure');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Um erro aconteceu',
+                            text: "Não foi encontrado uma keyword no post, então não terá efeito",
+                            showConfirmButton: true,
+                            confirmButtonText: 'continue'
+                        });
+                }
+                else{
+                    // Display success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Seu rank Yoast foi atualizado com sucesso!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+
+            })
             .catch(error => {
-                console.error('Fetch error:', error);
+                console.error('Error:', error.message);
+                // Remove success class if present
+                element.classList.remove('yoast-success');
+                // Add failure class to the element
+                element.classList.add('yoast-failure');
+                // Display error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Um erro aconteceu',
+                    text: error.message,
+                    showConfirmButton: true,
+                    confirmButtonText: 'continue'
+                });
             });
         }
+
     </script>
+    <style>
+        .yoast-success {
+            background-color: #dff0d8 !important;
+            color: #3c763d !important;
+            border: 1px solid #d6e9c6 !important;
+        }
+        .yoast-success::after {
+            content: '\2714'; /* Unicode for checkmark symbol */
+            position: absolute;
+            color: #3c763d;
+        }
+        .yoast-failure {
+            background-color: #f2dede !important;
+            color: #a94442 !important;
+            border: 1px solid #ebccd1 !important;
+        }
+        .yoast-failure::after {
+            content: '\2716'; /* Unicode for cross symbol */
+            position: absolute;
+            color: #a94442;
+        }
+    </style>
 @endsection
