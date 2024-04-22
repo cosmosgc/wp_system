@@ -1,6 +1,10 @@
         @extends('layouts.app')
 
         @section('content')
+
+        @php
+            $searchParam = request()->input('query');
+        @endphp
         <style>
             .editor_modal {
             height: 80vh;
@@ -61,6 +65,21 @@
         <div class="dashboard-content">
         <h1>Lista credenciais wordpress</h1>
 
+        <div class="card card-medium">
+            <div class="card-body">
+              <div class="search_bar">
+                <form action="/list_credential" method="get">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Nome do post ou Dominio" value="{{$searchParam}}">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -72,6 +91,8 @@
                     </tr>
                 </thead>
                 <tbody>
+
+                    @if(empty($search))
 
                     @foreach($editor as $edit)
                         @foreach($edit->links as $links)
@@ -97,6 +118,34 @@
                         @endforeach
 
                     @endforeach
+
+                    @else
+                    @foreach($editor as $edit)
+                    @foreach($search as $links)
+                    <input type="hidden" name="user_id" class="id" value="{{$links->id}}">
+
+                    <tr>
+                        <td class="editor_name">{{$edit->name}}</td>
+                        <td class="wp_login">{{$links->wp_login}}</td>
+                        <td class="wp_password">{{$links->wp_password}}</td>
+                        <td  class="wp_domain">{{$links->wp_domain}}</td>
+                        <td class="editor_list_flex">
+                            <form action="{{route('credentialDelete',$links->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit"><i class="fas fa-trash">Excluir</i></button>
+                            </form>
+
+                            <button class="update btn btn-success"><i class="fas fa-sync-alt">Alterar</i></button>
+                        </td>
+                    </tr>
+
+
+                    @endforeach
+
+                @endforeach
+                @endif
+
                 </tbody>
             </table>
         </div>

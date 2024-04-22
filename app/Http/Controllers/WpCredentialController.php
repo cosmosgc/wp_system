@@ -28,5 +28,6 @@ class WpCredentialController extends Controller
 
     public function deleteWpCredential($id){
         $credential_deletion=$this->wp_credential_service->deleteCredential($id);
+        return view('dashboard.documentDeleted');
     }
 }
