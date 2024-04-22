@@ -1076,9 +1076,10 @@
                         try {
                             body = {id: configId,
                                     domain: domain,
-                                    post_id:data.post_id,
+                                    post_id: data.post_id,
                                     keyword: keyword.innerText,
-                                    _token: csrfToken}
+                                    _token: csrfToken};
+                            // console.log(body);
                             const query_2 = await fetch('/update_yoaust', {
                                 method: 'POST',
                                 body: JSON.stringify(body),
