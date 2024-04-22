@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Wp_post_content;
 use GuzzleHttp\Client;
-
+use  Exception;
 
 class Wp_service{
 
@@ -20,7 +20,7 @@ class Wp_service{
         //$title = $title->input('title');
         //$content = $content->input('content');
 
-
+        $errorList = [];
         $featuredImagePath = storage_path('app/public/'.$image);
 
         // Verifique se a imagem existe no caminho especificado
@@ -36,34 +36,38 @@ class Wp_service{
             ];
 
             // Faça a requisição para enviar a imagem para o WordPress
-            $responseUploadImagem = $this->client->post($domain.'/wp-json/wp/v2/media', [
-                'auth' => [$login, $password],
-                'multipart' => [
-                    [
-                        'name' => 'file',
-                        'contents' => fopen($featuredImagePath, 'r'),
-                        'filename' => $featuredImageName,
-                    ],
+            try {
+                $responseUploadImagem = $this->client->post($domain.'/wp-json/wp/v2/media', [
+                    'auth' => [$login, $password],
+                    'multipart' => [
+                        [
+                            'name' => 'file',
+                            'contents' => fopen($featuredImagePath, 'r'),
+                            'filename' => $featuredImageName,
+                        ],
 
-                    [
-                        'name' => 'alt_text',
-                        'contents' => $additionalData['alt_text'],
+                        [
+                            'name' => 'alt_text',
+                            'contents' => $additionalData['alt_text'],
+                        ],
+                        [
+                            'name' => 'title',
+                            'contents' => $additionalData['title'],
+                        ],
+                        [
+                            'name' => 'caption',
+                            'contents' => $additionalData['caption'],
+                        ],
+                        [
+                            'name' => 'description',
+                            'contents' => $additionalData['description'],
+                        ],
                     ],
-                    [
-                        'name' => 'title',
-                        'contents' => $additionalData['title'],
-                    ],
-                    [
-                        'name' => 'caption',
-                        'contents' => $additionalData['caption'],
-                    ],
-                    [
-                        'name' => 'description',
-                        'contents' => $additionalData['description'],
-                    ],
-                ],
-            ]);
-
+                ]);
+            } catch (Exception $e) {
+                // Do nothing here, just continue execution
+                $errorList[] = $e;
+            }
             // Extraia o ID da imagem enviada
             $imageID = json_decode($responseUploadImagem->getBody())->id;
         } else {
