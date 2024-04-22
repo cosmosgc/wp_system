@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Editor;
 use App\Models\Ia_credential;
+use App\Models\Wp_credential;
 use Illuminate\Http\Request;
 use App\Models\Wp_post_content;
 
@@ -143,11 +144,13 @@ class DasboardController extends Controller
         return view('dashboard.wordpressCredential');
     }
 
-    public function listWpCredential(){
+    public function listWpCredential(Request $request){
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
         $user_session=Editor::where('name',$user[0])->get();
         $user_credentials = null;
+        $search_user=[];
+        $results=[];
         if($user_session[0]->is_admin!=1){
             $user_credentials = $user_session;
         }else{
@@ -162,7 +165,13 @@ class DasboardController extends Controller
                 }
             }
         }
-        return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials]);
+
+
+        if(!empty($request->input('query'))){
+            $search_user=$user_session[0];
+            $results=$search_user->links()->where ('wp_login','like','%'.$request->input('query').'%')->orWhere('wp_domain','like','%'.$request->input('query').'%')->get();
+        }
+        return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials,'searchUser'=>$search_user,'search'=>$results]);
 
     }
 
