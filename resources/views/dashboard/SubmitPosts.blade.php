@@ -1076,7 +1076,7 @@
                         try {
                             body = {id: configId,
                                     domain: domain,
-                                    post_id:data.id,
+                                    post_id:data.post_id,
                                     keyword: keyword.innerText,
                                     _token: csrfToken}
                             const query_2 = await fetch('/update_yoaust', {
