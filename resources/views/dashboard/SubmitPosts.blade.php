@@ -140,21 +140,27 @@
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
             <div class="row">
-                <div class="col-md-4" style="display: flex; justify-content: flex-end;">
+                <div class="col-md-3" style="display: flex; justify-content: flex-end;">
                     <button class="btn btn-success btn-block" onclick="batch_generate()">
                         <i class="fas fa-file"></i> Gerar conteúdo em lote
                     </button>
                 </div>
-                <div class="col-md-4" style="display: flex; justify-content: center;">
+                <div class="col-md-3" style="display: flex; justify-content: center;">
                     <button class="btn btn-primary btn-block" onclick="batch_post()">
                         <i class="fas fa-upload"></i> Postar em lote
                     </button>
                 </div>
-                <div class="col-md-4" style="display: flex; justify-content: flex-start;">
+                <div class="col-md-3" style="display: flex; justify-content: flex-start;">
                     <button class="btn btn-danger btn-block" onclick="batch_delete()">
                         <i class="fas fa-trash-alt"></i> Deletar em lote
                     </button>
                 </div>
+                <div class="col-md-3" style="display: flex; justify-content: flex-start;">
+                    <button class="btn btn-primary btn-block" onclick="batch_doc()">
+                        <i class="fab fa-google"></i> Criar documentos em lote
+                    </button>
+                </div>
+
             </div>
             <div class="row progress-bar-parent" style="display:none;">
                 <div class="progress">
@@ -194,7 +200,7 @@
                 @foreach($post_contents->postContents as $config)
                 <tr>
                   <td>
-                      <input class="form-check-input config_id" type="checkbox"  data-id="{{$config->id}}" data-theme="{{$config->theme}}">
+                      <input class="form-check-input config_id" type="checkbox"  data-id="{{$config->id}}" data-theme="{{$config->theme}}" data-drive_folder={{$config->gdrive_document_url}}>
                   </td>
 
 
@@ -329,7 +335,9 @@
               if (checkbox.checked) {
                   var id = checkbox.getAttribute('data-id');
                   var theme = checkbox.getAttribute('data-theme');
-                  selectedItems.push({ id: id, theme: theme });
+                  var driver_folder=checkbox.getAttribute('data-drive_folder');
+
+                  selectedItems.push({ id: id, theme: theme ,g_drive:driver_folder});
                   var parentTr = checkbox.closest('tr');
                   console.log(parentTr);
                   if(remove){
@@ -345,14 +353,18 @@
         function separateThemesAndIDs(selectedItems) {
             var themes = [];
             var ids = [];
+            var driver_folder_url=[]
 
             selectedItems.forEach(function(item) {
                 themes.push(item.theme);
                 ids.push(item.id);
+                driver_folder_url.push(item.g_drive)
             });
 
-            return { themes: themes, ids: ids };
+            return { themes: themes, ids: ids, gdrive_document_url:driver_folder_url };
         }
+
+
         function openPost(id){
             // Find the post_content corresponding to the id
             var postContent = postContents.find(function(item) {
@@ -482,6 +494,78 @@
             closeModalButton.addEventListener('click',()=>{
                 modal.classList.remove('open_editor_modal');
             })
+
+
+
+            //função para gerar documentos em lote
+            async function batch_doc(all = false){
+                selected_items = getSelectedItems('loading');
+                separatedData = separateThemesAndIDs(selected_items);
+                const progressBar = document.querySelector('.progress-bar-parent');
+                // console.log(separatedData.themes, separatedData.ids);
+                // return;
+                let errorItems = [];
+                if(all)
+                {
+                    try {
+                        await create_gdoc(separatedData.themes, separatedData.ids,separatedData.separatedData.gdrive_document_url);
+                    }catch (error) {
+                        errorItems.push({ theme: separatedData.themes, id: separatedData.ids });
+                    }
+                }
+                else{
+                    let completedItems = 0;
+                    const totalItems = Object.keys(separatedData.themes).length;
+                    progressBar.style.display = 'block';
+                    updateProgressBar(0);
+                    for (const theme in separatedData.themes) {
+                        const id = separatedData.ids[theme];
+                        const drive_url=separatedData.gdrive_document_url[theme]
+                        //console.log(drive_url);
+                        //const loading_doc=selectedItems[theme]
+                        console.log("criando", [theme], [id]);
+                        try {
+                            await create_gdoc(theme, id, drive_url);
+                        } catch (error) {
+                            errorItems.push({ theme, id, drive_url });
+                        }
+                        completedItems++;
+                        const progress = Math.round((completedItems / totalItems) * 100);
+                        let label = completedItems + "/" + totalItems;
+                        updateProgressBar(progress, label);
+                    }
+                }
+                removed = getSelectedItems('loading', true);
+                progressBar.style.display = 'none';
+                if (errorItems.length > 0) {
+                    // If there are errors, display the error messages
+                    let errorMessage = "Erros ocorreram enquanto eram gerados os documentos::";
+                    errorItems.forEach(item => {
+                        errorMessage += `\nTheme: ${item.theme}, ID: ${item.id}`;
+                    });
+
+                    Swal.fire({
+                        title: 'Um erro ao gerar em lote!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // If no errors, display success message
+                    Swal.fire({
+                        title: 'Geração em lote concluído!',
+                        text: 'Continue?',
+                        icon: 'success',
+                        confirmButtonText: 'Continue'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload(); // Reload the page
+                        }
+                    });
+                }
+            }
+            
+            //
             async function batch_generate(all = false){
                 selected_items = getSelectedItems('loading');
                 separatedData = separateThemesAndIDs(selected_items);
@@ -791,6 +875,7 @@
                 })
             }
             async function create_gdoc(theme, id, folderLink = '', loading_elements = null) {
+                console.log(folderLink);
                 if (folderLink == '') {
                     swal.fire({
                         icon: 'error',
