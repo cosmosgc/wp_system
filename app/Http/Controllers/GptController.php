@@ -309,7 +309,7 @@ class GptController extends Controller
 
 
             // Check if href is empty or matches a pattern of not containing a link
-            if (empty($href) || !preg_match('/^((http|https|ftp):\/\/[^\s$.?#].[^\s]*)?$/i', $href)) {
+            if (empty($href) || $href == "" || !preg_match('/^((http|https|ftp):\/\/[^\s$.?#].[^\s]*)?$/i', $href)) {
                 // If href is empty or invalid, return inner text
                 return $innerText;
             }
@@ -370,7 +370,7 @@ class GptController extends Controller
         }
 
         $responseData = json_decode($response, true);
-        shuffle($responseData['items']);    
+        shuffle($responseData['items']);
         $videoId='';
         if (isset($responseData['items'][0]['id']['videoId'])) {
             $videoId = $responseData['items'][0]['id']['videoId'];
