@@ -92,6 +92,8 @@
                 </thead>
                 <tbody>
 
+                    @if($user_page==$editor[0]->name)
+
                     @if(empty($search))
 
                     @foreach($editor as $edit)
@@ -144,6 +146,7 @@
                     @endforeach
 
                 @endforeach
+                @endif
                 @endif
 
                 </tbody>

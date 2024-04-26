@@ -148,14 +148,14 @@ class DasboardController extends Controller
         $valorCodificado = request()->cookie('editor');
         $user=explode('+',base64_decode($valorCodificado));
         $user_session=Editor::where('name',$user[0])->get();
-        $user_credentials = null;
+        $user_credentials =$user_session;
         $search_user=[];
         $results=[];
-        if($user_session[0]->is_admin!=1){
-            $user_credentials = $user_session;
-        }else{
-            $user_credentials = Editor::all();
-        }
+        // if($user_session[0]->is_admin!=1){
+        //     $user_credentials = $user_session;
+        // }else{
+        //     $user_credentials = Editor::all();
+        // }
         //$user_credentials=Editor::all();
         $editor_credentials=[];
         foreach($user_credentials as $credentials){
@@ -171,7 +171,7 @@ class DasboardController extends Controller
             $search_user=$user_session[0];
             $results=$search_user->links()->where ('wp_login','like','%'.$request->input('query').'%')->orWhere('wp_domain','like','%'.$request->input('query').'%')->get();
         }
-        return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials,'searchUser'=>$search_user,'search'=>$results]);
+        return view('dashboard.wpCredentialList',['credentiais'=>$editor_credentials,'editor'=>$user_credentials,'searchUser'=>$search_user,'search'=>$results,'user_page'=>$user[0]]);
 
     }
 
