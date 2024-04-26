@@ -366,7 +366,7 @@ class GptController extends Controller
             $url = $apiEndpoint . '?' . http_build_query($params);
             $response = file_get_contents($url);
         } catch (Exception $e) {
-            dd($url, $e);
+            //dd($url, $e);
         }
 
         $responseData = json_decode($response, true);

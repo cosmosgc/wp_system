@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\Wp_post_content;
+use App\Models\Wp_credential;
 use Google\Client;
 use Google\Service\Docs;
 use Google\Service\Drive;
@@ -42,6 +43,16 @@ class PostFileService{
             'post_image'=>isset($data['post_image'])?$data['post_image']:null,
             'status'=>'Não publicado',
             'Editor_id'=>$data['user_id']
+        ]);
+    }
+
+    public function insertSiteCsv($data){
+        $new_site=Wp_credential::create([
+            'wp_login'=>isset($data['wp_login'])?$data['login']:null,
+            'wp_password'=>isset($data['wp_password'])?$data['wp_password']:null,
+            'wp_domain'=>isset($data['wp_domain'])?$data['wp_domain']:null,
+            'Editor_id'=>$data['user_id']
+
         ]);
     }
 

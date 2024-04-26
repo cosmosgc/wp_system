@@ -44,6 +44,7 @@
                 </label>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="csv_file" name="csv_file">
+                    <input type="hidden" name="" id="config_creation" value="config_creation">
                 </div>
             </div>
 
@@ -80,6 +81,7 @@
 </script>
 <script>
     const fileInput = document.getElementById('csv_file');
+    const docType=document.getElementById("config_creation").value
     const user_id = document.getElementById('user_id').value;
     const submitButton = document.getElementById('submit_csv_button');
 
@@ -167,7 +169,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify({ user_id: user_id, csvData: rowData}),
+                body: JSON.stringify({ user_id: user_id, docType:docType,csvData: rowData}),
             })
             .then(response => {
                 if (response.ok) {
