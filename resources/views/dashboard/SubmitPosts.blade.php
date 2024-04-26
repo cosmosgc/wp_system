@@ -229,7 +229,7 @@
                     <i class="fas fa-trash"></i>
                     </button>
                     <!-- Gerar conteúdo Button with Font Awesome icon and alt attribute -->
-                    <button onclick="generate_post([`{{$config->theme}}`], null, this, true)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
+                    <button onclick="generate_post([`{{$config->theme}}`], `{{$config->id}}`, this, true)" class="btn btn-success create_content" data-toggle="tooltip" data-placement="top" title="Gerar conteúdo">
                     <i class="fas fa-file"></i>
                     </button>
 

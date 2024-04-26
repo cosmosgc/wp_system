@@ -27,6 +27,10 @@
     <script>
         document.getElementById('domain-select').addEventListener('change', function() {
             var selectedDomain = this.value;
+            if (!selectedDomain.startsWith("http://") && !selectedDomain.startsWith("https://")) {
+                // If it doesn't have either prefix, assume "https://"
+                selectedDomain = "https://" + selectedDomain;
+            }
             var url = selectedDomain + "/wp-json/wp/v2/posts?per_page=10";
 
             fetch(url)
