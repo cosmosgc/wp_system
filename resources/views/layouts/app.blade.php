@@ -330,7 +330,7 @@
 
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-registered"></i>Registrar Sites</a></ol>
-                <ol><a href="{{ route('importSite', ['page' => 'importSite']) }}"><i class="fas fa-registered"></i>Importar sites</a></ol>
+                <!-- <ol><a href="{{ route('importSite', ['page' => 'importSite']) }}"><i class="fas fa-registered"></i>Importar sites</a></ol> -->
 
                 <ol><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i>Lista de Sites</a></ol>
 
