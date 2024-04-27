@@ -730,12 +730,6 @@
                         body.id = id;
                     }
 
-                    //contador de quantas vezes a função é chamada recursivamente
-                    if (recursionCount >= 5) {
-                        console.log("Limite de recursão atingido. Interrompendo.");
-                        return;
-                    }
-
                     try {
                         const query = await fetch('/gpt_query', {
                             method: 'POST',
@@ -758,9 +752,6 @@
                             location.reload(); // Reload the page
                         }
                     });
-                }else {
-                 // Chamada recursiva da função com um aumento no contador de recursão
-                    await generate_post(topic_to_generate, id, element_status, alert,recursionCount + 1);
                 }
 
                 } catch (error) {
