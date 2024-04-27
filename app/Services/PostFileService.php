@@ -48,7 +48,7 @@ class PostFileService{
 
     public function insertSiteCsv($data){
         $new_site=Wp_credential::create([
-            'wp_login'=>isset($data['wp_login'])?$data['login']:null,
+            'wp_login'=>isset($data['wp_login'])?$data['wp_login']:null,
             'wp_password'=>isset($data['wp_password'])?$data['wp_password']:null,
             'wp_domain'=>isset($data['wp_domain'])?$data['wp_domain']:null,
             'Editor_id'=>$data['user_id']

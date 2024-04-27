@@ -200,5 +200,9 @@ class DasboardController extends Controller
         return view('dashboard.deletedToken');
     }
 
+    public function registerSiteTeste(){
+        return view('dashboard.siteUpload');
+    }
+
 
 }

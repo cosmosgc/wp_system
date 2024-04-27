@@ -57,6 +57,7 @@ Route::get('/list_editor',[DasboardController::class,'ListEditor'])->name('listE
 Route::get('/config_updated',[DasboardController::class,'configUpdated'])->name('configUpdated');
 Route::get('/teste',[DasboardController::class,'gptTeste']);
 Route::get('/yoastforce',[DasboardController::class,'yoastforce'])->name('yoastforce');
+Route::get('/register_site_table',[DasboardController::class,'registerSiteTeste']);
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

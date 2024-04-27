@@ -40,6 +40,7 @@ class CsvReaderController extends Controller
                 $data_csv[] = $request->csvData;
             }
 
+
             foreach ($data_csv as $key => $row) {
                 foreach ($row as $subKey => $value) {
                     $data_csv[$key][$subKey] = is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'auto')  : $value;
@@ -121,6 +122,7 @@ class CsvReaderController extends Controller
                         'wp_domain'=>$dt['domain'],
                         'user_id'=>$request->user_id,
                     );
+                    //dd($content);
                     $new_site_registred=$this->postConfigService->insertSiteCsv($content);
                 }
             }
