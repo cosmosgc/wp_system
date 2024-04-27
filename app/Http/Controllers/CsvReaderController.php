@@ -62,12 +62,12 @@ class CsvReaderController extends Controller
                     }else{
                         $dataAtual->modify('+' . intval($dt['Programacao de Postagem']) . ' days');
                     }
-    
+
                     $addImage=null;
                     $folders_part=null;
                     $dataAtual->format('Y-m-d H:i:s');
                     $video = trim($dt['Video']," \t\n\r\0\x0B");
-    
+
                      $url = $dt['Imagem'];
                      $path = parse_url($url, PHP_URL_PATH);
                      if(!empty($url)){
@@ -83,7 +83,7 @@ class CsvReaderController extends Controller
                      if(!empty($dt['Imagem'])){
                          $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
                      }
-    
+
                     $content=array(
                         'theme'=>$dt['Tema'],
                         'keyword'=>$dt['Keyword'],
@@ -105,14 +105,14 @@ class CsvReaderController extends Controller
                         'insert_image'=>isset($dt['Insere Imagem no Post']) && $dt['Insere Imagem no Post']==='Sim'?true:null,
                         'post_image'=>$addImage,
                         'user_id'=>$request->user_id,
-    
+
                     );
                     $new_csv_content=$this->postConfigService->insertCSV($content);
 
             }
             $c=[];
 
-                
+
 
             }elseif($request->docType=='site_register'){
                 foreach($data as $dt){
@@ -122,7 +122,7 @@ class CsvReaderController extends Controller
                         'wp_domain'=>$dt['domain'],
                         'user_id'=>$request->user_id,
                     );
-                    //dd($content);
+                    // dd($content);
                     $new_site_registred=$this->postConfigService->insertSiteCsv($content);
                 }
             }
