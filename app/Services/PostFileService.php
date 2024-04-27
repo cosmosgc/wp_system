@@ -52,8 +52,8 @@ class PostFileService{
             'wp_password'=>isset($data['wp_password'])?$data['wp_password']:null,
             'wp_domain'=>isset($data['wp_domain'])?$data['wp_domain']:null,
             'Editor_id'=>$data['user_id']
-
         ]);
+        return $new_site;
     }
 
     public function importGoogleDocs($id)
