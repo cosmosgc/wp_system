@@ -117,7 +117,6 @@
         const headers = [
             'Tema',
             'Keyword',
-            'Site',
             'Categoria',
             'Ancora 1',
             'URL do Link 1',
@@ -132,8 +131,6 @@
             'Insere Imagem no Post',
             'Link Interno',
             'Programacao de Postagem',
-            'URL da Publicacao',
-            'Nota de SEO',
             'Dominio',
             'Gdrive',
             'Video'
@@ -162,7 +159,7 @@
                 const cellData = cell.textContent.trim();
                 rowData[header] = cellData;
             });
-            // console.log(rowData);
+            console.log(rowData);
             fetch('/submit_file', {
                 method: 'POST',
                 headers: {
