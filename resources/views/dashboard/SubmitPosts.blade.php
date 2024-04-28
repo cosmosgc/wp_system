@@ -564,7 +564,7 @@
                     });
                 }
             }
-            
+
             //
             async function batch_generate(all = false){
                 selected_items = getSelectedItems('loading');
@@ -739,24 +739,27 @@
 
 
 
-                // Remove o SVG de loading após a conclusão da query
-                try {
-                if(query.ok){
-                Swal.fire({
-                    title: 'Conteúdo criado com sucesso',
-                    text: 'Deseja continuar?',
-                    icon: 'success',
-                    confirmButtonText: 'continue'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                            location.reload(); // Reload the page
-                        }
-                    });
-                }else{
-                    console.log('batendo aqui');
-                    await generate_post(topic_to_generate, id, element_status, alert);
-                    // return;
-                }
+                    // Remove o SVG de loading após a conclusão da query
+                    try {
+                    if(query.ok){
+                        console.log(query);
+                    Swal.fire({
+                        title: 'Conteúdo criado com sucesso',
+                        text: 'Deseja continuar?',
+                        icon: 'success',
+                        confirmButtonText: 'continue'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                location.reload(); // Reload the page
+                            }
+                        });
+                    }else{
+                        console.log('batendo aqui');
+                        console.warn(query.error);
+                        throw new Error("Não foi possivel gerar o post: "+query.statusText);
+                        // await generate_post(topic_to_generate, id, element_status, alert);
+                        // return;
+                    }
 
                 } catch (error) {
                 Swal.fire({

@@ -41,7 +41,15 @@ class GptController extends Controller
         $arr = [];
         foreach($request->title as $key=>$topic){
             $id=isset($request->id[$key])?$request->id[$key]:null;
-            $response=$this->gptThread($id,$topic);
+            try {
+                $response = $this->gptThread($id, $topic);
+            } catch (Exception $e) {
+                // Handle the exception and return an error response
+                header("HTTP/1.1 500 Internal Server Error");
+                header("Content-Type: application/json");
+                echo json_encode(array("error" => $e->getMessage(), "ok" =>false));
+                exit;
+            }
             $arr[] = $response;
         }
         return $arr;
@@ -158,14 +166,14 @@ class GptController extends Controller
 
                     $gpt_request = $this->gptService->sendRequest($command, $post_title, $token);
 
-                    if ($gpt_request['choices'][0]['message']['content'] != 0) {
+                    if (isset($gpt_request['choices'][0]['message']['content']) && $gpt_request['choices'][0]['message']['content'] != 0) {
                         $data = $gpt_request['choices'][0]['message']['content'];
                         break;
                     }
                 }
 
                 // se ainda não der certo
-                if ($data === null) {
+                if (!isset($gpt_request['choices'][0]['message']['content']) || $data === null) {
                     throw new Exception("Tentativas ultrapassaram os limites");
                 }
 
