@@ -168,10 +168,8 @@ class PostContentService{
              // Faz o download do arquivo selecionado
             $fileId = $randomFile->getId();
             $response = $service->files->get($fileId, ['alt' => 'media']);
-
             // Salva o conteúdo do arquivo no armazenamento do Laravel
             $fileName = Str::random(20) . '_' . $randomFile->getName();
-            //dd($fileName);
             Storage::disk('public')->put('images/' . $fileName, $response->getBody()->getContents());
 
             // Retorna o caminho da imagem baixada

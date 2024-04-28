@@ -7,6 +7,7 @@ use App\Services\PostContentService;
 use App\Services\PostFileService;
 use Illuminate\Http\Request;
 use DateTime;
+use PhpParser\Node\Stmt\TryCatch;
 
 class CsvReaderController extends Controller
 {
@@ -73,15 +74,17 @@ class CsvReaderController extends Controller
                      if(!empty($url)){
                         $folders_part = explode('/folders/', $path)[1];
                      }
-                     if($folders_part!=null){
-                        $addImage=$this->imageService->downloadImageFromUrl($url);
-                     }
-                     //$folders_part_without_query = strstr($folders_part, '?', true);
+                     
                      $dataUser=array('session_user'=>$user[0],'gdrive_url'=>$folders_part);
                      $teste=json_encode($dataUser);
                      $userData=json_decode($teste);
                      if(!empty($dt['Imagem'])){
-                         $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
+                        try {
+                            $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
+                        } catch (\Throwable $th) {
+                            return $th;
+                        }
+                         
                      }
 
                     $content=array(
