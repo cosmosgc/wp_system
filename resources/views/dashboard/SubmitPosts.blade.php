@@ -756,9 +756,15 @@
                     }else{
                         console.log('batendo aqui');
                         console.warn(query.error);
-                        throw new Error("Não foi possivel gerar o post: "+query.statusText);
-                        // await generate_post(topic_to_generate, id, element_status, alert);
-                        // return;
+                        // throw new Error("Não foi possivel gerar o post: "+query.statusText);
+                        setTimeout(async () => {
+                            try {
+                                await generate_post(topic_to_generate, id, element_status, alert);
+                            } catch (error) {
+                                console.error('Error generating post:', error);
+                            }
+                        }, 1000);
+                        return;
                     }
 
                 } catch (error) {
