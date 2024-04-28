@@ -702,7 +702,7 @@
 
 
 
-            async function generate_post(topic_to_generate, id=null, element_status = null, alert=false,recursionCount = 0){
+            async function generate_post(topic_to_generate, id=null, element_status = null, alert=false){
                 //element_status.closest('tr').classList.add('loading')
                 loading_element(element_status, false);
                 const loading=document.createElement('div');
@@ -741,7 +741,7 @@
 
                 // Remove o SVG de loading após a conclusão da query
                 try {
-                if(alert && query.ok){
+                if(query.ok){
                 Swal.fire({
                     title: 'Conteúdo criado com sucesso',
                     text: 'Deseja continuar?',
@@ -752,6 +752,10 @@
                             location.reload(); // Reload the page
                         }
                     });
+                }else{
+                    console.log('batendo aqui');
+                    await generate_post(topic_to_generate, id, element_status, alert);
+                    // return;
                 }
 
                 } catch (error) {
