@@ -741,7 +741,7 @@
 
                     // Remove o SVG de loading após a conclusão da query
                     try {
-                    if(query.ok){
+                    if(alert && query.ok){
                         console.log(query);
                     Swal.fire({
                         title: 'Conteúdo criado com sucesso',
@@ -753,6 +753,19 @@
                                 location.reload(); // Reload the page
                             }
                         });
+                    }else if(query.ok){
+                        console.log(query);
+                    //  Swal.fire({
+                    //     title: 'Conteúdo criado com sucesso',
+                    //     text: 'Deseja continuar?',
+                    //     icon: 'success',
+                    //     confirmButtonText: 'continue'
+                    // }).then((result) => {
+                    //     if (result.isConfirmed) {
+                    //             location.reload(); // Reload the page
+                    //         }
+                    //     });
+
                     }else{
                         console.log('batendo aqui');
                         console.warn(query.error);

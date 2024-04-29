@@ -140,13 +140,18 @@ class PostContentService{
     }
 
 
-        public function downloadImageFromGoogleDrive($imageUrl, $data)
-        {
+    public function downloadImageFromGoogleDrive($imageUrl, $data, $maxRetries=0)
+    {
+        if ($maxRetries > 0) {
+            return; // Condição de parada: número máximo de tentativas atingido
+        }
+
+        try {
             // Cria uma instância do cliente Google Client
             $client = new Google_Client();
-            $credentials = Editor::where('name',$data->session_user)->get();
+            $credentials = Editor::where('name', $data->session_user)->get();
             $client->setApplicationName('Google Drive API');
-            if(!isset($credentials[0]->GoogleCredentials->api_key)){
+            if (!isset($credentials[0]->GoogleCredentials->api_key)) {
                 return;
             }
             $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
@@ -165,15 +170,19 @@ class PostContentService{
             // Escolhe um arquivo aleatório da lista
             $randomFile = collect($results->getFiles())->random();
 
-             // Faz o download do arquivo selecionado
+            // Faz o download do arquivo selecionado
             $fileId = $randomFile->getId();
             $response = $service->files->get($fileId, ['alt' => 'media']);
             // Salva o conteúdo do arquivo no armazenamento do Laravel
             $fileName = Str::random(20) . '_' . $randomFile->getName();
             Storage::disk('public')->put('images/' . $fileName, $response->getBody()->getContents());
 
-            // Retorna o caminho da imagem baixada
+            // Se o download for bem-sucedido, retornamos o caminho da imagem
             return 'images/' . $fileName;
+        } catch (\Exception $e) {
+            // Em caso de erro, chamamos a função recursivamente
+            return $this->downloadImageFromGoogleDrive($imageUrl, $data, $maxRetries++);
         }
+    }
 
 }
