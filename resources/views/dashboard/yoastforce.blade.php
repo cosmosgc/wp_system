@@ -58,7 +58,16 @@
                 post_id: postId,
                 //keyword: 'N/A'
             };
-
+            if (domain.toLowerCase() === "localhost") {
+                // If it is, add "http://"
+                domain = "http://" + domain;
+            } else if (!domain.startsWith("https://") && !domain.startsWith("http://")) {
+                // If not "localhost" and doesn't start with "https://", add "https://"
+                domain = "https://" + domain;
+            }
+            if (domain.endsWith("/")) {
+                domain = domain.substring(0, domain.length - 1);
+            }
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -76,6 +85,35 @@
             })
             .then(data => {
                 console.log('Success');
+                console.warn(data);
+                if(data == 1){
+                    console.error("retornou 1");
+                    element.classList.remove('yoast-success');
+                    // Add failure class to the element
+                    element.classList.add('yoast-failure');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Um erro aconteceu',
+                            html: `Houve um problema ao atualizar, ative o yoaust se está desligado e adicione uma keyword por favor. <a href='${domain}/wp-admin/post.php?post=${postId}&action=edit'>Clique aqui</a> para editar o post.`,
+                            showConfirmButton: true,
+                            confirmButtonText: 'continue'
+                        });
+                        return;
+                }
+                else if(data == false){
+                    console.error("retornou false");
+                    element.classList.remove('yoast-success');
+                    // Add failure class to the element
+                    element.classList.add('yoast-failure');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Um erro aconteceu',
+                            html: `Não foi encontrado yoaust no site, ative o yoaust pelo menos uma vez e adicione uma keyword por favor. <a href='${domain}/wp-admin/post.php?post=${postId}&action=edit'>Clique aqui</a> para editar o post.`,
+                            showConfirmButton: true,
+                            confirmButtonText: 'continue'
+                        });
+                        return;
+                }
                 // Remove failure class if present
                 element.classList.remove('yoast-failure');
                 // Add success class to the element
@@ -84,6 +122,7 @@
                 var yoastKeyElement = element.closest('tr').querySelector('td#yoastKey');
                 // Update its content with the primary_focus_keyword from the response
                 yoastKeyElement.textContent = data.primary_focus_keyword || 'N/A'; // Use primary_focus_keyword if available, otherwise 'N/A'
+
                 if(!data.primary_focus_keyword){
                     element.classList.remove('yoast-success');
                     // Add failure class to the element
@@ -91,7 +130,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Um erro aconteceu',
-                            text: "Não foi encontrado uma keyword no post, então não terá efeito",
+                            html: `Não foi encontrado uma keyword no post, então não terá efeito. <a href='${domain}/wp-admin/post.php?post=${postId}&action=edit'>Clique aqui</a> para editar o post.`,
                             showConfirmButton: true,
                             confirmButtonText: 'continue'
                         });
@@ -116,7 +155,7 @@
                 // Display error message
                 Swal.fire({
                     icon: 'error',
-                    title: 'Um erro aconteceu',
+                    title: 'Um erro aconteceu, não fez conexão um yoaust ativado',
                     text: error.message,
                     showConfirmButton: true,
                     confirmButtonText: 'continue'
