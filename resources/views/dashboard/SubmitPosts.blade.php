@@ -743,7 +743,7 @@
                     try {
                     if(query.ok){
                         console.log(query);
-                    Swal.fire({
+                    /*Swal.fire({
                         title: 'Conteúdo criado com sucesso',
                         text: 'Deseja continuar?',
                         icon: 'success',
@@ -752,7 +752,7 @@
                         if (result.isConfirmed) {
                                 location.reload(); // Reload the page
                             }
-                        });
+                        });*/
                     }else{
                         console.log('batendo aqui');
                         console.warn(query.error);
