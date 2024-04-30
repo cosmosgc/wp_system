@@ -14,12 +14,13 @@ class GoogleAuthController extends Controller
         // Ler as credenciais do arquivo JSON
         $valorCodificado = request()->cookie('editor');
         $editor=explode('+',base64_decode($valorCodificado));
-        $credentials = Editor::where('name',$editor[0])->get();
-        $keys=Editor::find($credentials[0]->id);
+        // $credentials = Editor::where('name',$editor[0])->get();
+        // $keys=Editor::find($credentials[0]->id);
 
+        $drive_creds = Drive_credential::all()->first();
         $client = new Client();
-        $client->setClientId($keys->GoogleCredentials->client_id);
-        $client->setClientSecret($keys->GoogleCredentials->client_secret);
+        $client->setClientId($drive_creds->client_id);
+        $client->setClientSecret($drive_creds->client_secret);
         $client->setRedirectUri(route('google.callback'));
         $client->addScope('https://www.googleapis.com/auth/documents'); // Escopo para acesso ao Google Docs
         $client->addScope('https://www.googleapis.com/auth/drive');
@@ -35,12 +36,13 @@ class GoogleAuthController extends Controller
         // Ler as credenciais do arquivo JSON
         $valorCodificado = request()->cookie('editor');
         $editor=explode('+',base64_decode($valorCodificado));
-        $credentials = Editor::where('name',$editor[0])->get();
-        $keys=Editor::find($credentials[0]->id);
+        // $credentials = Editor::where('name',$editor[0])->get();
+        // $keys=Editor::find($credentials[0]->id);
 
+        $drive_creds = Drive_credential::all()->first();
         $client = new Client();
-        $client->setClientId($keys->GoogleCredentials->client_id);
-        $client->setClientSecret($keys->GoogleCredentials->client_secret);
+        $client->setClientId($drive_creds->client_id);
+        $client->setClientSecret($drive_creds->client_secret);
         $client->setRedirectUri(route('google.callback'));
 
         try {
