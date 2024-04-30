@@ -100,7 +100,20 @@ class Wp_service{
                 ]);
                 $post_response=json_decode($response->getBody(), true);
                 $post_url=$post_response["post_url"];
+                $post_id=$post_response["post_id"];
                 $post_content = Wp_post_content::find($id);
+                if($post_date > date('Y-m-d H:i:s')){
+                    $posts_url_getter = $domain . '/wp-json/wp/v2/posts/' . $post_id;
+                    $response_post = $this->client->post($posts_url_getter, [
+                        'auth' => [$login, $password],
+                        'form_params' => $data,
+                    ]);
+                    $post_data = json_decode($response_post->getBody(), true);;
+                    $slug = $post_data['slug'];
+                    $post_url = $domain . '/' . $slug;
+                }
+
+
                 if ($post_content) {
                     $post_content->update(['status' => 'publicado', 'post_url' => $post_url]);
                 }
