@@ -13,6 +13,9 @@
     $post_configs = Editor::where('name', $user[0])->get();
     $uniqueDomains = [];
 @endphp
+https://afiliados-na-web.com/
+https://afiliados-na-web.com/
+https://afiliados-na-web.com/
 
 @section('content')
 <div class="container mt-3">
@@ -25,7 +28,7 @@
                 <input type="text" id="search-input" class="form-control" placeholder="Pesquisar por dominios">
             </div>
             <select id="domain-select" multiple class="form-control">
-            @foreach($credentials as $credential)
+            @foreach($credentials->unique('wp_domain') as $credential)
                 @if (!in_array($credential->wp_domain, $uniqueDomains))
                     <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
                     @php
