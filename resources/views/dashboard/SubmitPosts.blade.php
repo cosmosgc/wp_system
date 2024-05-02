@@ -646,7 +646,7 @@
                 // return;
                 // Utilizando um loop for assíncrono com async/await para postar em lotes
                 for (const id of separatedData.ids) {
-                    await post_to_wp(id);
+                    await post_to_wp(id, true);
                 }
                 removed = getSelectedItems('loading', true);
                 Swal.fire({
@@ -849,6 +849,7 @@
                             id: configId,
                             user_id: user_id.value,
                             post_id: data_response.post_id,
+                            updateYoastRankMath: true,
                             _token: csrfToken
                         };
                         const query_2 = await fetch('/update_yoaust', {
@@ -1188,7 +1189,8 @@
                             body = {id: configId,
                                     domain: domain,
                                     post_id: data.post_id,
-                                    keyword: keyword.innerText,
+                                    //keyword: keyword.innerText,
+                                    updateYoastRankMath: true,
                                     _token: csrfToken};
                             // console.log(body);
                             const query_2 = await fetch('/update_yoaust', {

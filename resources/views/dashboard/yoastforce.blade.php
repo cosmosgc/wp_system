@@ -96,7 +96,7 @@
             var data = {
                 domain: domain,
                 post_id: postId,
-                //keyword: 'N/A'
+                keyword: 'N/A'
             };
             if (domain.toLowerCase() === "localhost") {
                 // If it is, add "http://"
