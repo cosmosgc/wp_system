@@ -97,11 +97,51 @@
                 const csvData = XLSX.utils.sheet_to_csv(sheet);
                 const rows = csvData.split('\n');
                 let tableHTML = '<table class="table">';
+                const headers = [
+                    'Tema',
+                    'Keyword',
+                    'Site',
+                    'Categoria',
+                    'Ancora 1',
+                    'URL do Link 1',
+                    'Dofollow_link_1',
+                    'Ancora 2',
+                    'URL do Link 2',
+                    'Dofollow_link_2',
+                    'Ancora 3',
+                    'URL do Link 3',
+                    'Dofollow_link_3',
+                    'Imagem',
+                    'Insere Imagem no Post',
+                    'Link Interno',
+                    'Programacao de Postagem',
+                    'URL da Publicação',
+                    'Nota de SEO',
+                    'Dominio',
+                    'Gdrive',
+                    'Video'
+                ];
+
+                // Check if headers match
+                const headerRow = rows[0].split(',');
+                const headersMatch = headers.every((header, index) => header === headerRow[index].trim());
+
                 for (let i = 0; i < rows.length; i++) {
                     const cells = rows[i].split(',');
-                    tableHTML += '<tr>';
-                    for (let j = 0; j < cells.length; j++) {
-                        tableHTML += `<td>${cells[j]}</td>`;
+                    if (i === 0 && !headersMatch) {
+                        tableHTML += '<tr>';
+                        for (let j = 0; j < cells.length; j++) {
+                            if (cells[j].trim() !== headers[j]) {
+                                tableHTML += `<td class="keyerror">${cells[j]}</td>`;
+                            } else {
+                                tableHTML += `<td>${cells[j]}</td>`;
+                            }
+                        }
+                    } else {
+                        tableHTML += '<tr>';
+                        for (let j = 0; j < cells.length; j++) {
+                            tableHTML += `<td>${cells[j]}</td>`;
+                        }
                     }
                     tableHTML += '</tr>';
                 }
@@ -112,6 +152,8 @@
             reader.readAsBinaryString(file);
         }
     });
+
+
 
     function process_upload(){
         const headers = [
@@ -196,7 +238,7 @@
     th, td {
         font-size: xx-small !important;
     }
-    tr.csv_error {
+    tr.csv_error, td.keyerror {
         background: #d1464657;
     }
 </style>
