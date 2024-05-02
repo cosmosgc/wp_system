@@ -182,12 +182,19 @@
                 }
                 else{
                     // Display success message
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Seu rank Yoast foi atualizado com sucesso!',
+                    //     showConfirmButton: false,
+                    //     timer: 1500
+                    // });
                     Swal.fire({
                         icon: 'success',
                         title: 'Seu rank Yoast foi atualizado com sucesso!',
-                        showConfirmButton: false,
-                        timer: 1500
+                        showConfirmButton: true,
+                        confirmButtonText: 'continue'
                     });
+
                 }
 
             })
