@@ -92,6 +92,7 @@
         });
 
         function updateYoast(domain, postId, element) {
+            element.classList.add('yoast-loading');
             var url = "/update_yoaust";
             var data = {
                 domain: domain,
@@ -128,6 +129,7 @@
                 console.warn(data);
                 if(data == 1){
                     console.error("retornou 1");
+                    element.classList.remove('yoast-loading');
                     element.classList.remove('yoast-success');
                     // Add failure class to the element
                     element.classList.add('yoast-failure');
@@ -142,6 +144,7 @@
                 }
                 else if(data == false){
                     console.error("retornou false");
+                    element.classList.remove('yoast-loading');
                     element.classList.remove('yoast-success');
                     // Add failure class to the element
                     element.classList.add('yoast-failure');
@@ -155,6 +158,7 @@
                         return;
                 }
                 // Remove failure class if present
+                element.classList.remove('yoast-loading');
                 element.classList.remove('yoast-failure');
                 // Add success class to the element
                 element.classList.add('yoast-success');
@@ -164,6 +168,7 @@
                 yoastKeyElement.textContent = data.primary_focus_keyword || 'N/A'; // Use primary_focus_keyword if available, otherwise 'N/A'
 
                 if(!data.primary_focus_keyword){
+                    element.classList.remove('yoast-loading');
                     element.classList.remove('yoast-success');
                     // Add failure class to the element
                     element.classList.add('yoast-failure');
@@ -189,6 +194,7 @@
             .catch(error => {
                 console.error('Error:', error.message);
                 // Remove success class if present
+                element.classList.remove('yoast-loading');
                 element.classList.remove('yoast-success');
                 // Add failure class to the element
                 element.classList.add('yoast-failure');
@@ -224,6 +230,21 @@
             content: '\2716'; /* Unicode for cross symbol */
             position: absolute;
             color: #a94442;
+        }
+        @keyframes pulse {
+            0% {
+                background-color: rgba(33, 28, 28, 1);
+            }
+            50% {
+                background-color: rgba(33, 28, 28, 0.5);
+            }
+            100% {
+                background-color: rgba(33, 28, 28, 1);
+            }
+        }
+
+        .yoast-loading {
+            animation: pulse 2s infinite;
         }
     </style>
 @endsection
