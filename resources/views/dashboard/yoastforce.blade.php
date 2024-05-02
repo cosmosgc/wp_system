@@ -13,9 +13,6 @@
     $post_configs = Editor::where('name', $user[0])->get();
     $uniqueDomains = [];
 @endphp
-https://afiliados-na-web.com/
-https://afiliados-na-web.com/
-https://afiliados-na-web.com/
 
 @section('content')
 <div class="container mt-3">
