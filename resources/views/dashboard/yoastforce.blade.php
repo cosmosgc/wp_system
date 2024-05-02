@@ -6,12 +6,15 @@
     use App\Models\Wp_credential;
     use Illuminate\Support\Facades\Http;
 
-    $credentials = Wp_credential::all();
+
 
     $valorCodificado = request()->cookie('editor');
     $user = explode('+', base64_decode($valorCodificado));
-    $post_configs = Editor::where('name', $user[0])->get();
-    $uniqueDomains = [];
+    $post_configs = Editor::where('name', $user[0])->first();
+    //$credentials = Wp_credential::all();
+    $credentials = Wp_credential::where('Editor_id', $post_configs->id)->get();
+    //dd($credentials);
+    //$uniqueDomains = [];
 @endphp
 
 @section('content')
