@@ -848,7 +848,7 @@
                         data = {
                             id: configId,
                             user_id: user_id.value,
-                            post_id: data_response.id,
+                            post_id: data_response.post_id,
                             _token: csrfToken
                         };
                         const query_2 = await fetch('/update_yoaust', {
