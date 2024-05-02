@@ -306,7 +306,7 @@ class GptController extends Controller
 
     function removeDuplicateHref($htmlString) {
         // Regular expression to match <a> tags with href attribute
-        $pattern = '/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/i';
+        $pattern = '/<a\s+[^>]*href\s*=\s*["\']?\s*["\']?([^"\'>]*)["\']?[^>]*>(.*?)<\/a>/i';
 
         // Callback function to process each match
         $callback = function($matches) {
