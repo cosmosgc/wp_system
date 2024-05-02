@@ -25,7 +25,7 @@
                 <input type="text" id="search-input" class="form-control" placeholder="Pesquisar por dominios">
             </div>
             <select id="domain-select" multiple class="form-control">
-            @foreach($credentials->unique('wp_domain') as $credential)
+            @foreach($credentials->unique('wp_domain')->sortBy('wp_domain') as $credential)
                 @if (!in_array($credential->wp_domain, $uniqueDomains))
                     <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
                     @php
