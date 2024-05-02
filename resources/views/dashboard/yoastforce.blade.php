@@ -11,6 +11,7 @@
     $valorCodificado = request()->cookie('editor');
     $user = explode('+', base64_decode($valorCodificado));
     $post_configs = Editor::where('name', $user[0])->get();
+    $uniqueDomains = [];
 @endphp
 
 @section('content')
@@ -24,9 +25,9 @@
                 <input type="text" id="search-input" class="form-control" placeholder="Pesquisar por dominios">
             </div>
             <select id="domain-select" multiple class="form-control">
-                @foreach($credentials->unique('wp_domain') as $credential)
-                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
-                @endforeach
+            @foreach($credentials->unique('wp_domain')->sortBy('wp_domain') as $credential)
+                    <option value="{{$credential->wp_domain}}" data-user="{{$credential->Editor_id}}">{{$credential->wp_domain}}</option>
+            @endforeach
             </select>
         </div>
     </div>
