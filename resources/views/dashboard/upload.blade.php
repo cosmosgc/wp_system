@@ -117,6 +117,7 @@
         const headers = [
             'Tema',
             'Keyword',
+            'Site',
             'Categoria',
             'Ancora 1',
             'URL do Link 1',
@@ -131,6 +132,8 @@
             'Insere Imagem no Post',
             'Link Interno',
             'Programacao de Postagem',
+            'URL da Publicação',
+            'Nota de SEO',
             'Dominio',
             'Gdrive',
             'Video'
