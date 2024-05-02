@@ -142,9 +142,9 @@ class PostContentService{
 
     public function downloadImageFromGoogleDrive($imageUrl, $data, $maxRetries=0)
     {
-        if ($maxRetries > 0) {
-            return; // Condição de parada: número máximo de tentativas atingido
-        }
+        // if ($maxRetries > 0) {
+        //     return; // Condição de parada: número máximo de tentativas atingido
+        // }
 
         try {
             // Cria uma instância do cliente Google Client
@@ -181,7 +181,7 @@ class PostContentService{
             return 'images/' . $fileName;
         } catch (\Exception $e) {
             // Em caso de erro, chamamos a função recursivamente
-            return $this->downloadImageFromGoogleDrive($imageUrl, $data, $maxRetries++);
+            return $e;
         }
     }
 
