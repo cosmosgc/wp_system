@@ -80,7 +80,7 @@
 
                 posts.forEach(post => {
                     //não sei pegar o keyword no momento
-                    tableHtml += "<tr><td>" + post.title.rendered + "</td><td>" + post.date + "</td><td id='yoastKey'>N/A</td><td><button class='btn btn-secondary' onclick='updateYoast(\"" + selectedDomain + "\", \"" + post.id + "\", this)'>Update Yoast Rank</button></td></tr>";
+                    tableHtml += `<tr><td>${post.title.rendered}</td><td>${post.date}</td><td id='yoastKey'>N/A</td><td><button class='btn btn-secondary' onclick='updateYoast("${selectedDomain}", "${post.id}", this)'>Update Yoast Rank</button></td></tr>`;
                 });
 
                 tableHtml += "</tbody></table>";
