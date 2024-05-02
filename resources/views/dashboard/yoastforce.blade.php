@@ -14,15 +14,51 @@
 @endphp
 
 @section('content')
-    <select id="domain-select">
-        @foreach($credentials as $credential)
-            <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
-        @endforeach
-    </select>
-
-    <div id="posts-table">
-        <h3>Escolha um dominio para carregas os posts recentes.</h3>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="height: 100%;"><i class="fas fa-search"></i></span>
+                </div>
+                <input type="text" id="search-input" class="form-control" placeholder="Pesquisar por dominios">
+            </div>
+            <select id="domain-select" multiple class="form-control">
+                @foreach($credentials->unique('wp_domain') as $credential)
+                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div id="posts-table" class="border p-3">
+                <h3>Escolha um domínio para carregar os posts recentes.</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var domainSelect = document.getElementById('domain-select');
+        var searchInput = document.getElementById('search-input');
+
+        searchInput.addEventListener('keyup', function() {
+            var searchTerm = this.value.toLowerCase();
+
+            Array.from(domainSelect.options).forEach(function(option) {
+                var optionText = option.textContent.toLowerCase();
+                if (optionText.includes(searchTerm)) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
 
     <script>
         document.getElementById('domain-select').addEventListener('change', function() {
@@ -36,7 +72,7 @@
             fetch(url)
             .then(response => response.json())
             .then(posts => {
-                var tableHtml = "<table><thead><tr><th>Title</th><th>Date</th><th>Yoast Keyword</th><th>Action</th></tr></thead><tbody>";
+                var tableHtml = "<table><thead><tr><th>Titulo</th><th>Data</th><th>Yoast Keyword</th><th>Action</th></tr></thead><tbody>";
 
                 posts.forEach(post => {
                     //não sei pegar o keyword no momento
