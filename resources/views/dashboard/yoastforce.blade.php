@@ -26,12 +26,7 @@
             </div>
             <select id="domain-select" multiple class="form-control">
             @foreach($credentials->unique('wp_domain')->sortBy('wp_domain') as $credential)
-                @if (!in_array($credential->wp_domain, $uniqueDomains))
-                    <option value="{{$credential->wp_domain}}">{{$credential->wp_domain}}</option>
-                    @php
-                        $uniqueDomains[] = $credential->wp_domain;
-                    @endphp
-                @endif
+                    <option value="{{$credential->wp_domain}}" data-user="{{$credential->Editor_id}}">{{$credential->wp_domain}}</option>
             @endforeach
             </select>
         </div>
