@@ -43,6 +43,7 @@ class PostContentService{
             'gdrive_url'=>$data->gdrive_url,
             'gdrive_document_url'=>$data->gdrive_document_url,
             'video'=>$data->video,
+            'internal_link'=>$data->internal_link,
             'Editor_id'=>$user_id[0]->id
         ]);
 
