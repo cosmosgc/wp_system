@@ -29,7 +29,7 @@
             </div>
             <select id="domain-select" multiple class="form-control">
             @foreach($credentials->unique('wp_domain')->sortBy('wp_domain') as $credential)
-                <option value="{{ htmlspecialchars(str_replace('\n', '', $credential->wp_domain)) }}">{{ htmlspecialchars(str_replace('\n', '', $credential->wp_domain)) }}</option>
+                <option value="{{ str_replace(["\r", "\n"], '', $credential->wp_domain) }}">{{ $credential->wp_domain }}</option>
             @endforeach
             </select>
         </div>
