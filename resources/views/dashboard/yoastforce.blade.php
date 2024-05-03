@@ -29,7 +29,7 @@
             </div>
             <select id="domain-select" multiple class="form-control">
             @foreach($credentials->unique('wp_domain')->sortBy('wp_domain') as $credential)
-                <option value="{{ e($credential->wp_domain) }}">{{ e($credential->wp_domain) }}</option>
+                <option value="{{ htmlspecialchars($credential->wp_domain) }}">{{ htmlspecialchars($credential->wp_domain) }}</option>
             @endforeach
             </select>
         </div>
