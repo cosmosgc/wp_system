@@ -20,4 +20,8 @@ class Wp_post_content extends Model
     public function credential(){
         return $this->belongsTo(Wp_credential::class);
     }
+
+    public function post_infos(){
+        return $this->hasOne(Wp_post_info::class);
+    }
 }
