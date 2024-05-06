@@ -203,6 +203,15 @@ class DasboardController extends Controller
     public function registerSiteTeste(){
         return view('dashboard.siteUpload');
     }
+    public function getPost($id)
+    {
+        try {
+            $post_content = Wp_post_content::find($id);
+            return response()->json($post_content);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
 }

@@ -28,6 +28,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
+Route::get('/post/{id}', [DasboardController::class, 'getPost'])->name('post');
 Route::get('/register', [DasboardController::class,'register'])->name('dashboard.register');
 Route::get('/upload_csv',[DasboardController::class,'importCsv'])->name('dashboard.uploadCsv');
 Route::get('/gdriveport',[DasboardController::class,'gDrivePort'])->name('dashboard.gDriveConfig');

@@ -160,6 +160,11 @@
                         <i class="fab fa-google"></i> Criar documentos em lote
                     </button>
                 </div>
+                <div class="col-md-3" style="display: flex; justify-content: flex-start;">
+                    <button class="btn btn-primary btn-block" onclick="batch_csv()">
+                        <i class="fab fa-file"></i> Exportar para CSV
+                    </button>
+                </div>
 
             </div>
             <div class="row progress-bar-parent" style="display:none;">
@@ -495,6 +500,135 @@
                 modal.classList.remove('open_editor_modal');
             })
 
+
+            async function batch_csv(){
+                selected_items = getSelectedItems('loading');
+                separatedData = separateThemesAndIDs(selected_items);
+                const progressBar = document.querySelector('.progress-bar-parent');
+                let errorItems = [];
+                let completedItems = 0;
+                const totalItems = Object.keys(separatedData.themes).length;
+                progressBar.style.display = 'block';
+                updateProgressBar(0);
+
+                csv_data = [];
+                for (const theme in separatedData.themes) {
+                    const id = separatedData.ids[theme];
+                    //console.log(drive_url);
+                    //const loading_doc=selectedItems[theme]
+                    console.log("exportando", [theme], [id]);
+                    try {
+                        csv_data.push(await get_post(id));
+                    } catch (error) {
+                        errorItems.push({ theme, id});
+                    }
+                    completedItems++;
+                    const progress = Math.round((completedItems / totalItems) * 100);
+                    let label = completedItems + "/" + totalItems;
+                    updateProgressBar(progress, label);
+                }
+                csv = convertToCSV(csv_data);
+                downloadCSV(csv, 'data.csv');
+
+                removed = getSelectedItems('loading', true);
+                progressBar.style.display = 'none';
+
+            }
+
+            async function get_post(id) {
+                try {
+                    const response = await fetch(`/post/${id}`); // Assuming your endpoint is /posts/{id}
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch post data');
+                    }
+                    const postData = await response.json();
+                    // Process postData as needed
+                    console.log('Post data:', postData);
+                    return postData;
+                } catch (error) {
+                    console.error('Error fetching post data:', error);
+                    throw error;
+                }
+            }
+
+            function convertToCSV(data) {
+                const headers = [
+                    'Tema',
+                    'Keyword',
+                    'Site',
+                    'Categoria',
+                    'Ancora 1',
+                    'URL do Link 1',
+                    'Dofollow_link_1',
+                    'Ancora 2',
+                    'URL do Link 2',
+                    'Dofollow_link_2',
+                    'Ancora 3',
+                    'URL do Link 3',
+                    'Dofollow_link_3',
+                    'Imagem',
+                    'Insere Imagem no Post',
+                    'Link Interno',
+                    'Programacao de Postagem',
+                    'URL da Publicação',
+                    'Nota de SEO',
+                    'Dominio',
+                    'Gdrive',
+                    'Video'
+                ];
+
+                const csvRows = [];
+                csvRows.push(headers.join(','));
+
+                data.forEach(item => {
+                    const row = [
+                        item.theme,
+                        item.keyword || '',
+                        item.site || '', // If 'site' is not available, use an empty string
+                        item.category || '', // If 'category' is not available, use an empty string
+                        item.anchor_1 || '',
+                        item.url_link_1 || '',
+                        item.do_follow_link_1 || '',
+                        item.anchor_2 || '',
+                        item.url_link_2 || '',
+                        item.do_follow_link_2 || '',
+                        item.anchor_3 || '',
+                        item.url_link_3 || '',
+                        item.do_follow_link_3 || '',
+                        item.post_image || '',
+                        item.insert_image || '',
+                        item.internal_link || '',
+                        item.schedule_date || '',
+                        item.post_url || '',
+                        item.status || '',
+                        item.domain || '',
+                        item.gdrive_url || '',
+                        item.video || ''
+                    ];
+                    csvRows.push(row.join(','));
+                });
+
+                return csvRows.join('\n');
+            }
+            function downloadCSV(csvContent, filename) {
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                if (window.navigator.msSaveOrOpenBlob) {
+                    // For IE
+                    window.navigator.msSaveBlob(blob, filename);
+                } else {
+                    // For other browsers
+                    const link = document.createElement('a');
+                    if (link.download !== undefined) {
+                        const url = URL.createObjectURL(blob);
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', filename);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                }
+            }
 
 
             //função para gerar documentos em lote
