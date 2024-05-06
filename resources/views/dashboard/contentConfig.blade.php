@@ -119,6 +119,10 @@ $user=explode('+',base64_decode($valorCodificado));
             <td>Inserir video</td>
             <td><input type="checkbox" class="video" name="" id=""></td>
         </tr>
+        <tr>
+            <td>Link interno</td>
+            <td class="internal_link" contenteditable="true"></td>
+        </tr>
 
 
 
@@ -244,6 +248,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     formData.append('domain', document.querySelector('.domain').value);
                     formData.append('video', document.querySelector('.video').checked ? 1 : 0);
                     formData.append('session_user', document.querySelector('.user').value);
+                    formData.append('internal_link', document.querySelector('.internal_link').innerText);
                     if (imageFile) {
                         formData.append('sys_image', imageFile);
                     }
@@ -254,6 +259,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     loading.innerText = 'loading....';
                     const content = document.querySelector(".content");
                     content.appendChild(loading);
+                    console.log(formData);
                     fetch('/insert_post_content', {
                         method: 'POST',
                         headers: {
