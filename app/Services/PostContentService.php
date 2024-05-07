@@ -16,8 +16,6 @@ class PostContentService{
 
         $image= $this->processImage($data);
 
-
-
         $user_id=Editor::where('name',$data->session_user)->get();
 
         $new_content=Wp_post_content::create([
@@ -44,7 +42,8 @@ class PostContentService{
             'gdrive_document_url'=>$data->gdrive_document_url,
             'video'=>$data->video,
             'internal_link'=>$data->internal_link,
-            'Editor_id'=>$user_id[0]->id
+            'Project_id'=>$data->project_id,
+            'Editor_id'=>$user_id[0]->id,
         ]);
 
 

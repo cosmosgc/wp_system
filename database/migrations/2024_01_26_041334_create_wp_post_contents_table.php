@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("keyword")->nullable();
             $table->uuid('Editor_id');
             $table->uuid('Credential_id')->nullable();
+            $table->uuid('Project_id')->nullable();
             $table->string("category")->nullable();
             $table->string("anchor_1")->nullable();
             $table->string("url_link_1")->nullable();
@@ -49,7 +50,12 @@ return new class extends Migration
             ->references('id')
             ->on('wp_credentials')
             ->onDelete('cascade');
+
+
         });
+        
+
+        
     }
 
     /**

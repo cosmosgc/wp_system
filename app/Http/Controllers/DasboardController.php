@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Editor;
 use App\Models\Ia_credential;
 use App\Models\Wp_credential;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\Wp_post_content;
 
@@ -69,7 +70,8 @@ class DasboardController extends Controller
     }
 
     public function contentCreation(){
-        return view('dashboard.contentConfig');
+        $projects=Project::all();
+        return view('dashboard.contentConfig',['projects'=>$projects]);
     }
 
     public function postCreation(){
@@ -202,6 +204,10 @@ class DasboardController extends Controller
 
     public function registerSiteTeste(){
         return view('dashboard.siteUpload');
+    }
+
+    public function createProject(){
+        return view('dashboard.createProject');
     }
 
 

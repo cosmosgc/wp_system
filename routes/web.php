@@ -11,6 +11,7 @@ use App\Http\Controllers\GptController;
 use App\Http\Controllers\iaCredentialController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\PostContentController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\WpController;
 use App\Http\Controllers\WpCredentialController;
 use App\Services\PostFileService;
@@ -58,6 +59,7 @@ Route::get('/config_updated',[DasboardController::class,'configUpdated'])->name(
 Route::get('/teste',[DasboardController::class,'gptTeste']);
 Route::get('/yoastforce',[DasboardController::class,'yoastforce'])->name('yoastforce');
 Route::get('/register_site_table',[DasboardController::class,'registerSiteTeste'])->name('importSite');
+Route::get('/create_project',[DasboardController::class,'createProject'])->name('projectCreation');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');
@@ -69,6 +71,7 @@ Route::post('/create_doc',[GooGleDocsController::class,'createDocFromDb']);
 Route::post('/post_content',[WpController::class,'createBlogPost']);
 Route::post('/update_yoaust',[WpController::class,'updateYoast']);
 Route::post('/validate',[loginController::class,'validateLogin'])->name('validateLogin');
+Route::post('/create_project',[ProjectController::class,'insertProject'])->name('createProject');
 Route::get('/quit',[loginController::class,'logoff'])->name('logoff');
 Route::post('/submit_ia_token',[iaCredentialController::class,'insertCredential'])->name('insertIaToken');
 Route::post('/submit_wp_credential',[WpCredentialController::class,'saveWpCredential'])->name('saveWpCredential');
