@@ -181,7 +181,7 @@
 
           <div class="container mt-5">
 
-            <table class="table">
+            <table class="table" id="post_list_table">
               <thead>
 
                 <tr>
@@ -299,6 +299,24 @@
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
+    <!-- DataTables CSS -->
+
+    <!-- tenho que me livrar desses códigos e do Jquery -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- DataTables JS -->
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+<script>
+
+let table = new DataTable('#post_list_table');
+
+
+</script>
+<!-- o código que quero substituir acaba aqui -->
 
     <script>
         var postContents = [];
