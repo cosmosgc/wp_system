@@ -139,30 +139,31 @@
 
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
-            <div class="row">
-                <div class="col-md-3" style="display: flex; justify-content: flex-end;">
+            <div class="row justify-content-center">
+
+                <div class="col-md-2 mb-3" style="display: flex; justify-content: flex-end;">
                     <button class="btn btn-success btn-block" onclick="batch_generate()">
                         <i class="fas fa-file"></i> Gerar conteúdo em lote
                     </button>
                 </div>
-                <div class="col-md-3" style="display: flex; justify-content: center;">
+                <div class="col-md-2 mb-3" style="display: flex; justify-content: center;">
                     <button class="btn btn-primary btn-block" onclick="batch_post()">
                         <i class="fas fa-upload"></i> Postar em lote
                     </button>
                 </div>
-                <div class="col-md-3" style="display: flex; justify-content: flex-start;">
+                <div class="col-md-2 mb-3" style="display: flex; justify-content: flex-start;">
                     <button class="btn btn-danger btn-block" onclick="batch_delete()">
                         <i class="fas fa-trash-alt"></i> Deletar em lote
                     </button>
                 </div>
-                <div class="col-md-3" style="display: flex; justify-content: flex-start;">
+                <div class="col-md-2 mb-3" style="display: flex; justify-content: flex-start;">
                     <button class="btn btn-primary btn-block" onclick="batch_doc()">
                         <i class="fab fa-google"></i> Criar documentos em lote
                     </button>
                 </div>
-                <div class="col-md-3" style="display: flex; justify-content: flex-start;">
+                <div class="col-md-2 mb-3" style="display: flex; justify-content: flex-start;">
                     <button class="btn btn-primary btn-block" onclick="batch_csv()">
-                        <i class="fab fa-file"></i> Exportar para CSV
+                        <i class="fas fa-table"></i> Exportar para CSV
                     </button>
                 </div>
 
