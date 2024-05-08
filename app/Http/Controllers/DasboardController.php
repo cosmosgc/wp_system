@@ -88,11 +88,25 @@ class DasboardController extends Controller
 
     public function listPostConfig(Request $request){
         $results=null;
+        $projects=Project::all();
         if(!empty($request->input('query'))){
             $results=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->get();
         }
 
-        return view('dashboard.SubmitPosts',['search'=>$results]);
+        if(!empty($request->input('projects'))){
+            $results=Wp_post_content::where('Project_id',$request->input('projects'))->get();
+        }
+
+        if(!empty($request->input('custom_filters'))){
+            if($request->input('custom_filters')=='Sem conteudo'){
+                $results=Wp_post_content::whereNull('post_content')->get();
+            }else{
+                $results=Wp_post_content::where('status',$request->input('custom_filters'))->get();
+            }
+            
+        }
+
+        return view('dashboard.SubmitPosts',['search'=>$results,'projects'=>$projects]);
     }
 
     public function docCreated(){

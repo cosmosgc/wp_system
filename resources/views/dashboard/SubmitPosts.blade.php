@@ -33,8 +33,6 @@
         }
     });
 
-    //dd($post_content_objects);
-
   }
 
 @endphp
@@ -137,6 +135,7 @@
             </div>
           </div>
 
+
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
             <div class="row">
@@ -162,6 +161,25 @@
                 </div>
 
             </div>
+            <div class="ProjectFilter">
+                <form action="/list_content" method="get">
+                    <select name="projects" id="">
+                        @foreach ($projects as $project )
+                            <option value="{{$project->id}}">{{$project->project_name }}</option>
+                        @endforeach
+                    </select>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+              </div>
+              <div class="UnpublishedField">
+                <form action="/list_content" method="get">
+                    <select name="custom_filters" id="">
+                        <option value="Não publicado">Não publicado</option>
+                        <option value="Sem conteudo">Sem conteúdo</option>
+                    </select>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+              </div>
             <div class="row progress-bar-parent" style="display:none;">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
