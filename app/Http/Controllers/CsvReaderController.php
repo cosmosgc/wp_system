@@ -107,6 +107,7 @@ class CsvReaderController extends Controller
                         'schedule_date'=>$dataAtual,
                         'insert_image'=>isset($dt['Insere Imagem no Post']) && $dt['Insere Imagem no Post']==='Sim'?true:null,
                         'post_image'=>$addImage,
+                        'Project_id'=>$request->project_id,
                         'user_id'=>$request->user_id,
 
                     );

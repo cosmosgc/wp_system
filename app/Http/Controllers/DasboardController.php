@@ -122,7 +122,8 @@ class DasboardController extends Controller
     }
 
     public function importCsv(){
-        return view('dashboard.upload');
+        $projectsForCsv=Project::all();
+        return view('dashboard.upload',['projects'=>$projectsForCsv]);
     }
     public function gDrivePort(){
         return view('dashboard.gdriveConfig');
