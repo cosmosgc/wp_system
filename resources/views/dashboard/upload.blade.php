@@ -52,7 +52,7 @@
                     <input type="file" class="custom-file-input" id="csv_file" name="csv_file">
                     <input type="hidden" name="" id="config_creation" value="config_creation">
                 </div>
-            </div>    
+            </div>
 
         </div>
     </div>
@@ -132,7 +132,7 @@
                 // Check if headers match
                 const headerRow = rows[0].split(',');
                 const headersMatch = headers.every((header, index) => header === headerRow[index].trim());
-
+                let errorMessages = ''; // String to store error messages
                 for (let i = 0; i < rows.length; i++) {
                     const cells = rows[i].split(',');
                     if (i === 0 && !headersMatch) {
@@ -140,6 +140,7 @@
                         for (let j = 0; j < cells.length; j++) {
                             if (cells[j].trim() !== headers[j]) {
                                 tableHTML += `<td class="keyerror">${cells[j]}</td>`;
+                                errorMessages += `Encontramos um problema na linha ${i + 1}, coluna ${j + 1}: era para ser '<span style="color: blue;">${headers[j]}</span>' mas tinha '<span style="color: red;">${cells[j]}</span>'.\n <br>`;
                             } else {
                                 tableHTML += `<td>${cells[j]}</td>`;
                             }
@@ -153,6 +154,14 @@
                     tableHTML += '</tr>';
                 }
                 tableHTML += '</table>';
+                if (errorMessages !== '') {
+                    Swal.fire({
+                        title: 'Error!',
+                        html: errorMessages,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
                 document.getElementById('csv_table_container').innerHTML = tableHTML;
                 submitButton.classList.remove('d-none');
             };
