@@ -312,7 +312,12 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
 <script>
 
-let table = new DataTable('#post_list_table');
+let table = new DataTable('#post_list_table', {
+    language: {
+        url: '//cdn.datatables.net/plug-ins/2.0.7/i18n/pt-BR.json',
+    },
+    "searching": false,
+});
 
 
 </script>
