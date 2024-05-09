@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Wp_post_info extends Model
+class Project extends Model
 {
     use HasFactory;
     use HasUuids;
 
-    protected $fillable=['post_name','post_id','post_url','Config_id'];
+    protected $fillable=['project_name'];
 
-    public function get_config(){
-        return  $this->belongsTo(Wp_post_content::class);
+    public function post_config(){
+        return $this->hasMany(Wp_post_content::class);
     }
+
 }

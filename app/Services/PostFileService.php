@@ -42,6 +42,7 @@ class PostFileService{
             'insert_image'=>isset($data['insert_image']) && ($data['insert_image']===true)?1:0,
             'post_image'=>isset($data['post_image'])?$data['post_image']:null,
             'status'=>'Não publicado',
+            'Project_id'=>isset($data['Project_id'])?$data['Project_id']:null,
             'Editor_id'=>$data['user_id']
         ]);
     }

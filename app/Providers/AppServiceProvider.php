@@ -2,14 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Project;
 use App\Services\CsvReaderService;
 use App\Services\EditorService;
 use App\Services\LoginService;
 use App\Services\ScheduleService;
 use App\Services\PostContentService;
 use App\Services\GoogleDriveService;
+use App\Services\ProjectService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(GoogleDriveService::class,function($app){
             return new GoogleDriveService();
+        });
+
+        $this->app->singleton(ProjectService::class, function($app){
+            return new ProjectService();
         });
 
 

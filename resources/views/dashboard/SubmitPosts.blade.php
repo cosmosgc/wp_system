@@ -33,8 +33,6 @@
         }
     });
 
-    //dd($post_content_objects);
-
   }
 
 @endphp
@@ -137,6 +135,7 @@
             </div>
           </div>
 
+
           <input type="hidden" name="user_id" class="user_id" value="{{isset($post_configs[0]->id)?$post_configs[0]->id:0}}">
 
             <div class="row justify-content-center">
@@ -168,7 +167,8 @@
                 </div>
 
             </div>
-            <div class="row progress-bar-parent" style="display:none;">
+
+            <div class="row mt-2 progress-bar-parent" style="display:none;">
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                         <span class="progress-label">0%</span>
@@ -176,10 +176,44 @@
                 </div>
             </div>
 
+            <div class="row mt-4 justify-content-between">
+                <div class="col-md-6 col-lg-4 offset-md-3 offset-lg-0">
+                    <div class="ProjectFilter">
+                        <form action="/list_content" method="get">
+                            <div class="input-group">
+                                <select name="projects" id="" class="form-control">
+                                    @foreach ($projects as $project )
+                                        <option value="{{$project->id}}">{{$project->project_name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="UnpublishedField">
+                        <form action="/list_content" method="get">
+                            <div class="input-group">
+                                <select name="custom_filters" id="" class="form-control">
+                                    <option value="Não publicado">Não publicado</option>
+                                    <option value="Sem conteudo">Sem conteúdo</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
 
 
-          <div class="container mt-5">
+
+          <div class="container">
 
             <table class="table">
               <thead>

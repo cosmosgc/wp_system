@@ -32,6 +32,12 @@
                 <input type="hidden" name="user_id" value="{{$post_configs[0]->id}}">
                 <button type="submit" class="btn btn-primary btn-block">Importar</button>
             </form> -->
+            <label for="">Selecionar Projetos</label>
+            <select class="form-select" name="projects" id="projects_id">
+                @foreach ($projects as $project)
+                <option value="{{$project->id}}">{{$project->project_name}}</option>
+                @endforeach
+            </select><br>
 
             <div class="form-group">
                 <label for="csv_file" class="download-label d-flex align-items-center justify-content-center border rounded p-3">
@@ -46,7 +52,7 @@
                     <input type="file" class="custom-file-input" id="csv_file" name="csv_file">
                     <input type="hidden" name="" id="config_creation" value="config_creation">
                 </div>
-            </div>
+            </div>    
 
         </div>
     </div>
@@ -83,6 +89,7 @@
     const fileInput = document.getElementById('csv_file');
     const docType=document.getElementById("config_creation").value
     const user_id = document.getElementById('user_id').value;
+    const project= document.getElementById('projects_id').value;
     const submitButton = document.getElementById('submit_csv_button');
 
     fileInput.addEventListener('change', function() {
@@ -211,7 +218,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify({ user_id: user_id, docType:docType,csvData: rowData}),
+                body: JSON.stringify({ user_id: user_id, docType:docType, project_id:project ,csvData: rowData}),
             })
             .then(response => {
                 if (response.ok) {

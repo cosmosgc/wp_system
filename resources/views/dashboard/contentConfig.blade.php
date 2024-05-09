@@ -32,6 +32,16 @@ $user=explode('+',base64_decode($valorCodificado));
             <th>Input</th>
         </tr>
         <tr>
+            <td>Projeto</td>
+            <td>
+            <select name="" id="projects">
+                @foreach ($projects as $project)
+                   <option value="{{$project->project_name}}" data-project_id="{{$project->id}}">{{$project->project_name}}</option> 
+                @endforeach
+            </select>
+            </td>
+        </tr>
+        <tr>
             <td>Tema</td>
             <td class="theme" contenteditable="true"></td>
         </tr>
@@ -249,6 +259,7 @@ $user=explode('+',base64_decode($valorCodificado));
                     formData.append('video', document.querySelector('.video').checked ? 1 : 0);
                     formData.append('session_user', document.querySelector('.user').value);
                     formData.append('internal_link', document.querySelector('.internal_link').innerText);
+                    formData.append('project_id',document.getElementById("projects").selectedOptions[0].getAttribute("data-project_id"));
                     if (imageFile) {
                         formData.append('sys_image', imageFile);
                     }
@@ -291,7 +302,7 @@ $user=explode('+',base64_decode($valorCodificado));
                             confirmButtonText: 'continue'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                               // window.location.reload();
                             }
                         });
 
