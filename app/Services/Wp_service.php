@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Wp_post_content;
+use App\Models\Wp_post_info;
 use GuzzleHttp\Client;
 use  Exception;
 
@@ -116,6 +117,7 @@ class Wp_service{
 
                 if ($post_content) {
                     $post_content->update(['status' => 'publicado', 'post_url' => $post_url]);
+                    $post_infos=Wp_post_info::create(['post_name'=>$post_content->theme,'post_url'=>$post_url,'post_id'=>$post_id,'Config_id'=>$post_content->id]);
                 }
                 // $change_status=Wp_post_content::where('theme',$title)->update(['status'=>'publicado']);
                 // $insert_url=Wp_post_content::where('theme',$title)->update(['post_url'=>$post_url]);
