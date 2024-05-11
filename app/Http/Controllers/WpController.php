@@ -18,14 +18,26 @@ class WpController extends Controller
         $this->wpService=$service;
     }
 
+
+    
             public function createBlogPost(Request $request){
 
                 $image=Wp_post_content::find($request->id);
-                $login=Wp_credential::where('wp_domain',$image->domain)->get();
-                $domain_with_ssl=preg_replace('/^(?!https?:\/\/)/', 'https://',$login[0]->wp_domain);
-                $newPost=$this->wpService->postBlogContent($image->keyword,$image->theme,$image->category,$image->post_content,$image->insert_image,$image->post_image,$domain_with_ssl,$login[0]->wp_login,$login[0]->wp_password, $image->schedule_date, $image->id);
-                //$update_meta=$this->wpService->updateYoastRankMath($domain_with_ssl,intval($request->id),isset($image->keyword)?$image->keyword:'placeholder');
-                return $newPost;
+                try {
+                    if($image->status!='publicado'){
+                        $login=Wp_credential::where('wp_domain',$image->domain)->get();
+                        $domain_with_ssl=preg_replace('/^(?!https?:\/\/)/', 'https://',$login[0]->wp_domain);
+                        $newPost=$this->wpService->postBlogContent($image->keyword,$image->theme,$image->category,$image->post_content,$image->insert_image,$image->post_image,$domain_with_ssl,$login[0]->wp_login,$login[0]->wp_password, $image->schedule_date, $image->id);
+                        //$update_meta=$this->wpService->updateYoastRankMath($domain_with_ssl,intval($request->id),isset($image->keyword)?$image->keyword:'placeholder');
+                        return $newPost;
+
+                    }else{
+                        return response()->json('post existente na plataforma',500);
+                    }
+                } catch (\Throwable $th) {
+                   return $th;
+                }
+
             }
 
             public function updateYoast(Request $request){
