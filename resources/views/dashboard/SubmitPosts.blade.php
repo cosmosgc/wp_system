@@ -299,9 +299,8 @@
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
-    <!-- DataTables CSS -->
 
-    <!-- tenho que me livrar desses códigos e do Jquery -->
+<!-- DOTO: tenho que me livrar desses códigos e do Jquery -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
 
 <!-- jQuery -->
@@ -314,7 +313,7 @@
 
 let table = new DataTable('#post_list_table', {
     language: {
-        url: '//cdn.datatables.net/plug-ins/2.0.7/i18n/pt-BR.json',
+        url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/pt-BR.json',
     },
     "searching": false,
 });
