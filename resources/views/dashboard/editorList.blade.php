@@ -70,7 +70,7 @@
 </style>
 
 <h2>Lista de editores</h2>
-        <table class="table">
+        <table id="list" class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -128,6 +128,27 @@
         <button class="btn btn-primary upgrade_button">Atualizar</button>
         <button class="btn btn-danger close_modal_button">X</button>
     </div>
+<!-- DOTO: tenho que me livrar desses códigos e do Jquery -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- DataTables JS -->
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+<script>
+
+let table = new DataTable('#list', {
+    language: {
+        url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/pt-BR.json',
+    },
+    //"searching": false,
+});
+
+
+</script>
+<!-- o código que quero substituir acaba aqui -->
 
     <script>
         const id =document.querySelectorAll('.id')
