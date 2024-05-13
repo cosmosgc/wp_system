@@ -330,7 +330,7 @@
 
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-registered"></i>Registrar Sites</a></ol>
-                <!-- <ol><a href="{{ route('importSite', ['page' => 'importSite']) }}"><i class="fas fa-registered"></i>Importar sites</a></ol> -->
+                <ol><a href="{{ route('importSite', ['page' => 'importSite']) }}"><i class="fas fa-globe"></i>Importar sites</a></ol>
 
                 <ol><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i>Lista de Sites</a></ol>
 
@@ -345,6 +345,7 @@
                 <ol><a href="{{ route('dashboard.gDriveConfig', ['page' => 'dashboard.gDriveConfig']) }}"><i class="fas fa-id-card"></i>Criar credenciais Google</a></ol>
                 <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-file-upload"></i>Importar config</a></ol>
                 <ol><a href="{{ route('yoastforce', ['page' => 'yoastforce']) }}"><i class="fas fa-id-card"></i>youstforce</a></ol>
+                <ol><a href="{{ route('projectCreation', ['page' => 'criar_projetos']) }}"><i class="fas fa-coffee"></i>Criar Projeto</a></ol>
 
             </div>
 
