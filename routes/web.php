@@ -61,6 +61,8 @@ Route::get('/teste',[DasboardController::class,'gptTeste']);
 Route::get('/yoastforce',[DasboardController::class,'yoastforce'])->name('yoastforce');
 Route::get('/register_site_table',[DasboardController::class,'registerSiteTeste'])->name('importSite');
 Route::get('/create_project',[DasboardController::class,'createProject'])->name('projectCreation');
+Route::get('/projectList',[DasboardController::class,'listProject'])->name('projectList');
+
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

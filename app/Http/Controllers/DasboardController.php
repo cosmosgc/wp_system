@@ -103,7 +103,7 @@ class DasboardController extends Controller
             }else{
                 $results=Wp_post_content::where('status',$request->input('custom_filters'))->get();
             }
-            
+
         }
 
         return view('dashboard.SubmitPosts',['search'=>$results,'projects'=>$projects]);
@@ -233,6 +233,8 @@ class DasboardController extends Controller
     public function createProject(){
         return view('dashboard.createProject');
     }
-
+    public function listProject(){
+        return view('dashboard.listProject');
+    }
 
 }
