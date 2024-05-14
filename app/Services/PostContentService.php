@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Drive_credential;
 use App\Models\Editor;
 use App\Models\Wp_post_content;
 use Illuminate\Support\Str;
@@ -149,13 +150,12 @@ class PostContentService{
         try {
             // Cria uma instância do cliente Google Client
             $client = new Google_Client();
-            $credentials = Editor::all();
+            $credentials = Drive_credential::all();
             $client->setApplicationName('Google Drive API');
-            dd($credentials[0]->GoogleCredentials->api_key);
-            if (!isset($credentials[0]->GoogleCredentials->api_key)) {
+            if (!isset($credentials[0]->api_key)) {
                 return response()->json('sem credenciais',500);
             }
-            $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
+            $client->setDeveloperKey($credentials[0]->api_key); // Usando a chave de API
 
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
