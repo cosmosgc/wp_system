@@ -324,6 +324,7 @@
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.SumitPosts', ['page' => 'post_content']) }}"><i class="fas fa-upload"></i>Publicar em sites</a></ol>
                 <ol><a href="{{ route('dashboard.contentConfig', ['page' => 'content_creation']) }}"><i class="fas fa-pen"></i>Criar Artigo</a></ol>
+                <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-file-excel"></i>Importar CSV</a></ol>
             </div>
 
             <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>Configurações <span class="arrow">></span></li>
@@ -343,7 +344,6 @@
                 <ol><a href="{{ route('listIaCredentials', ['page' => 'listGptToken']) }}"><i class="fas fa-list"></i>Listar Tokens</a></ol>
                 @endif --}}
                 <ol><a href="{{ route('dashboard.gDriveConfig', ['page' => 'dashboard.gDriveConfig']) }}"><i class="fas fa-id-card"></i>Criar credenciais Google</a></ol>
-                <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-file-upload"></i>Importar config</a></ol>
                 <ol><a href="{{ route('yoastforce', ['page' => 'yoastforce']) }}"><i class="fas fa-id-card"></i>youstforce</a></ol>
                 <ol><a href="{{ route('projectCreation', ['page' => 'criar_projetos']) }}"><i class="fas fa-coffee"></i>Criar Projeto</a></ol>
                 <ol><a href="{{ route('projectList', ['page' => 'listar_projetos']) }}"><i class="fas fa-coffee"></i>Lista de Projetos</a></ol>
