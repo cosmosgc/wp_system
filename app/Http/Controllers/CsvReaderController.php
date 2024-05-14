@@ -81,6 +81,7 @@ class CsvReaderController extends Controller
                      if(!empty($dt['Imagem'])){
                         try {
                             $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
+                            dd($addImage);
                         } catch (\Throwable $th) {
                             return $th;
                         }
