@@ -152,7 +152,7 @@ class PostContentService{
             $credentials = Editor::all();
             $client->setApplicationName('Google Drive API');
             if (!isset($credentials[0]->GoogleCredentials->api_key)) {
-                return;
+                return response()->json('sem credenciais',500);
             }
             $client->setDeveloperKey($credentials[0]->GoogleCredentials->api_key); // Usando a chave de API
 
