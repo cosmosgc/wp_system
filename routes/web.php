@@ -62,7 +62,7 @@ Route::get('/yoastforce',[DasboardController::class,'yoastforce'])->name('yoastf
 Route::get('/register_site_table',[DasboardController::class,'registerSiteTeste'])->name('importSite');
 Route::get('/create_project',[DasboardController::class,'createProject'])->name('projectCreation');
 Route::get('/projectList',[DasboardController::class,'listProject'])->name('projectList');
-
+Route::get('/project/{id}',[DasboardController::class,'listProjectItems'])->name('listProjectItems');
 
 
 Route::post('/createEditor', [EditorController::class,'processEditor'])->name('processEditor');

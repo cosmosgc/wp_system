@@ -236,5 +236,12 @@ class DasboardController extends Controller
     public function listProject(){
         return view('dashboard.listProject');
     }
-
+    public function listProjectItems($id){
+        try {
+            $project = Wp_post_content::where('project_id',$id)->get();
+            return response()->json($project);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

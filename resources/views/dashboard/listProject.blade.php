@@ -26,8 +26,8 @@
                 <td>{{ $project->id }}</td>
                 <td>{{ $project->project_name }}</td>
                 <td>
-                    <button type="button" class="btn btn-info" onclick="updateProject({{ $project->id }})">Update</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteProject({{ $project->id }})">Delete</button>
+                    <button type="button" class="btn btn-info" onclick="updateProject('{{ $project->id }}')">Update</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteProject('{{ $project->id }}')">Delete</button>
                 </td>
             </tr>
             @endforeach
