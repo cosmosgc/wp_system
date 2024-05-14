@@ -89,7 +89,6 @@
     const fileInput = document.getElementById('csv_file');
     const docType=document.getElementById("config_creation").value
     const user_id = document.getElementById('user_id').value;
-    const project= document.getElementById('projects_id').value;
     const submitButton = document.getElementById('submit_csv_button');
 
     fileInput.addEventListener('change', function() {
@@ -202,6 +201,7 @@
         const csvData = [];
         const progressBar = document.querySelector('.progress-bar');
         const progresslabel = document.querySelector('.progress-label');
+        const project= document.getElementById('projects_id').selectedOptions[0].value;
         const totalRows = tableRows.length-1;
         let processedRows = 0;
 
@@ -220,7 +220,7 @@
                 const cellData = cell.textContent.trim();
                 rowData[header] = cellData;
             });
-            console.log(rowData);
+            console.log({ user_id: user_id, docType:docType, project_id:project ,csvData: rowData});
             fetch('/submit_file', {
                 method: 'POST',
                 headers: {
