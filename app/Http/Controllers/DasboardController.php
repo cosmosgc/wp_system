@@ -248,7 +248,7 @@ class DasboardController extends Controller
         }
     }
     public function deleteProject($id){
-        $project = Editor::find($id);
+        $project = Project::find($id);
         if ($project) {
             $project->delete();
             return response()->json($project);
