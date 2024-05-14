@@ -80,8 +80,8 @@ class CsvReaderController extends Controller
                      $userData=json_decode($teste);
                      if(!empty($dt['Imagem'])){
                         try {
-                            $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
-                            //dd($addImage);
+                            $test=$this->imageService->downloadImageFromGoogleDrive('',$userData);
+                            dd($test);
                         } catch (\Throwable $th) {
                             return $th;
                         }
