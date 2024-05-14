@@ -346,6 +346,7 @@
                 <ol><a href="{{ route('dashboard.gDriveConfig', ['page' => 'dashboard.gDriveConfig']) }}"><i class="fas fa-id-card"></i>Criar credenciais Google</a></ol>
                 <ol><a href="{{ route('yoastforce', ['page' => 'yoastforce']) }}"><i class="fas fa-id-card"></i>youstforce</a></ol>
                 <ol><a href="{{ route('projectCreation', ['page' => 'criar_projetos']) }}"><i class="fas fa-coffee"></i>Criar Projeto</a></ol>
+                <ol><a href="{{ route('projectList', ['page' => 'listar_projetos']) }}"><i class="fas fa-coffee"></i>Lista de Projetos</a></ol>
 
             </div>
 

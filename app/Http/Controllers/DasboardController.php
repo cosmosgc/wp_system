@@ -106,7 +106,7 @@ class DasboardController extends Controller
             }else{
                 $results=Wp_post_content::where('status',$request->input('custom_filters'))->where('Editor_id', $user_session->id)->distinct()->get();
             }
-            
+
         }
 
         return view('dashboard.SubmitPosts',['search'=>$results,'projects'=>$projects]);
@@ -236,6 +236,24 @@ class DasboardController extends Controller
     public function createProject(){
         return view('dashboard.createProject');
     }
-
-
+    public function listProject(){
+        return view('dashboard.listProject');
+    }
+    public function listProjectItems($id){
+        try {
+            $project = Wp_post_content::where('project_id',$id)->get();
+            return response()->json($project);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function deleteProject($id){
+        $project = Project::find($id);
+        if ($project) {
+            $project->delete();
+            return response()->json($project);
+        } else {
+            return response()->json(['error' => "Aconteceu um problema ao tentar deletar o projeto"], 500);
+        }
+    }
 }
