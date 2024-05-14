@@ -93,18 +93,18 @@ class DasboardController extends Controller
         $results=null;
         $projects=Project::all();
         if(!empty($request->input('query'))){
-            $results=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->where('Editor_id', $user_session->id)->get();
+            $results=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->where('Editor_id', $user_session->id)->distinct()->get();
         }
 
         if(!empty($request->input('projects'))){
-            $results=Wp_post_content::where('Project_id',$request->input('projects'))->where('Editor_id', $user_session->id)->get();
+            $results=Wp_post_content::where('Project_id',$request->input('projects'))->where('Editor_id', $user_session->id)->distinct()->get();
         }
 
         if(!empty($request->input('custom_filters'))){
             if($request->input('custom_filters')=='Sem conteudo'){
-                $results=Wp_post_content::whereNull('post_content')->where('Editor_id', $user_session->id)->get();
+                $results=Wp_post_content::whereNull('post_content')->where('Editor_id', $user_session->id)->distinct()->get();
             }else{
-                $results=Wp_post_content::where('status',$request->input('custom_filters'))->where('Editor_id', $user_session->id)->get();
+                $results=Wp_post_content::where('status',$request->input('custom_filters'))->where('Editor_id', $user_session->id)->distinct()->get();
             }
             
         }
