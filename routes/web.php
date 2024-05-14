@@ -84,6 +84,7 @@ Route::delete('/remove_config',[ConfigDeleteController::class,'deleteConfig']);
 Route::delete('/editor/{id}', [EditorController::class,'destroy'])->name('editor.destroy');
 Route::delete('/wp_crential/{id}',[WpCredentialController::class,'deleteWpCredential'])->name('credentialDelete');
 Route::delete('/delete_token/{id}',[iaCredentialController::class,'deleteCredential'])->name('deleteToken');
+Route::delete('/project/{id}',[DasboardController::class,'deleteProject'])->name('deleteProject');
 Route::put('/update_user',[EditorController::class,'updateEditor']);
 Route::put('/update_credentials',[WpCredentialController::class,'updateWpCredential']);
 Route::put('/update_config',[PostContentController::class,'updateConfig']);

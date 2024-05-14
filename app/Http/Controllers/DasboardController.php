@@ -247,4 +247,13 @@ class DasboardController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    public function deleteProject($id){
+        $project = Editor::find($id);
+        if ($project) {
+            $project->delete();
+            return response()->json($project);
+        } else {
+            return response()->json(['error' => "Aconteceu um problema ao tentar deletar o projeto"], 500);
+        }
+    }
 }
