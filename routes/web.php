@@ -88,5 +88,6 @@ Route::delete('/project/{id}',[DasboardController::class,'deleteProject'])->name
 Route::put('/update_user',[EditorController::class,'updateEditor']);
 Route::put('/update_credentials',[WpCredentialController::class,'updateWpCredential']);
 Route::put('/update_config',[PostContentController::class,'updateConfig']);
+Route::put('/project/{id}', [DasboardController::class, 'updateProject'])->name('updateProject');
 
 
