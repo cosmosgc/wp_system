@@ -236,7 +236,7 @@
                     row.classList.add('csv_error');
                     Swal.fire({
                         title: 'Error!',
-                        text: response.data,
+                        text: response.json(),
                         icon: 'error',
                         confirmButtonText: 'Fechar'
                         })
