@@ -74,7 +74,7 @@ class CsvReaderController extends Controller
                      if(!empty($url)){
                         $folders_part = explode('/folders/', $path)[1];
                      }
-                     
+
                      $dataUser=array('session_user'=>$user[0],'gdrive_url'=>$folders_part);
                      $teste=json_encode($dataUser);
                      $userData=json_decode($teste);
@@ -82,10 +82,16 @@ class CsvReaderController extends Controller
                         try {
                             $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
                             //dd($addImage);
+                            if (strpos($addImage, '<html>') === 0) {
+                                // Handle the case where $addImage starts with <html>
+                                // For example, log an error, throw an exception, or set $addImage to null
+                                error_log("A imagem de downloadImageFromGoogleDrive veio como html.");
+                                $addImage = null; // Or handle it in another appropriate way
+                            }
                         } catch (\Throwable $th) {
                             return $th;
                         }
-                         
+
                      }
 
                     $content=array(
