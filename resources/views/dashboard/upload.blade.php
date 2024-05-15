@@ -235,6 +235,12 @@
                     row.remove();
                 } else {
                     row.classList.add('csv_error');
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.data,
+                        icon: 'error',
+                        confirmButtonText: 'Fechar'
+                        })
                 }
                 //Movi o conteúdo do .finally para cá
                 processedRows++;
