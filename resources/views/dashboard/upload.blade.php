@@ -219,6 +219,7 @@
                 const header = headers[index]; // Assuming 'headers' is an array of header names
                 const cellData = cell.textContent.trim();
                 rowData[header] = cellData;
+                cell.classList.add("loading");
             });
             console.log({ user_id: user_id, docType:docType, project_id:project ,csvData: rowData});
             fetch('/submit_file', {
@@ -241,18 +242,26 @@
                         confirmButtonText: 'Fechar'
                         })
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
+                //Movi o conteúdo do .finally para cá
                 processedRows++;
                 const progressPercentage = (processedRows / totalRows) * 100;
                 progressBar.style.width = `${progressPercentage}%`;
                 progressBar.setAttribute('aria-valuenow', progressPercentage);
                 roundedPercent = Math.round(progressPercentage);
                 progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
-            });
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            // .finally(() => {
+            //     processedRows++;
+            //     const progressPercentage = (processedRows / totalRows) * 100;
+            //     progressBar.style.width = `${progressPercentage}%`;
+            //     progressBar.setAttribute('aria-valuenow', progressPercentage);
+            //     roundedPercent = Math.round(progressPercentage);
+            //     progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
+            // });
         });
     }
 </script>
@@ -263,6 +272,18 @@
     tr.csv_error, td.keyerror {
         background: #d1464657;
     }
+    tr.loading {
+            background: #8d8d8d54;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% {
+                background-color: #8d8d8d54;
+            }
+            100% {
+                background-color: #8d8d8d;
+            }
+        }
 </style>
 @endsection
 
