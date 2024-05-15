@@ -256,4 +256,22 @@ class DasboardController extends Controller
             return response()->json(['error' => "Aconteceu um problema ao tentar deletar o projeto"], 500);
         }
     }
+    public function updateProject($id)
+    {
+        try {
+            $project = Wp_post_content::find($id);
+
+            if (!$project) {
+                return response()->json(['message' => 'item de projeto não encontrado!'], 404);
+            }
+
+            $project->project_id = null;
+            $project->save();
+
+            return response()->json(['message' => 'Projeto atualizado com sucesso!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Houve um problema ao atualizar o projeto.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
 }
