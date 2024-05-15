@@ -170,7 +170,7 @@
 
 
 
-    function process_upload(){
+    async function process_upload(){
         const headers = [
             'Tema',
             'Keyword',
@@ -243,25 +243,25 @@
                         })
                 }
                 //Movi o conteúdo do .finally para cá
+                // processedRows++;
+                // const progressPercentage = (processedRows / totalRows) * 100;
+                // progressBar.style.width = `${progressPercentage}%`;
+                // progressBar.setAttribute('aria-valuenow', progressPercentage);
+                // roundedPercent = Math.round(progressPercentage);
+                // progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
                 processedRows++;
                 const progressPercentage = (processedRows / totalRows) * 100;
                 progressBar.style.width = `${progressPercentage}%`;
                 progressBar.setAttribute('aria-valuenow', progressPercentage);
                 roundedPercent = Math.round(progressPercentage);
                 progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
-
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            // .finally(() => {
-            //     processedRows++;
-            //     const progressPercentage = (processedRows / totalRows) * 100;
-            //     progressBar.style.width = `${progressPercentage}%`;
-            //     progressBar.setAttribute('aria-valuenow', progressPercentage);
-            //     roundedPercent = Math.round(progressPercentage);
-            //     progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
-            // });
+            });
         });
     }
 </script>
