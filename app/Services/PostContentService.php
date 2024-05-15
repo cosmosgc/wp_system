@@ -154,9 +154,6 @@ class PostContentService{
             $client->setApplicationName('Google Drive API');
             $accessToken = session('google_access_token');
             // Se o token de acesso não estiver presente na sessão, redirecione para o processo de autenticação do Google
-            if (!$accessToken) {
-                return response()->json('Token expirado ou não fornecido',500);
-            }
             $client->setAccessToken($accessToken);
             // if (!isset($credentials[0]->api_key)) {
             //     return response()->json('sem credenciais',500);
