@@ -81,7 +81,6 @@ class CsvReaderController extends Controller
                      if(!empty($dt['Imagem'])){
                         try {
                             $addImage=$this->imageService->downloadImageFromGoogleDrive('',$userData);
-                            //dd($addImage);
                             if (strpos($addImage, '<html>') === 0) {
                                 // Handle the case where $addImage starts with <html>
                                 // For example, log an error, throw an exception, or set $addImage to null

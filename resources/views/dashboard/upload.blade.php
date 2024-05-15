@@ -237,7 +237,7 @@
                     row.classList.add('csv_error');
                     Swal.fire({
                         title: 'Error!',
-                        text: response.data,
+                        text: 'Token invalido ou não cadastrado',
                         icon: 'error',
                         confirmButtonText: 'Fechar'
                         })
