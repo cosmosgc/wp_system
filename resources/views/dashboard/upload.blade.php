@@ -57,6 +57,12 @@
         </div>
     </div>
 </div>
+<!-- um atalho para logar com google -->
+<a href="/auth/google" class="btn btn-primary btn-block"
+                        style="
+                            width: 100%;
+                            margin-top: 10px;
+                        ">Login Google</a>
 <button id="submit_csv_button" class="btn btn-primary btn-block mt-3 d-none" onclick="process_upload();">Enviar CSV</button>
 <input type="hidden" name="user_id" id="user_id" value="{{$post_configs[0]->id}}">
 <div class="progress">
@@ -236,6 +242,13 @@
             } else {
                 row.classList.add('csv_error');
                 const responseData = await response.json();
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('error-message');
+                errorMessage.textContent = responseData.data;
+
+                // Insert the error message after the row element
+                row.parentNode.insertBefore(errorMessage, row.nextSibling);
+
                 Swal.fire({
                     title: 'Error!',
                     text: responseData.data,
