@@ -170,7 +170,7 @@
 
 
 
-    async function process_upload(){
+    async function process_upload() {
         const headers = [
             'Tema',
             'Keyword',
@@ -196,74 +196,66 @@
             'Video'
         ];
 
-        const tableRows = document.querySelectorAll('#csv_table_container table tr');
-        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-        const csvData = [];
-        const progressBar = document.querySelector('.progress-bar');
-        const progresslabel = document.querySelector('.progress-label');
-        const project= document.getElementById('projects_id').selectedOptions[0].value;
-        const totalRows = tableRows.length-1;
-        let processedRows = 0;
+    const tableRows = document.querySelectorAll('#csv_table_container table tr');
+    const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+    const progressBar = document.querySelector('.progress-bar');
+    const progresslabel = document.querySelector('.progress-label');
+    const project = document.getElementById('projects_id').selectedOptions[0].value;
+    const totalRows = tableRows.length - 1;
+    let processedRows = 0;
 
-        tableRows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const rowData = {};
-            const firstCell = cells[0].textContent.trim();
-            const firstHeader = headers[0];
-            if (firstCell === firstHeader) {
-                // If true, skip this row and continue with the next one
-                return;
-            }
-            cells.forEach((cell, index) => {
-                // Assuming the headers are in the same order as the table columns
-                const header = headers[index]; // Assuming 'headers' is an array of header names
-                const cellData = cell.textContent.trim();
-                rowData[header] = cellData;
-                cell.classList.add("loading");
-            });
-            console.log({ user_id: user_id, docType:docType, project_id:project ,csvData: rowData});
-            fetch('/submit_file', {
+    for (let row of tableRows) {
+        const cells = row.querySelectorAll('td');
+        const rowData = {};
+        const firstCell = cells[0].textContent.trim();
+        const firstHeader = headers[0];
+        if (firstCell === firstHeader) {
+            // Skip the header row
+            continue;
+        }
+        cells.forEach((cell, index) => {
+            const header = headers[index];
+            const cellData = cell.textContent.trim();
+            rowData[header] = cellData;
+            cell.classList.add("loading");
+        });
+        console.log({ user_id: user_id, docType:docType, project_id:project ,csvData: rowData});
+
+        try {
+            const response = await fetch('/submit_file', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify({ user_id: user_id, docType:docType, project_id:project ,csvData: rowData}),
-            })
-            .then(response => {
-                if (response.ok) {
-                    row.remove();
-                } else {
-                    row.classList.add('csv_error');
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Token invalido ou não cadastrado',
-                        icon: 'error',
-                        confirmButtonText: 'Fechar'
-                        })
-                }
-                //Movi o conteúdo do .finally para cá
-                // processedRows++;
-                // const progressPercentage = (processedRows / totalRows) * 100;
-                // progressBar.style.width = `${progressPercentage}%`;
-                // progressBar.setAttribute('aria-valuenow', progressPercentage);
-                // roundedPercent = Math.round(progressPercentage);
-                // progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
-
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                processedRows++;
-                const progressPercentage = (processedRows / totalRows) * 100;
-                progressBar.style.width = `${progressPercentage}%`;
-                progressBar.setAttribute('aria-valuenow', progressPercentage);
-                roundedPercent = Math.round(progressPercentage);
-                progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
+                body: JSON.stringify({ user_id: user_id, docType: docType, project_id: project, csvData: rowData }),
             });
-        });
+
+            if (response.ok) {
+                row.remove();
+            } else {
+                row.classList.add('csv_error');
+                const responseData = await response.json();
+                Swal.fire({
+                    title: 'Error!',
+                    text: responseData.data,
+                    icon: 'error',
+                    confirmButtonText: 'Fechar'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            processedRows++;
+            const progressPercentage = (processedRows / totalRows) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.setAttribute('aria-valuenow', progressPercentage);
+            const roundedPercent = Math.round(progressPercentage);
+            progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
+        }
     }
+}
+
 </script>
 <style>
     th, td {
