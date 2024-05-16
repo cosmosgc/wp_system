@@ -63,6 +63,9 @@
                             width: 100%;
                             margin-top: 10px;
                         ">Login Google</a>
+    @if (session('google_access_token'))
+        <p>Já está logado no google.</p>
+    @endif
 <button id="submit_csv_button" class="btn btn-primary btn-block mt-3 d-none" onclick="process_upload();">Enviar CSV</button>
 <input type="hidden" name="user_id" id="user_id" value="{{$post_configs[0]->id}}">
 <div class="progress">
