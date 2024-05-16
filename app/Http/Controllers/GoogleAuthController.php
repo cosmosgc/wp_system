@@ -50,7 +50,7 @@ class GoogleAuthController extends Controller
             $token = $client->fetchAccessTokenWithAuthCode($request->get('code'));
             // Armazenar o token de acesso e o token de atualização na sessão
             session(['google_access_token' => $token['access_token']]);
-            session(['google_refresh_token' => $token['refresh_token']]);
+            //session(['google_refresh_token' => $token['refresh_token']]);
         } catch (\Exception $e) {
             // Lidar com qualquer erro durante o processo de obtenção do token de acesso
             return response('Não foi possivel obter o refresh_token,favor revogar o reconhecimento em sua conta.');
