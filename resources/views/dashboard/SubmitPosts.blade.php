@@ -248,7 +248,15 @@
                   <td class="keyword">{{$config->keyword}}</td>
                   <td class="category">{{$config->category}}</td>
                   <td class="post-content" onclick='openPost("{{$config->id}}");'><a href="#">{{!empty($config->post_content)?'Sim':'Não'}}</a></td>
-                  <td>{{($config->insert_image==1)?'Sim':'Não'}}</td>
+                  <td>
+                        @if($config->post_image)
+                            sim
+                            <!-- <img src="{{ Storage::url('public/' . $config->post_image) }}" alt="Image" loading="lazy" style="max-width: 100px; height: auto;"> -->
+                        @else
+                            Não
+                        @endif
+                    </td>
+
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
                   <td class="schedule_date">{{$config->schedule_date}}</td>
