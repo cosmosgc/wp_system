@@ -149,8 +149,7 @@ class PostContentService{
 
         try {
             // Cria uma instância do cliente Google Client
-            $accessToken = session('google_refresh_token');
-            dd($accessToken);
+            $accessToken = session('google_access_token');
             $client = new Google_Client();
             $credentials = Drive_credential::all()->first();
             $client->setApplicationName('Google Drive API');
@@ -158,7 +157,7 @@ class PostContentService{
             $client->setClientSecret($credentials->client_secret);
             
             // Se o token de acesso não estiver presente na sessão, redirecione para o processo de autenticação do Google
-            $client->refreshToken($accessToken);
+            $client->setAccessToken($accessToken);
             // if (!isset($credentials[0]->api_key)) {
             //     return response()->json('sem credenciais',500);
             // }
