@@ -125,6 +125,22 @@ if(empty($credential)){
     </div>
 </div>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if the refresh token is present in the session storage
+    if (!sessionStorage.getItem('google_refresh_token')) {
+        // Get the refresh token from the session (server-side)
+        const refreshToken = "{{ session('google_refresh_token') }}";
+
+        // If the token exists, store it in the session storage
+        if (refreshToken) {
+            sessionStorage.setItem('google_refresh_token', refreshToken);
+            console.log('Google refresh token stored in session storage.');
+        }
+    }
+});
+</script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function () {
         var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

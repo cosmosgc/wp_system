@@ -58,7 +58,7 @@
     </div>
 </div>
 <!-- um atalho para logar com google -->
-<a href="/auth/google" class="btn btn-primary btn-block"
+<a href="/auth/google" id="glogin" class="btn btn-primary btn-block"
                         style="
                             width: 100%;
                             margin-top: 10px;
@@ -268,8 +268,42 @@
         }
     }
 }
+function checkGoogleRefreshToken() {
+    // Check if the google_refresh_token exists in session storage
+    const googleRefreshToken = sessionStorage.getItem('google_refresh_token');
 
+    if (googleRefreshToken) {
+        console.log('Google refresh token found:', googleRefreshToken);
+    } else {
+        console.log('Google refresh token not found.');
+    }
+}
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function checkGoogleRefreshToken() {
+        // Check if the google_refresh_token exists in session storage
+        const googleRefreshToken = sessionStorage.getItem('google_refresh_token');
+
+        // Get the button element
+        const loginButton = document.getElementById('glogin');
+
+        if (googleRefreshToken) {
+            console.log('Google refresh token found:', googleRefreshToken);
+            // Change the button inner text
+            loginButton.innerText = 'Conta Google já Linkada';
+        } else {
+            console.log('Google refresh token not found.');
+            // Ensure the button text is set to the default if token not found
+            loginButton.innerText = 'Login Google';
+        }
+    }
+
+    // Call the function to perform the check and update the button text
+    checkGoogleRefreshToken();
+});
+</script>
+
 <style>
     th, td {
         font-size: xx-small !important;
