@@ -212,7 +212,7 @@
     const project = document.getElementById('projects_id').selectedOptions[0].value;
     const totalRows = tableRows.length - 1;
     let processedRows = 0;
-
+    let errorList = []
     for (let row of tableRows) {
         const cells = row.querySelectorAll('td');
         const rowData = {};
@@ -245,6 +245,7 @@
             } else {
                 row.classList.add('csv_error');
                 const responseData = await response.json();
+                errorList.push(responseData);
                 const errorMessage = document.createElement('div');
                 errorMessage.classList.add('error-message');
                 errorMessage.textContent = responseData.data;
@@ -270,6 +271,20 @@
             progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
         }
     }
+    if (errorList.length > 0) {
+        let errorHtml = "<ul>";
+        errorList.forEach(function(error) {
+            errorHtml += "<li>" + error + "</li>";
+        });
+        errorHtml += "</ul>";
+        Swal.fire({
+            title: 'Error!',
+            html: errorHtml,
+            icon: 'error',
+            confirmButtonText: 'Fechar'
+        });
+    }
+
 }
 function checkGoogleRefreshToken() {
     // Check if the google_refresh_token exists in session storage

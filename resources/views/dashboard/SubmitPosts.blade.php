@@ -179,33 +179,34 @@
             <div class="row mt-4 justify-content-between">
                 <div class="col-md-6 col-lg-4 offset-md-3 offset-lg-0">
                     <div class="ProjectFilter">
-                        <form action="/list_content" method="get">
-                            <div class="input-group">
-                                <select name="projects" id="" class="form-control">
-                                    @foreach ($projects as $project )
-                                        <option value="{{$project->id}}" @if(request('projects') == $project->id) selected @endif>{{$project->project_name}}</option>
-                                    @endforeach
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Search</button>
-                                </div>
-                            </div>
-                        </form>
+
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="UnpublishedField">
-                        <form action="/list_content" method="get">
-                            <div class="input-group">
-                                <select name="custom_filters" id="" class="form-control">
-                                    <option value="Não publicado">Não publicado</option>
-                                    <option value="Sem conteudo">Sem conteúdo</option>
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Search</button>
-                                </div>
-                            </div>
-                        </form>
+                    <form action="/list_content" method="get">
+                        <div class="form-group">
+                            <label for="projects">Selecione o projeto</label>
+                            <select name="projects" id="projects" class="form-control">
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}" @if(request('projects') == $project->id) selected @endif>
+                                        {{ $project->project_name }}
+                                    </option>
+                                @endforeach
+                                <option value="">Sem projeto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="custom_filters">Filtros</label>
+                            <select name="custom_filters" id="custom_filters" class="form-control">
+                                <option value="Não publicado">Não publicado</option>
+                                <option value="Sem conteudo">Sem conteúdo</option>
+                                <option value="">Sem filtro</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+
                     </div>
                 </div>
             </div>
@@ -247,7 +248,7 @@
                   <td class="theme">{{$config->theme}}</td>
                   <td class="keyword">{{$config->keyword}}</td>
                   <td class="category">{{$config->category}}</td>
-                  <td class="post-content" onclick='openPost("{{$config->id}}");'><a href="#">{{!empty($config->post_content)?'Sim':'Não'}}</a></td>
+                  <td id="content" class="post-content" onclick='openPost("{{$config->id}}");'><a href="#">{{!empty($config->post_content)?'Sim':'Não'}}</a></td>
                   <td>
                         @if($config->post_image)
                             sim
@@ -260,7 +261,7 @@
                   <td>{{$config->created_at}}</td>
                   <td class="domain">{{$config->domain}}</td>
                   <td class="schedule_date">{{$config->schedule_date}}</td>
-                  <td class="status">{{$config->status}}</td>
+                  <td id="tableStatus" class="status">{{$config->status}}</td>
                   <td class="post_url">
                     @if(!empty($config->post_url))
                         <a href="{{$config->post_url}}">Acessar</a>
@@ -362,7 +363,6 @@ let table = new DataTable('#post_list_table', {
             { "orderable": false, "targets": 0 } // Disable ordering for the first column
         ]
 });
-
 
 </script>
 <!-- o código que quero substituir acaba aqui -->
