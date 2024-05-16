@@ -61,7 +61,7 @@ class PostFileService{
     public function importGoogleDocs($id)
     {
         // Ler o token de acesso da sessão
-        $accessToken = session('google_refresh_token');
+        $accessToken = session('google_access_token');
         // Se o token de acesso não estiver presente na sessão, redirecione para o processo de autenticação do Google
         if (!$accessToken) {
             return redirect()->route('google.redirect');
@@ -72,7 +72,7 @@ class PostFileService{
         $credentials = Drive_credential::all()->first();
         $client->setClientId($credentials->client_id);
         $client->setClientSecret($credentials->client_secret);
-        $client->refreshToken($accessToken);
+        $client->setAccessToken($accessToken);
 
         // Inicializar serviço de Documentos do Google
         $service = new Docs($client);
@@ -105,7 +105,7 @@ class PostFileService{
 
     public function createAndPopulateGoogleDoc($title,$data,$folderId)
     {
-        $accessToken = session('google_refresh_token');
+        $accessToken = session('google_access_token');
 
         if (!$accessToken) {
             return redirect()->route('google.redirect');
@@ -115,7 +115,7 @@ class PostFileService{
         $credentials = Drive_credential::all()->first();
         $client->setClientId($credentials->client_id);
         $client->setClientSecret($credentials->client_secret);
-        $client->refreshToken($accessToken);
+        $client->setAccessToken($accessToken);
 
        $driveService = new Drive($client);
        $service = new Docs($client);
