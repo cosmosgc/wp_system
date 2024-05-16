@@ -157,11 +157,11 @@ class PostContentService{
             $client->setClientSecret($credentials->client_secret);
             
             // Se o token de acesso não estiver presente na sessão, redirecione para o processo de autenticação do Google
-            //$client->setAccessToken($accessToken);
+            $client->setAccessToken($accessToken);
             // if (!isset($credentials[0]->api_key)) {
             //     return response()->json('sem credenciais',500);
             // }
-             $client->setDeveloperKey($credentials->api_key); // Usando a chave de API
+             //$client->setDeveloperKey($credentials->api_key); // Usando a chave de API
 
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
