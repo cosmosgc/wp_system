@@ -6,8 +6,13 @@ use App\Models\Project;
 class ProjectService{
     
     public function createProject($data){
+        $prefix=0;
+        if(!empty(Project::all())){
+            $prefix=Project::count();
+        }
+        $prefix++;
         $new_project=Project::create([
-            'project_name'=>$data->index.'-'.$data->project_name,
+            'project_name'=>$prefix.'-'.$data->project_name,
         ]);
 
     }

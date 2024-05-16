@@ -17,7 +17,7 @@ class ProjectController extends Controller
     public function insertProject(Request $request){
         $new_project=$this->projectService->createProject($request);
 
-        return response()->json(['message' => 'Project successfully created'], 200);
+        return view('dashboard.projectCreated');
 
     }
 }
