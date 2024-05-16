@@ -46,7 +46,7 @@ class GoogleAuthController extends Controller
         $client->setClientId($drive_creds->client_id);
         $client->setClientSecret($drive_creds->client_secret);
         $client->setRedirectUri(route('google.callback'));
-
+        $token = null;
         try {
             // Obter o token de acesso usando o código de autorização
             $token = $client->fetchAccessTokenWithAuthCode($request->get('code'));
@@ -59,6 +59,6 @@ class GoogleAuthController extends Controller
         }
 
         // Redirecionar para onde quer que você queira ir após o login bem-sucedido
-        return redirect()->route('dashboard.gDriveConfig');
+        return redirect()->route('dashboard.gDriveConfig')->with('google_refresh_token', $token['refresh_token']);;
     }
 }
