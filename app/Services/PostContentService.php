@@ -151,15 +151,17 @@ class PostContentService{
             // Cria uma instância do cliente Google Client
             $accessToken = session('google_access_token');
             $client = new Google_Client();
-            $credentials = Drive_credential::all();
+            $credentials = Drive_credential::all()->first();
             $client->setApplicationName('Google Drive API');
+            $client->setClientId($credentials->client_id);
+            $client->setClientSecret($credentials->client_secret);
             
             // Se o token de acesso não estiver presente na sessão, redirecione para o processo de autenticação do Google
-            $client->setAccessToken($accessToken);
+            //$client->setAccessToken($accessToken);
             // if (!isset($credentials[0]->api_key)) {
             //     return response()->json('sem credenciais',500);
             // }
-            // $client->setDeveloperKey($credentials[0]->api_key); // Usando a chave de API
+             $client->setDeveloperKey($credentials->api_key); // Usando a chave de API
 
             // Cria uma instância do serviço Google Drive
             $service = new Google_Service_Drive($client);
@@ -174,7 +176,6 @@ class PostContentService{
             ]);
             // Escolhe um arquivo aleatório da lista
             $randomFile = collect($results->getFiles())->random();
-
             // Faz o download do arquivo selecionado
             $fileId = $randomFile->getId();
             $response = $service->files->get($fileId, ['alt' => 'media']);

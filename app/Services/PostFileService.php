@@ -7,6 +7,7 @@ use Google\Client;
 use Google\Service\Docs;
 use Google\Service\Drive;
 use Google\Service\Docs\Request;
+use App\Models\Drive_credential;
 
 
 class PostFileService{
@@ -68,6 +69,9 @@ class PostFileService{
 
         // Criar cliente Google
         $client = new Client();
+        $credentials = Drive_credential::all()->first();
+        $client->setClientId($credentials->client_id);
+        $client->setClientSecret($credentials->client_secret);
         $client->setAccessToken($accessToken);
 
         // Inicializar serviço de Documentos do Google
@@ -108,6 +112,9 @@ class PostFileService{
         }
 
         $client = new Client();
+        $credentials = Drive_credential::all()->first();
+        $client->setClientId($credentials->client_id);
+        $client->setClientSecret($credentials->client_secret);
         $client->setAccessToken($accessToken);
 
        $driveService = new Drive($client);

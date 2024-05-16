@@ -183,7 +183,7 @@
                             <div class="input-group">
                                 <select name="projects" id="" class="form-control">
                                     @foreach ($projects as $project )
-                                        <option value="{{$project->id}}">{{$project->project_name }}</option>
+                                        <option value="{{$project->id}}" @if(request('projects') == $project->id) selected @endif>{{$project->project_name}}</option>
                                     @endforeach
                                 </select>
                                 <div class="input-group-append">
