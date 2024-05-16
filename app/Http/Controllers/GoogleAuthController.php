@@ -26,8 +26,6 @@ class GoogleAuthController extends Controller
         $client->addScope('https://www.googleapis.com/auth/drive');
         $client->setApprovalPrompt('force');
         $client->setAccessType('offline'); // Garantir que o token de atualização seja retornado durante o processo de autorização inicial
-        $expiration = 2592000; // 30 dias
-        $client->setConfig('expires_in', $expiration);
 
         // Redirecionar para a URL de autorização do Google
         return redirect($client->createAuthUrl());
