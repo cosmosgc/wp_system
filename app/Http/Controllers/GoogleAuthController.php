@@ -53,10 +53,11 @@ class GoogleAuthController extends Controller
             session(['google_refresh_token' => $token['refresh_token']]);
         } catch (\Exception $e) {
             // Lidar com qualquer erro durante o processo de obtenção do token de acesso
-            return response('Não foi possivel obter o refresh_token,favor revogar o reconhecimento em sua conta. Error: '.$e,200);
+            return response('Não foi possivel obter o refresh_token,favor revogar o reconhecimento em sua conta.');
         }
 
+        // or redirect
         // Redirecionar para onde quer que você queira ir após o login bem-sucedido
-        return redirect()->route('dashboard.gDriveConfig')->with('google_refresh_token', $token['refresh_token']);;
+        return redirect()->route('dashboard.gDriveConfig')->with('google_refresh_token', $token['access_token']);
     }
 }
