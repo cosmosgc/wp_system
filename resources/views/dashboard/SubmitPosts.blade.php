@@ -1473,9 +1473,21 @@ let table = new DataTable('#post_list_table', {
                 } catch (error) {
                     loading_element(button, true);
                     console.error("Fetch error:", error);
+                    let errorMessage = '';
+
+                    if (error.response) {
+                        // Server responded with a status code out of the range of 2xx
+                        errorMessage = await error.response.text();
+                    } else if (error.request) {
+                        // Request was made but no response was received
+                        errorMessage = error.request;
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        errorMessage = error.message;
+                    }
                     Swal.fire({
                         title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
-                        text: error,
+                        html: errorMessage,
                         icon: 'error',
                         confirmButtonText: 'continue'
                     });
