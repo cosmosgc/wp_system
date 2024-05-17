@@ -66,9 +66,9 @@ class Wp_service{
                     ],
                 ]);
             } catch (Exception $e) {
+                throw new \RuntimeException('An error occurred while processing.', 0, $e);
                 // Do nothing here, just continue execution
-                dd($e);
-                $errorList[] = $e;
+                //$errorList[] = $e;
             }
             // Extraia o ID da imagem enviada
             if(isset($responseUploadImagem)){
