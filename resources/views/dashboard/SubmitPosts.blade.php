@@ -1462,7 +1462,7 @@ let table = new DataTable('#post_list_table', {
                         const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
                         const errorTitle = titleMatch ? titleMatch[1] : "Error";
                         if (!titleMatch && query.error) {
-                            errorTitle = query.error;
+                            errorTitle = errorText;
                         }
 
                         Swal.fire({
