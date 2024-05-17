@@ -67,7 +67,10 @@ class Wp_service{
                     ],
                 ]);
             } catch (Exception $e) {
-                throw new Error('An error occurred while processing.', 0, $e);
+                return response()->json([
+                    'message' => 'An error occurred while processing.',
+                    'error' => $e->getMessage()
+                ], 500);
                 // Do nothing here, just continue execution
                 //$errorList[] = $e;
             }
