@@ -375,7 +375,7 @@ let table = new DataTable('#post_list_table', {
     language: {
         url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/pt-BR.json',
     },
-    "searching": false,
+    "searching": true,
     "columnDefs": [
             { "orderable": false, "targets": 0 } // Disable ordering for the first column
         ]
