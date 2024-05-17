@@ -244,6 +244,14 @@
                 row.remove();
             } else {
                 row.classList.add('csv_error');
+                
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'teste',
+                    icon: 'error',
+                    confirmButtonText: 'Fechar'
+                })
+
                 const responseData = await response.json();
                 errorList.push(responseData);
                 const errorMessage = document.createElement('div');
@@ -252,16 +260,16 @@
 
                 // Insert the error message after the row element
                 row.parentNode.insertBefore(errorMessage, row.nextSibling);
-
-                Swal.fire({
-                    title: 'Error!',
-                    text: responseData.data,
-                    icon: 'error',
-                    confirmButtonText: 'Fechar'
-                });
+;
             }
         } catch (error) {
             console.error('Error:', error);
+            Swal.fire({
+                    title: 'Error!',
+                    text: error,
+                    icon: 'error',
+                    confirmButtonText: 'Fechar'
+                })
         } finally {
             processedRows++;
             const progressPercentage = (processedRows / totalRows) * 100;

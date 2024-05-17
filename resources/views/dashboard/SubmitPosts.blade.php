@@ -127,7 +127,7 @@
                   <div class="input-group">
                     <input type="text" class="form-control" name="query" id="query" placeholder="Buscar por Nome do post ou Dominio" value="{{$searchParam}}">
                     <div class="input-group-append">
-                      <button class="btn btn-primary" type="submit">Search</button>
+                      <button class="btn btn-primary" type="submit">Buscar</button>
                     </div>
                   </div>
                 </form>
@@ -199,7 +199,7 @@
                                 <option value="">Sem filtro</option>
                             </select>
                         </div>
-                        <button class="btn btn-primary" type="submit">Search</button>
+                        <button class="btn btn-primary" type="submit">Buscar</button>
                     </form>
 
                     </div>
