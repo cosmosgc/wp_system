@@ -8,6 +8,7 @@ use App\Models\Wp_credential;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\Wp_post_content;
+use Illuminate\Support\Facades\Route;
 
 
 class DasboardController extends Controller
@@ -237,13 +238,49 @@ class DasboardController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
+    public function allPosts()
+    {
+        try {
+            $posts = Wp_post_content::all();
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function allEditors()
+    {
+        try {
+            $response = Editor::all();
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function getEditor($id)
+    {
+        try {
+            $response = Editor::find($id);
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function allSites()
+    {
+        try {
+            $response = Wp_credential::all();
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
     public function createProject(){
         return view('dashboard.createProject');
     }
     public function listProject(){
         return view('dashboard.listProject');
     }
+
     public function listProjectItems($id){
         try {
             $project = Wp_post_content::where('project_id',$id)->get();
@@ -277,6 +314,22 @@ class DasboardController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Houve um problema ao atualizar o projeto.', 'error' => $e->getMessage()], 500);
         }
+    }
+    public function listRoutes()
+    {
+        $routes = collect(Route::getRoutes())->map(function ($route) {
+            return [
+                'uri' => $route->uri(),
+                'name' => $route->getName(),
+                'action' => $route->getActionName(),
+                'methods' => $route->methods(),
+            ];
+        })->filter(function ($route) {
+            // Filter only API routes, assuming they contain '/api' in their URI
+            return strpos($route['uri'], 'api') !== false;
+        })->values();
+
+        return response()->json($routes);
     }
 
 }
