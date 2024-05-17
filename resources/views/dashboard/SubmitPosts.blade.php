@@ -1460,10 +1460,11 @@ let table = new DataTable('#post_list_table', {
                         errorText = await query.text();
                         console.error(errorText);
                         const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
-                        const errorTitle = titleMatch ? titleMatch[1] : "Error";
-                        if (!titleMatch && query.error) {
+                        let errorTitle = titleMatch ? titleMatch[1] : "Error";
+                        if (!titleMatch) {
                             errorTitle = errorText;
                         }
+                        console.error(errorTitle);
 
                         Swal.fire({
                             title: 'Aconteceu um erro durante o processo',
