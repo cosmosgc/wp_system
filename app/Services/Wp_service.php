@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Wp_post_content;
 use App\Models\Wp_post_info;
+use Error;
 use GuzzleHttp\Client;
 use  Exception;
 
@@ -66,7 +67,7 @@ class Wp_service{
                     ],
                 ]);
             } catch (Exception $e) {
-                throw new \RuntimeException('An error occurred while processing.', 0, $e);
+                throw new Error('An error occurred while processing.', 0, $e);
                 // Do nothing here, just continue execution
                 //$errorList[] = $e;
             }
