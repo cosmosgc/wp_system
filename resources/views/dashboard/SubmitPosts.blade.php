@@ -177,30 +177,25 @@
             </div>
 
             <div class="row mt-4 justify-content-between">
-                <div class="col-md-6 col-lg-4 offset-md-3 offset-lg-0">
-                    <div class="ProjectFilter">
-
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-12 col-lg-12">
                     <div class="UnpublishedField">
-                    <form action="/list_content" method="get">
+                    <form action="/list_content" class="d-flex justify-content-around" method="get">
                         <div class="form-group">
                             <label for="projects">Selecione o projeto</label>
                             <select name="projects" id="projects" class="form-control">
+                                <option value="">Sem projeto</opt>
                                 @foreach ($projects as $project)
                                     <option value="{{ $project->id }}" @if(request('projects') == $project->id) selected @endif>
                                         {{ $project->project_name }}
                                     </option>
                                 @endforeach
-                                <option value="">Sem projeto</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="custom_filters">Filtros</label>
                             <select name="custom_filters" id="custom_filters" class="form-control">
-                                <option value="Não publicado">Não publicado</option>
-                                <option value="Sem conteudo">Sem conteúdo</option>
+                                <option value="Não publicado" @if(request('custom_filters') == "Não publicado") selected @endif>Não publicado</option>
+                                <option value="Sem conteudo" @if(request('custom_filters') == "Sem conteudo") selected @endif>Sem conteúdo</option>
                                 <option value="">Sem filtro</option>
                             </select>
                         </div>
