@@ -244,7 +244,7 @@
                 row.remove();
             } else {
                 row.classList.add('csv_error');
-                
+
                 Swal.fire({
                     title: 'Error!',
                     text: 'teste',
@@ -279,6 +279,7 @@
             progresslabel.innerHTML = (`${processedRows} / ${totalRows} | ${roundedPercent}%`);
         }
     }
+    console.warn(errorList);
     if (errorList.length > 0) {
         let errorHtml = "<ul>";
         errorList.forEach(function(error) {

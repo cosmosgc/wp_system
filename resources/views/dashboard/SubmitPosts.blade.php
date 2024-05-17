@@ -130,6 +130,28 @@
                       <button class="btn btn-primary" type="submit">Buscar</button>
                     </div>
                   </div>
+                  <!-- <div class="d-flex justify-content-around">
+                        <div class="form-group">
+                            <label for="projects">Selecione o projeto</label>
+                            <select name="projects" id="projects" class="form-control">
+                                <option value="">Sem projeto</opt>
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}" @if(request('projects') == $project->id) selected @endif>
+                                        {{ $project->project_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="custom_filters">Filtros</label>
+                            <select name="custom_filters" id="custom_filters" class="form-control">
+                                <option value="Não publicado" @if(request('custom_filters') == "Não publicado") selected @endif>Não publicado</option>
+                                <option value="Sem conteudo" @if(request('custom_filters') == "Sem conteudo") selected @endif>Sem conteúdo</option>
+                                <option value="">Sem filtro</option>
+                            </select>
+                        </div>
+                  </div> -->
+
                 </form>
               </div>
             </div>
@@ -175,7 +197,7 @@
                     </div>
                 </div>
             </div>
-
+            <!-- talvez mover esse filtro para o input de pesquisa -->
             <div class="row mt-4 justify-content-between">
                 <div class="col-md-12 col-lg-12">
                     <div class="UnpublishedField">
