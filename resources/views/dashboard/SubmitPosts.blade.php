@@ -1453,38 +1453,22 @@ let table = new DataTable('#post_list_table', {
                         }
                     } else {
                         loading_element(button, true);
-                        console.error("Fetch failed with status:", error.status || error.message);
-                        console.error(error);
 
-                        let errorText = '';
-                        let errorTitle = 'Error';
-
-                        try {
-                            // Try to read the error response text
-                            if (error.response) {
-                                errorText = await error.response.text();
-                            } else {
-                                errorText = error.message;
-                            }
-
-                            // Try to match the title in the response text
-                            const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
-                            if (titleMatch) {
-                                errorTitle = titleMatch[1];
-                            } else if (error.error) {
-                                // Fallback to query.error if no match
-                                errorTitle = error.error;
-                            }
-
-                        } catch (readError) {
-                            // In case there's an issue reading the error text
-                            console.error("Error reading response text:", readError);
-                            errorText = error.message;
+                        console.error("Fetch failed with status:", query.status);
+                        console.error(query);
+                        //console.error("Error response text:", await query.text());
+                        errorText = await query.text();
+                        console.error(errorText);
+                        const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
+                        const errorTitle = titleMatch ? titleMatch[1] : "Error";
+                        if (!titleMatch && query.error) {
+                            errorTitle = query.error;
                         }
 
                         Swal.fire({
-                            title: 'Error no processo de criação, verificar validade da chave ou rever conteúdo da configuração',
-                            html: errorTitle,
+                            title: 'Aconteceu um erro durante o processo',
+                            text: query.status,
+                            html: '<p>'+query.status+'</p><pre>' + errorTitle + '</pre>',
                             icon: 'error',
                             confirmButtonText: 'continue'
                         });
