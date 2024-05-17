@@ -67,10 +67,14 @@ class Wp_service{
                 ]);
             } catch (Exception $e) {
                 // Do nothing here, just continue execution
+                dd($e);
                 $errorList[] = $e;
             }
             // Extraia o ID da imagem enviada
-            $imageID = json_decode($responseUploadImagem->getBody())->id;
+            if(isset($responseUploadImagem)){
+                $imageID = json_decode($responseUploadImagem->getBody())->id;
+            }
+
         } else {
             // Caso a imagem não seja encontrada, você pode tomar ação apropriada aqui
             $imageID = null;
