@@ -199,7 +199,7 @@
             </div>
             <!-- talvez mover esse filtro para o input de pesquisa -->
             <div class="row mt-4 justify-content-between">
-                <div class="col-md-12 col-lg-12">
+                <div class="col-md-4 col-lg-4">
                     <div class="UnpublishedField">
                     <form action="/list_content" class="d-flex justify-content-around" method="get">
                         <div class="form-group">
@@ -1079,9 +1079,12 @@ let table = new DataTable('#post_list_table', {
                     } else {
 
                         errorText = await query_2.text();
-                        // console.error(errorText);
+                        console.error(errorText);
                         const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
                         const errorTitle = titleMatch ? titleMatch[1] : "Error";
+                        if (!titleMatch) {
+                            errorTitle = errorText;
+                        }
 
                         Swal.fire({
                             title: 'Aconteceu um erro durante o processo',
@@ -1460,10 +1463,11 @@ let table = new DataTable('#post_list_table', {
                         errorText = await query.text();
                         console.error(errorText);
                         const titleMatch = errorText.match(/<title>([\s\S]*?)<\/title>/);
-                        const errorTitle = titleMatch ? titleMatch[1] : "Error";
-                        if (!titleMatch && query.error) {
+                        let errorTitle = titleMatch ? titleMatch[1] : "Error";
+                        if (!titleMatch) {
                             errorTitle = errorText;
                         }
+                        console.error(errorTitle);
 
                         Swal.fire({
                             title: 'Aconteceu um erro durante o processo',
