@@ -245,18 +245,17 @@
             } else {
                 row.classList.add('csv_error');
 
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'teste',
-                    icon: 'error',
-                    confirmButtonText: 'Fechar'
-                })
-
                 const responseData = await response.json();
                 errorList.push(responseData);
                 const errorMessage = document.createElement('div');
                 errorMessage.classList.add('error-message');
                 errorMessage.textContent = responseData.data;
+                Swal.fire({
+                    title: 'Error!',
+                    text: responseData.data,
+                    icon: 'error',
+                    confirmButtonText: 'Fechar'
+                })
 
                 // Insert the error message after the row element
                 row.parentNode.insertBefore(errorMessage, row.nextSibling);
