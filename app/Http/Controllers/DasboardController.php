@@ -71,6 +71,16 @@ class DasboardController extends Controller
     }
 
     public function contentCreation(){
+        $valorCodificado = request()->cookie('editor');
+        $user=explode('+',base64_decode($valorCodificado));
+        $user_session=Editor::where('name',$user[0])->get();
+        $editors = null;
+        if($user_session[0]->is_admin!=1){
+            $editors = $user_session;
+        }else{
+            $editors = Editor::all();
+        }
+        //deve-se modificar o resto do código para mostar apenas os projetos com o id do usuario
         $projects=Project::all();
         return view('dashboard.contentConfig',['projects'=>$projects]);
     }
