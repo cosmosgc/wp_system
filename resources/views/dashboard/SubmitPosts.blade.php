@@ -76,9 +76,16 @@
             }
         }
 
-        .editor_list_flex{
+        .editor_list_flex {
+            width: 200px;
             display: flex;
-            flex-direction:row;
+            flex-wrap: wrap;
+            gap: 5px; /* Optional: adds some spacing between items */
+        }
+
+        .editor_list_flex .btn {
+            flex: 1 1 calc(33.333% - 10px); /* Three items per row with space between */
+            box-sizing: border-box;
         }
 
         .upgrade_button {
@@ -197,7 +204,7 @@
             </div>
             <!-- talvez mover esse filtro para o input de pesquisa -->
             <div class="row mt-4 justify-content-between">
-                <div class="col-md-4 col-lg-4">
+                <div class="col-md-5 col-lg-5">
                     <div class="UnpublishedField">
                     <form action="/list_content" class="d-flex justify-content-around" method="get">
                         <div class="form-group  flex-column d-flex justify-content-between">
@@ -219,11 +226,23 @@
                                 <option value="Sem conteudo" @if(request('custom_filters') == "Sem conteudo") selected @endif>Sem conteúdo</option>
                             </select>
                         </div>
+
                         <button class="btn btn-primary" type="submit">Buscar</button>
                     </form>
 
                     </div>
                 </div>
+                <div class="col-md-4 col-lg-4">
+                    <div class="form-group d-flex flex-column mb-3">
+                        <label for="statusFilter">Status</label>
+                        <select id="statusFilter" class="form-control">
+                            <option value="">Todos</option>
+                            <option value="Sem conteúdo">Sem conteúdo</option>
+                            <option value="Não publicado">Não publicado</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
 
@@ -378,8 +397,32 @@ let table = new DataTable('#post_list_table', {
             { "orderable": false, "targets": 0 } // Disable ordering for the first column
         ],
     pageLength: 500, // Set default page length to 500
-    lengthMenu: [10, 25, 50, 100, 250, 500, 1000]
+    lengthMenu: [10, 25, 50, 100, 250, 500, 1000],
 });
+$('#statusFilter').on('change', function() {
+        let selectedValue = $(this).val();
+        if(selectedValue == "Não publicado")
+        {
+            table.column(9).search(selectedValue).draw();
+            table.column(4).search("").draw();
+        }
+
+        else if(selectedValue == "Sem conteúdo")
+        {
+            table.column(9).search("").draw();
+            table.column(4).search("não").draw();
+        }
+
+        else if(selectedValue == "")
+        {
+            table.column(4).search("").draw();
+            table.column(9).search("").draw();
+        }
+
+    });
+
+    // Initially filter the table to show only "Não publicado"
+    $('#statusFilter').val('').trigger('change');
 
 </script>
 <!-- o código que quero substituir acaba aqui -->
