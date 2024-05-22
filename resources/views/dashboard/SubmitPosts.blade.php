@@ -216,9 +216,9 @@
                         <div class="form-group  flex-column d-flex justify-content-between">
                             <label for="custom_filters">Filtros</label>
                             <select name="custom_filters" id="custom_filters" class="form-control">
+                                <option value="">Sem filtro</option>
                                 <option value="Não publicado" @if(request('custom_filters') == "Não publicado") selected @endif>Não publicado</option>
                                 <option value="Sem conteudo" @if(request('custom_filters') == "Sem conteudo") selected @endif>Sem conteúdo</option>
-                                <option value="">Sem filtro</option>
                             </select>
                         </div>
                         <button class="btn btn-primary" type="submit">Buscar</button>
