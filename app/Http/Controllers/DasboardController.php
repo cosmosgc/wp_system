@@ -106,10 +106,10 @@ class DasboardController extends Controller
 
         $query = Wp_post_content::query();
         if(!empty($request->input('query'))){
-            $query=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%');
+            $query=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->orWhere('Editor_id',$user_session->id);
         }
         if (!empty($request->input('projects'))) {
-            $query->where('Project_id', $request->input('projects'));
+            $query->where('Project_id', $request->input('projects'))->orWhere('Editor_id',$user_session->id);
         }
 
         if (!empty($request->input('custom_filters'))) {

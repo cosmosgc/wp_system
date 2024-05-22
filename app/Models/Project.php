@@ -14,7 +14,7 @@ class Project extends Model
     protected $fillable=['project_name'];
 
     public function post_config(){
-        return $this->hasMany(Wp_post_content::class);
+        return $this->hasMany(Wp_post_content::class,'Project_id');
     }
 
 }

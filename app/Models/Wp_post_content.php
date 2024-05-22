@@ -26,6 +26,6 @@ class Wp_post_content extends Model
     }
 
     public function project(){
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class,'Project_id');
     }
 }
