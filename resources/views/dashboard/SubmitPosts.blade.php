@@ -202,7 +202,7 @@
                 <div class="col-md-4 col-lg-4">
                     <div class="UnpublishedField">
                     <form action="/list_content" class="d-flex justify-content-around" method="get">
-                        <div class="form-group">
+                        <div class="form-group  flex-column d-flex justify-content-between">
                             <label for="projects">Selecione o projeto</label>
                             <select name="projects" id="projects" class="form-control">
                                 <option value="">Sem projeto</opt>
@@ -213,7 +213,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group  flex-column d-flex justify-content-between">
                             <label for="custom_filters">Filtros</label>
                             <select name="custom_filters" id="custom_filters" class="form-control">
                                 <option value="Não publicado" @if(request('custom_filters') == "Não publicado") selected @endif>Não publicado</option>
