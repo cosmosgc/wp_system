@@ -378,7 +378,9 @@ let table = new DataTable('#post_list_table', {
     "searching": true,
     "columnDefs": [
             { "orderable": false, "targets": 0 } // Disable ordering for the first column
-        ]
+        ],
+    pageLength: 500, // Set default page length to 500
+    lengthMenu: [10, 25, 50, 100, 250, 500, 1000]
 });
 
 </script>
