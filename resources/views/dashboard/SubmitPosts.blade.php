@@ -218,14 +218,14 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group  flex-column d-flex justify-content-between">
+                        <!-- <div class="form-group  flex-column d-flex justify-content-between">
                             <label for="custom_filters">Filtros</label>
                             <select name="custom_filters" id="custom_filters" class="form-control">
                                 <option value="">Sem filtro</option>
                                 <option value="Não publicado" @if(request('custom_filters') == "Não publicado") selected @endif>Não publicado</option>
                                 <option value="Sem conteudo" @if(request('custom_filters') == "Sem conteudo") selected @endif>Sem conteúdo</option>
                             </select>
-                        </div>
+                        </div> -->
 
                         <button class="btn btn-primary" type="submit">Buscar</button>
                     </form>
@@ -400,26 +400,28 @@ let table = new DataTable('#post_list_table', {
     lengthMenu: [10, 25, 50, 100, 250, 500, 1000],
 });
 $('#statusFilter').on('change', function() {
-        let selectedValue = $(this).val();
-        if(selectedValue == "Não publicado")
-        {
-            table.column(9).search(selectedValue).draw();
-            table.column(4).search("").draw();
-        }
+    let selectedValue = $(this).val();
+    if(selectedValue == "Não publicado")
+    {
+        table.column(9).search(selectedValue).draw();
+        table.column(4).search("").draw();
+        selectAllStatus();
+    }
 
-        else if(selectedValue == "Sem conteúdo")
-        {
-            table.column(9).search("").draw();
-            table.column(4).search("não").draw();
-        }
+    else if(selectedValue == "Sem conteúdo")
+    {
+        table.column(9).search("").draw();
+        table.column(4).search("não").draw();
+        selectAllContent();
+    }
 
-        else if(selectedValue == "")
-        {
-            table.column(4).search("").draw();
-            table.column(9).search("").draw();
-        }
+    else if(selectedValue == "")
+    {
+        table.column(4).search("").draw();
+        table.column(9).search("").draw();
+    }
 
-    });
+});
 
     // Initially filter the table to show only "Não publicado"
     $('#statusFilter').val('').trigger('change');
@@ -448,6 +450,28 @@ $('#statusFilter').on('change', function() {
         }
 
         loadPosts();
+
+        function selectAllStatus() {
+            const rows = document.querySelectorAll('#post_list_table tbody tr');
+            rows.forEach(row => {
+                const status = row.querySelector('.status').textContent.trim();
+                if (status === 'Não publicado') {
+                    const checkbox = row.querySelector('.config_id');
+                    checkbox.checked = true;
+                }
+            });
+        }
+
+        function selectAllContent() {
+            const rows = document.querySelectorAll('#post_list_table tbody tr');
+            rows.forEach(row => {
+                const status = row.querySelector('.post-content').textContent.trim();
+                if (status === 'Não') {
+                    const checkbox = row.querySelector('.config_id');
+                    checkbox.checked = true;
+                }
+            });
+        }
 
         function selectAllCheckbox(){
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
