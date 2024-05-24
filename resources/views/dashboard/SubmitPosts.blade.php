@@ -204,7 +204,7 @@
             </div>
             <!-- talvez mover esse filtro para o input de pesquisa -->
             <div class="row mt-4 justify-content-between">
-                <div class="col-md-5 col-lg-5">
+                <div class="col-md-4 col-lg-4">
                     <div class="UnpublishedField">
                     <form action="/list_content" class="d-flex justify-content-around" method="get">
                         <div class="form-group  flex-column d-flex justify-content-between">

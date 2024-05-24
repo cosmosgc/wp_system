@@ -109,7 +109,8 @@ class DasboardController extends Controller
             $query=Wp_post_content::where ('theme','like','%'.$request->input('query').'%')->orWhere('domain','like','%'.$request->input('query').'%')->orWhere('Editor_id',$user_session->id);
         }
         if (!empty($request->input('projects'))) {
-            $query->where('Project_id', $request->input('projects'))->orWhere('Editor_id',$user_session->id);
+            $query->where('Project_id', $request->input('projects'));
+            //dd($query->distinct()->get());
         }
 
         if (!empty($request->input('custom_filters'))) {
@@ -123,7 +124,6 @@ class DasboardController extends Controller
         $query->where('Editor_id', $user_session->id);
 
         $results = $query->distinct()->get();
-
 
         return view('dashboard.SubmitPosts',['search'=>$results,'projects'=>$projects]);
     }
