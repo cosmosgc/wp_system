@@ -41,6 +41,7 @@
             font-family: 'Roboto', sans-serif;
             box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 30px;
         }
 
         .header h2 {
@@ -194,16 +195,32 @@
             transition: 0.6s;
         }
 
-        .configs_content {
-            display: none;
-        }
 
         .open_box {
             padding-left: 6% !important;
         }
 
+        .configs_content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease-out, opacity 0.6s ease-out, transform 0.8s ease-out;
+            position: absolute;
+            flex-direction: row;
+            left: 0px;
+            top: 0px;
+            background: #373737;
+            border-radius: 30px;
+            transform: translateY(0px);
+
+            display: flex;
+            flex-wrap: wrap;
+        }
+
         .open {
-            display: block;
+            max-height: 500px; /* Adjust based on content */
+            opacity: 1;
+            transform: translateY(60px);
         }
     </style>
 </head>
@@ -297,23 +314,23 @@
         });
     }
 
-    close_side.addEventListener('click', () => {
-        sidebar.classList.add('closed');
-        content.classList.add('expanded');
-        sidebar.classList.remove('open');
-        content.classList.remove('minimize');
-        // close_side.style.display = 'none';
-        // open_side.style.display = 'block';
-    });
+    // close_side.addEventListener('click', () => {
+    //     sidebar.classList.add('closed');
+    //     content.classList.add('expanded');
+    //     sidebar.classList.remove('open');
+    //     content.classList.remove('minimize');
+    //     // close_side.style.display = 'none';
+    //     // open_side.style.display = 'block';
+    // });
 
-    open_side.addEventListener('click', () => {
-        sidebar.classList.remove('closed');
-        content.classList.remove('expanded');
-        sidebar.classList.add('open');
-        content.classList.add('minimize');
-        // close_side.style.display = 'block';
-        // open_side.style.display = 'none';
-    });
+    // open_side.addEventListener('click', () => {
+    //     sidebar.classList.remove('closed');
+    //     content.classList.remove('expanded');
+    //     sidebar.classList.add('open');
+    //     content.classList.add('minimize');
+    //     // close_side.style.display = 'block';
+    //     // open_side.style.display = 'none';
+    // });
     function logoff() {
         // Make an AJAX request to the logoff route using fetch
         fetch('/quit', {
