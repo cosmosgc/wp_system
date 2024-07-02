@@ -29,293 +29,189 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-        .flex-container-column {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .sidebar {
-            height: 100%;
-            width: 250px;
+        .header {
+            width: 100%;
             position: fixed;
             z-index: 1;
             top: 0;
             left: 0;
             background-color: rgba(33, 33, 33, 0.9); /* Dark background */
-            padding-top: 20px;
+            padding: 10px 20px;
             transition: 0.8s;
             font-family: 'Roboto', sans-serif;
-            box-shadow: -2px 0px 11px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px); /* Glass effect */
         }
 
-        .sidebar h2 {
+        .header h2 {
             color: #FFFFFF; /* White text color */
             text-align: left;
-            padding-left: 5%;
+            display: inline-block;
         }
 
-        .sidebar ul {
+        .header ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
         }
 
-        .sidebar li {
+        .header li {
             padding: 8px;
-            padding-top: 0px;
             text-align: left;
             transition: 0.3s;
         }
 
-        .sidebar a {
+        .header a {
             text-decoration: none;
             color: #FFFFFF; /* White link color */
             padding: 5px;
-            text-align: left;
             display: block;
             transition: 0.3s;
         }
 
-        .sidebar a:hover {
+        .header a:hover {
             background-color: rgba(50, 50, 50, 0.9); /* Darker background on hover */
             transition: 0.5s;
             border-radius: 10px;
         }
 
-        .sidebar li:hover {
+        .header li:hover {
             transform: scale(1.05);
         }
 
-
         .content {
-            margin-left: 250px;
+            margin-top: 70px;
             padding: 20px;
-            transition: .8s;
-        }
-        input[type="file"] {
-            border: 1px solid #c5c5c5;
-            border-radius: 11px;
-            padding: 5px;
-            white-space: normal;
-            word-wrap: break-word;
-            width: 100%;
-            overflow: auto;
         }
 
-        .sidebar i {
+        .header i {
             margin-right: 8px;
-
         }
-        .sidebar .fa, .sidebar .fas {
+
+        .header .fa, .header .fas {
             align-self: center;
         }
 
-        li a{
+        li a {
             display: flex;
-            justify-content: space-between;
-        }
-
-        ul{
-            width: 100%;
-        }
-
-        .open_side{
-            margin-left: 237px;
-            display: none;
-            border-radius: 30px;
-            background: #373737;
-            color: white;
-            border: none;
-            box-shadow: 4px 0px 5px 0px rgb(255 255 255);
-        }
-
-        .close_side{
-            margin-left: 213px;
-            border-radius: 30px;
-            width: 30px;
-            height: 30px;
-            background: transparent;
-            color: #fff;
-            border: 2px #fff solid;
-        }
-        .closed {
-        margin-left: -234px;
-        }
-
-        .expanded {
-        margin-left: 20px;
-        }
-        .open{
-            display: block;
-        }
-        .minimized{
-            display: block;
-        }
-        .closed .open_side {
-            display: block !important;
-        }
-
-        .open .open_side {
-            display: none !important;
-        }
-        .closed .close_side {
-            display: none !important;
-        }
-
-        .open .close_side {
-            display: block !important;
-        }
-
-        @media(max-width:700px){
-            .content{
-                margin-left: 20px;
-            }
-
-            .sidebar{
-                margin-left: -234px
-            }
-            .closed {
-                margin-left: -234px !important;
-            }
-            .open{
-                margin-left: 0px !important;
-            }
-
-            .expanded {
-            margin-left: 20px !important;
-            }
-            .minimized{
-                margin-left: 250px !important;
-            }
-
-            .open_side{
-                display: block;
-            }
-
-            .close_side{
-                display: none;
-            }
+            align-items: center;
         }
 
         .download-label {
-        display: inline-block;
-        font-family: Arial, sans-serif;
-        cursor: pointer;
-        color: #333;
-    }
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            color: #333;
+        }
 
-    .download-icon {
-        width: 20px;
-        height: 20px;
-        vertical-align: middle;
-        margin-right: 5px;
-    }
+        .download-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
 
-    /* Estilos específicos para melhorar a acessibilidade */
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
+        /* Specific styles to improve accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
 
-    .custom-file-input{
-        display: none;
-    }
+        .custom-file-input {
+            display: none;
+        }
 
-    .dashboard_content{
-        overflow: scroll;
-    }
+        .dashboard_content {
+            overflow: auto;
+        }
 
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0px 0px 9px 0px black;
-    word-wrap: break-word;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0px 0px 9px 0px black;
+            word-wrap: break-word;
+        }
 
-    th, td {
-    border: 1px solid #ddd;
-    padding: 3px;
-    text-align: left;
-    font-size: small;
-    }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 3px;
+            text-align: left;
+            font-size: small;
+        }
 
-    th {
-    background-color: #daf3e4;
-    }
+        th {
+            background-color: #daf3e4;
+        }
 
-    tr:nth-child(odd) {
-    background-color: #f9f9f9;
-    }
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
 
-    /* Hover effect */
-    tr:hover {
-    background-color: #e0e0e0a8;
-    }
+        tr:hover {
+            background-color: #e0e0e0a8;
+        }
 
-    /* Responsive styles */
-    @media only screen and (max-width: 600px) {
-    th, td {
-        font-size: 14px;
-    }
-    }
-    .card-medium {
-        box-shadow: 4px 4px 12px 0px black;
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
-    }
+        @media only screen and (max-width: 600px) {
+            th, td {
+                font-size: 14px;
+            }
+        }
 
-    .token_buttons{
-        display: flex;
-        gap: 5%;
-        justify-content: center;
-        align-content: center;
-    }
+        .card-medium {
+            box-shadow: 4px 4px 12px 0px black;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
 
-    li{
-        color: white;
-    }
+        .token_buttons {
+            display: flex;
+            gap: 5%;
+            justify-content: center;
+            align-content: center;
+        }
 
-    .arrow{
-        transform: rotate(90deg);
-        display: inline-block;
-        transition: .6s;
-    }
+        li {
+            color: white;
+        }
 
-    .arrow_up{
-        transform: rotate(-90deg);
-        transition: .6s;
-    }
+        .arrow {
+            transform: rotate(90deg);
+            display: inline-block;
+            transition: 0.6s;
+        }
 
-    .configs_content{
-        display: none;
+        .arrow_up {
+            transform: rotate(-90deg);
+            transition: 0.6s;
+        }
 
-    }
+        .configs_content {
+            display: none;
+        }
 
-    .open_box{
-        padding-left: 6% !important;
-    }
-    .open{
-        display: block;
-    }
+        .open_box {
+            padding-left: 6% !important;
+        }
 
-
-
+        .open {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <button class="close_side">X</button>
+    <div class="header">
+        <!-- <button class="close_side">X</button>
         <button class="open_side"><<</button>
-        <h2>Dashboard</h2>
+        <h2>Dashboard</h2> -->
         <ul>
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
 
