@@ -60,8 +60,13 @@
 
         .header li {
             padding: 8px;
-            text-align: left;
+            /* text-align: left; */
             transition: 0.3s;
+        }
+        .header li:hover {
+            background-color: rgba(50, 50, 50, 0.9);
+            transition: 0.5s;
+            border-radius: 10px;
         }
 
         .header a {
@@ -85,6 +90,13 @@
         .content {
             margin-top: 70px;
             padding: 20px;
+        }
+
+        .container{
+            background-color: #fff;
+            box-shadow: 0 0 12px 0px black;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
         }
 
         .header i {
@@ -138,7 +150,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            box-shadow: 0px 0px 9px 0px black;
+            /* box-shadow: 0px 0px 9px 0px black; */
             word-wrap: break-word;
         }
 
@@ -197,7 +209,7 @@
 
 
         .open_box {
-            padding-left: 6% !important;
+            /* padding-left: 6% !important; */
         }
 
         .configs_content {
@@ -222,6 +234,25 @@
             opacity: 1;
             transform: translateY(60px);
         }
+        .logo{
+            height: 40px;
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+        footer{
+            position: absolute;
+            /* bottom: 0; */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        footer>p {
+            color: #616161;
+            text-align: center;
+            /* font-size: 1.3em; */
+            /* padding: 16px; */
+        }
     </style>
 </head>
 <body>
@@ -230,6 +261,7 @@
         <button class="open_side"><<</button>
         <h2>Dashboard</h2> -->
         <ul>
+            <img src="Logo.png" class="logo" alt="" srcset="">
             <li><a href="{{ route('dashboard.show', ['page' => 'home']) }}"><i class="fas fa-home"></i>Inicio</a></li>
 
             <li style="cursor: pointer" class="open_box"><i class="fas fa-file-alt"></i>Artigos <span class="arrow">></span></li>
@@ -240,14 +272,23 @@
                 <ol><a href="{{route('dashboard.uploadCsv',['page'=>'uploadCsv'])}}"><i class="fas fa-file-excel"></i>Importar CSV</a></ol>
             </div>
 
-            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>Configurações <span class="arrow">></span></li>
+            <li style="cursor: pointer" class="open_box"><i class="fab fa-wordpress"></i>Wordpress <span class="arrow">></span></li>
 
             <div class="configs_content">
                 <ol><a href="{{ route('dashboard.wp', ['page' => 'wordpress_credentials']) }}"><i class="fas fa-registered"></i>Registrar Sites</a></ol>
                 <ol><a href="{{ route('importSite', ['page' => 'importSite']) }}"><i class="fas fa-globe"></i>Importar sites</a></ol>
-
                 <ol><a href="{{ route('listCredential', ['page' => 'list_wp_credentials']) }}"><i class="fas fa-key"></i>Lista de Sites</a></ol>
 
+                {{-- @if($test[0]->is_admin==1)
+                <ol><a href="{{ route('listIaCredentials', ['page' => 'listGptToken']) }}"><i class="fas fa-list"></i>Listar Tokens</a></ol>
+                @endif --}}
+                <ol><a href="{{ route('yoastforce', ['page' => 'yoastforce']) }}"><i class="fas fa-id-card"></i>youstforce</a></ol>
+                @if($test[0]->is_admin==1)
+                @endif
+            </div>
+            <li style="cursor: pointer" class="open_box"><i class="fas fa-cog"></i>Configurações <span class="arrow">></span></li>
+
+            <div class="configs_content">
                 @if($test[0]->is_admin==1)
                 <ol><a href="{{ route('dashboard.register', ['page' => 'register']) }}"><i class="fas fa-user-plus"></i>Registrar Editor</a></ol>
                 <ol><a href="{{ route('listEditor', ['page' => 'editor_list']) }}"><i class="fas fa-users"></i>Lista de editores</a></ol>
@@ -257,11 +298,12 @@
                 <ol><a href="{{ route('listIaCredentials', ['page' => 'listGptToken']) }}"><i class="fas fa-list"></i>Listar Tokens</a></ol>
                 @endif --}}
                 <ol><a href="{{ route('dashboard.gDriveConfig', ['page' => 'dashboard.gDriveConfig']) }}"><i class="fas fa-id-card"></i>Criar credenciais Google</a></ol>
-                <ol><a href="{{ route('yoastforce', ['page' => 'yoastforce']) }}"><i class="fas fa-id-card"></i>youstforce</a></ol>
                 <ol><a href="{{ route('projectCreation', ['page' => 'criar_projetos']) }}"><i class="fas fa-coffee"></i>Criar Projeto</a></ol>
                 <ol><a href="{{ route('projectList', ['page' => 'listar_projetos']) }}"><i class="fas fa-coffee"></i>Lista de Projetos</a></ol>
 
             </div>
+
+
 
             <li class="quit"><a href="#" onclick="logoff()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
         </ul>
@@ -276,7 +318,15 @@
     <!-- Adicione este link no cabeçalho para Font Awesome -->
 
 
+    <footer class="footer footer-simples">
+        <p>&copy; 2014-{{ date('Y') }} Tangerina Dev. Todos os direitos reservados.</p>
 
+        <p class="footer-links">
+            <a class="simple-link" href="/termos">Termos de uso</a>
+            |
+            <a class="simple-link" href="/privacidade">Política de privacidade</a>
+        </p>
+    </footer>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -361,8 +411,24 @@
       const arrow=document.querySelectorAll(".arrow");
       menuOpenbox.forEach((e,i)=>{
         e.addEventListener('click',()=>{
-            openBoxContent[i].classList.toggle("open");
-            arrow[i].classList.toggle("arrow_up");
+            // Remove 'open' and 'arrow_up' classes from all elements except the current one
+            openBoxContent.forEach((box, index) => {
+                if (index !== i) {
+                    box.classList.remove('open');
+                }
+            });
+
+            arrow.forEach((arrowElement, index) => {
+                if (index !== i) {
+                    arrowElement.classList.remove('arrow_up');
+                }
+            });
+
+            // Toggle the 'open' class for the clicked element
+            openBoxContent[i].classList.toggle('open');
+
+            // Toggle the 'arrow_up' class for the clicked element
+            arrow[i].classList.toggle('arrow_up');
         })
 
       })
